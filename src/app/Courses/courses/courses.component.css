@@ -7,7 +7,17 @@ body {
     color: #333;
     overflow-x: hidden;
 }
-
+table td {
+    vertical-align: middle;  /* Ensures proper alignment */
+  }
+  
+  .no-data-message {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #999;
+    padding: 20px;
+  }
 /* Modal Styling */
 .modal {
     position: fixed;
