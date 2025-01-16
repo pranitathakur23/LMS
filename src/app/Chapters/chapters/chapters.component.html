@@ -12,47 +12,19 @@
             <tr>
                 <th>SR. No</th>
                 <th>Chapter Name</th>
-                <th>Duration</th>
+                <!-- <th>Duration</th> -->
                 <th>Edit</th>
                 <th>Delete</th>
-
-
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Introduction to Angular</td>
-              <td>45 minutes</td>
-              <td><button style="  background-color: #218838;
-                color: white;
-                border: none; padding: 6px 12px;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 14px;
-color: white;
-transition: background-color 0.3s ease;">Edit</button></td>
-              <td><button class="delete-btn">Delete</button></td>
+            <tr *ngFor="let chapter of chapters; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ chapter.name}}</td>
+              <!-- <td>{{ chapter.name }}</td> -->
+              <td><button class="edit-btn" (click)="editCourse(chapter)">Edit</button></td>
+              <td><button class="delete-btn" (click)="deleteCourse(chapter)">Delete</button></td>
             </tr>
-            <tr>
-              <td>1</td>
-              <td>Introduction to Angular</td>
-              <td>45 minutes</td>
-              <td><button style="  background-color: #218838;
-                color: white;
-                border: none; padding: 6px 12px;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 14px;
-color: white;
-transition: background-color 0.3s ease;">Edit</button></td>
-              <td><button class="delete-btn">Delete</button></td>
-            </tr>
-            <tr>
-           
-          
           </tbody>
 
         </table>
@@ -91,29 +63,19 @@ transition: background-color 0.3s ease;">Edit</button></td>
 
               <div class="row mt-3">
                 <div class="col-md-6">
-                  <label for="chapterDescription" style="font-weight: bold;">
-                    Duration
-                  </label>
-                  <input class="form-control" type="text" id="duration" [(ngModel)]="newCourse.duration" name="duration" placeholder="Enter Course Duration " required />
-                </div>
-                <div class="col-md-6">
                   <label for="chapterDuration" style="font-weight: bold;">
                    Duration In
                   </label>
                   <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="newChapter.duration" name="chapterDuration" placeholder="Enter Duration" required />
                 </div>
-               
-              </div>
-
-              <div class="row mt-3">
                 <div class="col-md-6">
-                  <label for="fileUploadChapter" style="font-weight: bold;">
-                    File Upload
+                  <label for="chapterDescription" style="font-weight: bold;">
+                    Duration
                   </label>
-                  <div class="custom-file">
-                    <input type="file" class="form-control" id="fileUploadChapter"  accept="file/*" />
-                  </div>
+                  <input class="form-control" type="text" id="duration" [(ngModel)]="newCourse.duration" name="duration" placeholder="Enter Course Duration " required />
                 </div>
+              </div>
+              <div class="row mt-3">
                 <div class="col-md-6">
                   <label for="contentType" style="font-weight: bold;">
                  Content Type
@@ -123,7 +85,14 @@ transition: background-color 0.3s ease;">Edit</button></td>
                     <option ></option>
                   </select>
                 </div>
-           
+                <div class="col-md-6">
+                  <label for="fileUploadChapter" style="font-weight: bold;">
+                    File Upload
+                  </label>
+                  <div class="custom-file">
+                    <input type="file" class="form-control" id="fileUploadChapter"  accept="file/*" />
+                  </div>
+                </div>
               </div>
               <div class="row mt-3">
                 <div class="col-md-6">

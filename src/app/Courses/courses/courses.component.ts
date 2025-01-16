@@ -35,7 +35,7 @@ export class CoursesComponent {
   isCreateMode = true;  // By default, it will be create mode
  // Correctly type the 'file' as 'File | null' in the `newCourse` object
  departments: Department[] = [];  
- newCourse = {
+ newCourse = { 
   title: '',
   department: '',
   duration: '',
