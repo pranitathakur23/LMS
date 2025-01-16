@@ -1,0 +1,193 @@
+/* General Body Styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Modal Styling */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInModal 0.5s ease-out;
+    z-index: 1000;
+}
+
+/* Modal Fade-In Animation */
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Modal Content Styling */
+.modal-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 50%;
+    max-width: 900%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    max-height: 80vh;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Submit and Cancel Button Styling */
+.submit-btn, .cancel-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Submit Button Styling */
+.submit-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: #218838;
+}
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #dc3545; /* Red color on hover */
+}
+/* Cancel Button Styling */
+.cancel-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
+}
+
+/* Data Table Styling */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header Styling */
+.styled-table thead {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Alternate Row Color */
+.styled-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Table Row Hover Effect */
+.styled-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Edit and Delete Button Styling */
+.edit-btn, .delete-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+/* Edit Button */
+.edit-btn {
+    background-color: #28a745;
+}
+
+.edit-btn:hover {
+    background-color: #218838;
+}
+
+/* Delete Button */
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    /* Modal Content Styling */
+    .modal-content {
+        width: 80%;
+        padding: 15px;
+    }
+
+    .modal-header {
+        font-size: 20px;
+    }
+
+    /* Data Table */
+    .styled-table {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .submit-btn, .cancel-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .submit-btn {
+        padding: 10px 15px;
+    }
+
+    .cancel-btn {
+        padding: 10px 15px;
+    }
+
+    .edit-btn, .delete-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}

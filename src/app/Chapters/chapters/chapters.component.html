@@ -1,0 +1,161 @@
+<div class="big-card mt-4">
+    <div class="container">
+      <button class="create-btn" (click)="openModal()" style="    background-color: #218838;
+      color: white;
+      border: none;">
+        <span class="icon">+</span>Create Chapters
+      </button>
+  
+      <div class="card mt-4">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+                <th>SR. No</th>
+                <th>Chapter Name</th>
+                <th>Duration</th>
+                <th>Edit</th>
+                <th>Delete</th>
+
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Introduction to Angular</td>
+              <td>45 minutes</td>
+              <td><button style="  background-color: #218838;
+                color: white;
+                border: none; padding: 6px 12px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+color: white;
+transition: background-color 0.3s ease;">Edit</button></td>
+              <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>Introduction to Angular</td>
+              <td>45 minutes</td>
+              <td><button style="  background-color: #218838;
+                color: white;
+                border: none; padding: 6px 12px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+color: white;
+transition: background-color 0.3s ease;">Edit</button></td>
+              <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+           
+          
+          </tbody>
+
+        </table>
+      </div>
+  
+      <!-- Main Course Modal -->
+      <div *ngIf="isModalOpen" class="modal">
+        <div class=" modal-content">
+          <button class="close-btn" (click)="closeModal()">&times;</button>
+  
+          <h3 class="modal-header">Create New Chapter</h3>
+  
+          <form (ngSubmit)="submitForm()">
+            <!-- Course Form Fields -->
+            <div class="row">
+              <div class="col-md-6">
+                <label for="department" style="font-weight: bold;">
+                 Courses
+                </label>
+                <select class="form-control" id="department" [(ngModel)]="newCourse.department" name="department" required>
+                  <option value="" disabled selected>Select Course</option>
+                  <option>Angular</option>
+                  <option>React JS</option>
+                  <option>ASP.NET</option>
+                  <option>SQL</option>
+                </select>
+              </div>
+                <div class="col-md-6">
+                  <label for="chapterName" style="font-weight: bold;">
+               Chapter Name
+                  </label>
+                  <input class="form-control" type="text" id="chapterName" [(ngModel)]="newChapter.name" placeholder="Enter Chapter Name" name="chapterName" required />
+                </div>
+               
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <label for="chapterDescription" style="font-weight: bold;">
+                    Duration
+                  </label>
+                  <input class="form-control" type="text" id="duration" [(ngModel)]="newCourse.duration" name="duration" placeholder="Enter Course Duration " required />
+                </div>
+                <div class="col-md-6">
+                  <label for="chapterDuration" style="font-weight: bold;">
+                   Duration In
+                  </label>
+                  <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="newChapter.duration" name="chapterDuration" placeholder="Enter Duration" required />
+                </div>
+               
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <label for="fileUploadChapter" style="font-weight: bold;">
+                    File Upload
+                  </label>
+                  <div class="custom-file">
+                    <input type="file" class="form-control" id="fileUploadChapter"  accept="file/*" />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="contentType" style="font-weight: bold;">
+                 Content Type
+                  </label>
+                  <select class="form-control" id="contentType" [(ngModel)]="newChapter.contentType" name="contentType" required>
+                    <option value="" disabled selected>Select Content Type</option>
+                    <option ></option>
+                  </select>
+                </div>
+           
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <label for="chapterThumbnail" style="font-weight: bold;">
+                    Thumbnail
+                  </label>
+                  <input type="file" class="form-control" id="chapterThumbnail" accept="image/*" />
+                  <div class="mt-2">
+                    <img alt="Chapter Thumbnail Preview" class="img-fluid" style="max-width: 100%; height: auto; border-radius: 8px;">
+                  </div>
+                </div>
+              
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <button class="create-btn" style="    background-color: #218838;
+                  color: white;
+                  border: none; padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  color: white;
+  transition: background-color 0.3s ease;">
+                 Submit
+                  </button>
+                  
+                </div>
+</div>
+   </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

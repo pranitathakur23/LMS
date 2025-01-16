@@ -1,0 +1,189 @@
+<div class="big-card mt-4">
+    <div class="container">
+      <button class="create-btn" (click)="openModal()" style="    background-color: #218838;
+      color: white;
+      border: none;">
+        <span class="icon">+</span>Create Assessment
+      </button>
+  
+      <div class="card mt-4">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>SR. No</th>
+              <th>Assessment Name</th>
+              <!-- <th>Languages</th> -->
+              <th>Duration</th>
+              <th>Edit</th>
+              <th>Delete</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Introduction to Angular</td>
+              <td>30 minutes</td>
+              <td><button style="  background-color: #218838;
+                color: white;
+                border: none; padding: 6px 12px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+color: white;
+transition: background-color 0.3s ease;">Edit</button></td>                  <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Angular Components</td>
+              <td>45 minutes</td>
+              <td><button style="  background-color: #218838;
+                color: white;
+                border: none; padding: 6px 12px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+color: white;
+transition: background-color 0.3s ease;">Edit</button></td>                  <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Angular Routing</td>
+              <td>40 minutes</td>
+              <td><button style="  background-color: #218838;
+                color: white;
+                border: none; padding: 6px 12px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+color: white;
+transition: background-color 0.3s ease;">Edit</button></td>                  <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Angular Services</td>
+              <td>35 minutes</td>
+              <td><button style="  background-color: #218838;
+                color: white;
+                border: none; padding: 6px 12px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+color: white;
+transition: background-color 0.3s ease;">Edit</button></td>                  <td><button class="delete-btn">Delete</button></td>
+            </tr>
+           </tbody>
+
+        </table>
+      </div>
+  
+      <!-- Main Course Modal -->
+      <div *ngIf="isModalOpen" class="modal">
+        <div class=" modal-content">
+          <button class="close-btn" (click)="closeModal()">&times;</button>
+  
+          <h3 class="modal-header">Create New Assessment</h3>
+  
+          <form (ngSubmit)="submitForm()">
+            <!-- Course Form Fields -->
+            <div class="row">
+              <div class="col-md-6">
+                <label for="department" style="font-weight: bold;">
+                 Course
+                </label>
+                <select class="form-control" id="department" [(ngModel)]="newCourse.department" name="department" required>
+                  <option value="" disabled selected>Select Course</option>
+                  <option>Angular</option>
+                  <option>React JS</option>
+                  <option>ASP.NET</option>
+                  <option>SQL</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="courseTitle" style="font-weight: bold;">
+                    Assessment Name
+
+                </label>
+                <input class="form-control" type="text" id="courseTitle"  placeholder="Enter Course Title" name="courseTitle" required />
+              </div>
+          
+             
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label for="questionPaper" style="font-weight: bold;">
+                  Question Paper
+                </label>
+                <select class="form-control" id="questionPaper" [(ngModel)]="newCourse.questionPaper" name="questionPaper" required>
+                  <option value="" disabled selected>Select Question papers</option>
+                  <option *ngFor="let paper of questionPapers" [value]="paper">{{ paper }}</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                  <label for="chapterDuration" style="font-weight: bold;">
+                      Duration 
+                     </label>
+                     <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="newChapter.duration" name="chapterDuration" placeholder="Enter Duration" required />
+                  </div>
+                  <div class="col-md-4">
+                    <label for="department" style="font-weight: bold;">
+                        Duration In
+                    </label>
+                    <input class="form-control" type="text" id="assessmentDuration"  name="assessmentDuration" placeholder="Enter Duration" required />
+          
+                  </div>
+                  
+            </div>
+  <div class="row">
+    <div class="col-md-6">
+      <label for="chapterDuration" style="font-weight: bold;">
+          Number Of Question 
+         </label>
+         <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="newChapter.duration" name="chapterDuration" placeholder="Enter Duration" required />
+      </div>
+      <div class="col-md-6">
+        <label for="chapterDuration" style="font-weight: bold;">
+           Total Marks 
+           </label>
+           <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="newChapter.duration" name="chapterDuration" placeholder="Enter Duration" required />
+        </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <label for="chapterDuration" style="font-weight: bold;">
+         Passing Marks
+         </label>
+         <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="newChapter.duration" name="chapterDuration" placeholder="Enter Duration" required />
+      </div>
+      <div class="col-md-6">
+        <label for="chapterDuration" style="font-weight: bold;">
+Number Of Attempts           </label>
+           <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="newChapter.duration" name="chapterDuration" placeholder="Enter Duration" required />
+        </div>
+  </div>
+ 
+          <div class="row mt-3">
+              <div class="col-md-12">
+                <button class="create-btn" style=" background-color: #218838;
+                color: white;
+                border: none; padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      color: white;
+      transition: background-color 0.3s ease;">
+               Submit
+                </button> 
+   </div>
+   </div>
+   </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
