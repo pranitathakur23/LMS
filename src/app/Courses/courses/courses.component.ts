@@ -332,43 +332,56 @@ fetchDepartments() {
     // Validate Course Title
     if (!this.newCourse.title) {
       alert('Please enter a course title.');
-
+      // Focus on the Course Title input field
+      document.getElementById('courseTitle')?.focus();
       return; // Stop further execution
     }
   
     // Validate Department
     if (!this.newCourse.department) {
       alert('Please select a department.');
+      // Focus on the Department select field
+      document.getElementById('department')?.focus();
       return; // Stop further execution
     }
   
-    // Validate Course Duration
-    if (!this.newCourse.duration || isNaN(Number(this.newCourse.duration))) {
-      alert('Please enter a valid course duration.');
-      return; // Stop further execution
-    }
+   
   
     // Validate Course Duration In
     if (!this.newCourse.durationTime) {
-      alert('Please select the duration time.');
+      alert('Please select the duration In.');
+      // Focus on the Duration Time select field
+      document.getElementById('durationTime')?.focus();
       return; // Stop further execution
     }
-  
+   // Validate Course Duration
+   if (!this.newCourse.duration || isNaN(Number(this.newCourse.duration))) {
+    alert('Please enter a course duration time.');
+    // Focus on the Course Duration input field
+    document.getElementById('duration')?.focus();
+    return; // Stop further execution
+  }
     // Validate Thumbnail
-    if (!this.newCourse.file && this.isCreateMode== true) {
+    if (!this.newCourse.file && this.isCreateMode === true) {
       alert('Please upload a thumbnail image.');
+      // Focus on the File Upload input field
+      document.getElementById('fileUpload')?.focus();
       return; // Stop further execution
     }
   
     // Validate Description
     if (!this.newCourse.description) {
       alert('Please enter a course description.');
+      // Focus on the Description textarea field
+      document.getElementById('description')?.focus();
       return; // Stop further execution
     }
+  
     if (this.isCreateMode) {
       this.createCourse(0);  // Create mode
     } else {
       this.createCourse(1);  // Update mode
     }
   }
+  
 }
