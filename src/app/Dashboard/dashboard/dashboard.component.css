@@ -1,0 +1,140 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f4f8;
+}
+
+.dashboard {
+  display: flex
+;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    margin-left: 3%;
+}
+
+.main-card {
+  background-color: #0a48b3 !important; /* Main card background color */
+  color: white;
+  padding: 20px 15px;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: popAnimation 0.8s ease-out; /* Added pop animation */
+     width: 100%; /* Adjusted width for better proportion */
+  margin-top: 0; /* Touches the header above */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main-card:hover {
+  transform: scale(1.02); /* Slight zoom effect on hover */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.icon {
+  font-size: 36px;
+  margin-right: 12px;
+}
+
+.main-dashboard-icon {
+  color: #ffffff; /* White home icon for better contrast */
+}
+
+.main-title {
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three columns layout */
+  gap: 10px; /* Reduced gap for compact appearance */
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 18px 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.card:hover {
+  transform: translateY(-8px); /* Elevated hover effect */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.icon.courses-icon {
+  color: #f39c12; /* Bright orange for Manage Courses */
+}
+
+.icon.user-management-icon {
+  color: #3498db; /* Light blue for User Management */
+}
+
+.icon.questions-icon {
+  color: #2ecc71; /* Bright green for Question Bank */
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.card-body {
+  margin-top: 8px;
+}
+
+.description {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.4;
+}
+
+@keyframes popAnimation {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

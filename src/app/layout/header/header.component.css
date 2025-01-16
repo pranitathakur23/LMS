@@ -1,0 +1,72 @@
+/* header.component.css */
+.header {
+  background: linear-gradient(135deg, #3e77b0, #6799cc);
+  color: white;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Increased shadow */
+  transition: all 0.3s ease-in-out;
+}
+
+.header:hover {
+  background: linear-gradient(135deg, #3e77b0, #6799cc);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-left: 30px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+}
+
+.icon i {
+  font-size: 24px;
+  transition: color 0.3s ease;
+}
+
+.icon:hover i {
+  color: #ffdf40;
+}
+
+.logout-icon {
+  margin-left: 30px;
+}
+
+.icon[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+}

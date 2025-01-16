@@ -1,0 +1,121 @@
+<div class="big-card mt-4">
+  <div class="container">
+    <button class="create-btn" (click)="openModal()" style="    background-color: #218838;
+    color: white;
+    border: none;">
+      <span class="icon">+</span>Create Course
+    </button>
+
+    <div class="card mt-4">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>SR. No</th>
+            <th>Course Name</th>
+            <!-- <th>Languages</th> -->
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let course of courses; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ course.name }}</td>  <!-- Adjusted to match property 'name' -->
+            <!-- <td>{{ course.languages }}</td> -->
+            <td><button class="edit-btn" (click)="editCourse(course)">Edit</button></td>
+            <td><button class="delete-btn" (click)="deleteCourse(course)">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Main Course Modal -->
+    <div *ngIf="isModalOpen" class="modal">
+      <div class=" modal-content">
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+
+        <h3 class="modal-header">Create New Course</h3>
+
+        <form (ngSubmit)="submitForm()">
+          <!-- Course Form Fields -->
+          <div class="row">
+            <div class="col-md-6">
+              <label for="courseTitle" style="font-weight: bold;">
+                Course Title
+              </label>
+              <input class="form-control" type="text" id="courseTitle" [(ngModel)]="newCourse.title" placeholder="Enter Course Title" name="courseTitle" required />
+            </div>
+            <div class="col-md-6">
+              <label for="department" style="font-weight: bold;">
+               Department
+              </label>
+              <select class="form-control" id="department" [(ngModel)]="newCourse.department" name="department" required>
+                <option value="" disabled selected>Select Department</option>
+                <option *ngFor="let dept of departments" [value]="dept.DepartmentName">{{ dept.DepartmentName }}</option>
+              </select>
+            </div>
+           
+          </div>
+
+<div class="row">
+  <div class="col-md-6">
+    <label for="durationTime" style="font-weight: bold;">
+    Course Duration In
+    </label>
+    <select class="form-control" id="durationTime" [(ngModel)]="newCourse.durationTime" name="durationTime" required>
+      <option value="" disabled selected>Select Course Duration</option>
+      <option *ngFor="let time of durationTimes" [value]="time.DurationID">{{ time.DurationName }}</option>
+    </select>
+  </div>
+  <div class="col-md-6">
+    <label for="duration" style="font-weight: bold;">
+      Course Duration
+    </label>
+    <input class="form-control" type="text" id="duration" [(ngModel)]="newCourse.duration" name="duration" placeholder="Enter Course Duration " required />
+  </div>
+ 
+</div>
+<div class="row mt-3">
+  
+
+  <div class="col-md-6">
+    <label for="fileUpload" style="font-weight: bold;">
+      Thumbnail
+    </label>
+    <div class="custom-file">
+      <input type="file" class="form-control" id="fileUpload" (change)="handleFileUpload($event)" accept="image/*" />
+    </div>
+
+    <div *ngIf="thumbnailPreview" class="mt-2">
+      <label for="thumbnailPreview" style="font-weight: bold;">Thumbnail Preview</label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <label for="description" style="font-weight: bold;">
+    Description
+    </label>
+    <textarea class="form-control" id="description" name="description" rows="4" [(ngModel)]="newCourse.description" required></textarea>
+  </div>
+</div>
+
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+              <button class="create-btn" style=" background-color: #218838;
+              color: white;
+              border: none; padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+    transition: background-color 0.3s ease;">
+             Submit
+              </button> 
+ </div>
+ </div>
+ </form>
+      </div>
+    </div>
+  </div>
+</div>

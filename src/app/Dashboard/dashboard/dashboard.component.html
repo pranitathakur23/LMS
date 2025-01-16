@@ -1,0 +1,63 @@
+<div class="dashboard">
+  <div class="main-card">
+    <div class="card-header">
+      <i class="icon main-dashboard-icon">🏠</i> <!-- Home Icon -->
+      <span class="main-title">Dashboard</span>
+    </div>
+
+    <div class="cards-container">
+      <!-- Manage Courses Card -->
+      <div class="card" [@fadeIn] (click)="navigateTo('Courses/courses')">
+        <div class="card-header">
+          <i class="icon courses-icon">🎓</i> <!-- Courses Icon -->
+          <span class="title">Manage Courses</span>
+        </div>
+        <div class="card-body">
+          <p class="description">Manage your courses here. </p>
+        </div>
+      </div>
+      <div class="card" [@fadeIn] (click)="chapterNavigate('Chapters/chapters')">
+        <div class="card-header">
+          <i class="icon chapter-icon">📚</i> <!-- Chapter Icon --><span class="title">Chapter Details</span>
+        </div>
+        <div class="card-body">
+          <p class="description">Easily manage users, roles, and access permissions from here.</p>
+        </div>
+      </div>
+     
+
+      <!-- User Management Card -->
+      <div class="card" [@fadeIn]>
+        <div class="card-header">
+          <i class="icon user-management-icon">👤</i> <!-- User Management Icon -->
+          <span class="title">User Management</span>
+        </div>
+        <div class="card-body">
+          <p class="description">Easily manage users, roles, and access permissions from here.</p>
+        </div>
+      </div>
+         <!-- User Management Card -->
+         <div class="card" [@fadeIn] (click)="assessmentNavigate('assessment/assessment')">
+          <div class="card-header">
+            <i class="icon assessment-icon">📝</i> <!-- Assessment Icon -->
+            <span class="title">User Assesmemnt</span>
+          </div>
+          <div class="card-body">
+            <p class="description">Easily manage users, roles, and access permissions from here.</p>
+          </div>
+        </div>
+       <!-- Question Bank Card -->
+       <div class="card" [@fadeIn] (click)="questionpaperNavigate('Questions/question-bank')">
+        <div class="card-header">
+          <i class="icon questions-icon">📘</i> <!-- Question Bank Icon -->
+          <span class="title">Question Bank</span>
+        </div>
+        <div class="card-body">
+          <p class="description">Create and manage your question bank for assessments and quizzes.</p>
+        </div>
+      </div>
+    
+
+    </div>
+  </div>
+</div>
