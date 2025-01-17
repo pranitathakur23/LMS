@@ -46,7 +46,7 @@
             </div>          
             <div class="col-md-6">
               <label for="courseTitle" style="font-weight: bold;">Assessment Name</label>
-              <input class="form-control" type="text" id="courseTitle" [(ngModel)]="assessmentName" name="courseTitle" required />
+              <input class="form-control" type="text" id="courseTitle" [(ngModel)]="assessmentName" name="courseTitle" placeholder="Enter Assessment Name" required />
             </div>
           </div>
           <div class="row">
@@ -61,12 +61,12 @@
             </div>
             <div class="col-md-4">
               <label for="chapterDuration" style="font-weight: bold;">Duration</label>
-              <input
+              <input 
                 class="form-control"
                 type="text"
                 id="chapterDuration"
                 [(ngModel)]="durationValue"
-                name="chapterDuration"
+                name="chapterDuration" placeholder="Enter Duration"
                 required />
             </div>
             <div class="col-md-4">
@@ -83,14 +83,14 @@
                 Number Of Question
               </label>
               <input class="form-control" type="text" id="questionsCount" [(ngModel)]="questionsCount"
-                name="questionsCount" placeholder="Enter Duration" required />
+                name="questionsCount" placeholder="Enter no of Questions" required />
             </div>
             <div class="col-md-6">
               <label for="totalMarks" style="font-weight: bold;">
                 Total Marks
               </label>
               <input class="form-control" type="text" id="totalMarks" [(ngModel)]="totalMarks"
-                name="totalMarks" placeholder="Enter Duration" required />
+                name="totalMarks" placeholder="Enter total Marks" required />
             </div>
           </div>
           <div class="row">
@@ -99,13 +99,13 @@
                 Passing Marks
               </label>
               <input class="form-control" type="text" id="passingMarks" [(ngModel)]="passingMarks"
-                name="passingMarks" placeholder="Enter Duration" required />
+                name="passingMarks" placeholder="Enter Passing Marks" required />
             </div>
             <div class="col-md-6">
               <label for="passingMarks" style="font-weight: bold;">
                 Number Of Attempts </label>
               <input class="form-control" type="text" id="noOfAttempts" [(ngModel)]="noOfAttempts"
-                name="noOfAttempts" placeholder="Enter Duration" required />
+                name="noOfAttempts" placeholder="Enter No of Attempts" required />
             </div>
           </div>
           <div class="row mt-3">
