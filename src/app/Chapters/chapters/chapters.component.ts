@@ -28,6 +28,7 @@ export class ChaptersComponent {
   isModalOpen = false;
   isChapterModalOpen = false;  
   selectedContent: string = '';  // This stores the selected content ID
+  durationTimes: Duration[] = [];  // New array to hold Course Duration In options
 
   newCourse = {
     title: '',
@@ -50,7 +51,6 @@ export class ChaptersComponent {
 
   departments = ['Computer Science', 'Information Technology', 'Electrical Engineering'];
   questionPapers = ['MCQ', 'Descriptive', 'Practical'];
-  durationTimes = ['1 Hour', '2 Hours', '3 Hours'];
   thumbnailPreview: string | null = null;
 contentOptions: any;
 
@@ -86,24 +86,27 @@ contentOptions: any;
     );
   }
 
+  
   fetchDurationOptions() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
-    const requestBody = { mode: 2 };
-
+    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo'; // Full URL
+    const requestBody = {
+      mode: 2  // Pass mode: 2 to fetch Course Duration In options
+    };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
-        if (response.status === true) {
-          this.durationTimes = response.data.map((duration: any) => ({
-            DurationID: duration.DurationID,
-            DurationName: duration.DurationName
-          }));
+        if (response.status == true) {
+          // Map the response data to 'durationTimes'
+          this.durationTimes = response.data.map((duration: any) => {
+            return {
+              DurationID: duration.DurationID,   // Use DurationID directly
+              DurationName: duration.DurationName // Use DurationName directly
+            };
+          });
         }
       },
-      (error) => {
-        console.error('Error fetching duration options:', error);
-      }
     );
   }
+
 
   fetchCourses() {
     const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';  // The same URL as per your request

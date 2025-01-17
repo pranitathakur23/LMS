@@ -70,18 +70,18 @@
                     Course Duration In
                   </label>
                   <select
-      class="form-control"
-      id="durationTime"
-      [(ngModel)]="newCourse.durationTime"
-      name="durationTime"
-      required
-      #durationTimeSelect
-    >
-      <option value="" disabled selected>Select Course Duration</option>
-      <option *ngFor="let time of durationTimes">
-      
-      </option>
-    </select>
+                  class="form-control"
+                  id="durationTime"
+                  [(ngModel)]="newCourse.durationTime"
+                  name="durationTime"
+                  required
+                  #durationTimeSelect
+                >
+                  <option value="" disabled selected>Select Course Duration</option>
+                  <option *ngFor="let time of durationTimes" [value]="time.DurationID">
+                    {{ time.DurationName }}
+                  </option>
+                </select>
                 </div>
                 <div class="col-md-6">
                   <label for="duration" style="font-weight: bold;">
