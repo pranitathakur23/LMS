@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -12,6 +12,14 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 
 export class AssessmentComponent {
+  @ViewChild('assessmentNameInput') assessmentNameInput!: ElementRef;
+  @ViewChild('durationInput') durationInput!: ElementRef;
+  @ViewChild('questionsCountInput') questionsCountInput!: ElementRef;
+  @ViewChild('totalMarksInput') totalMarksInput!: ElementRef;
+  @ViewChild('passingMarksInput') passingMarksInput!: ElementRef;
+  @ViewChild('noOfAttemptsInput') noOfAttemptsInput!: ElementRef;
+  @ViewChild('courseSelect') courseSelect!: ElementRef;
+  @ViewChild('durationTimeSelect') durationTimeSelect!: ElementRef;
   selectedAssessmentID: number | null = null;
   currentMode: number = 1; 
   courses: any[] = [];
@@ -158,41 +166,45 @@ export class AssessmentComponent {
 
   SaveandUpdateAssessmentDetails(): void {
     const employeeCode = sessionStorage.getItem('employeeCode');
-  
     if (!this.selectedCourseId) {
       alert('Please select Course.');
+      this.courseSelect.nativeElement.focus(); // Set focus to course field
       return;
     }
     if (!this.assessmentName || this.assessmentName.trim() == '') {
       alert('Assessment Name is required.');
-      return;
-    }
-    if (!this.selectedQuestionPaper || this.selectedQuestionPaper.trim() == '') {
-      alert('Please select Question Paper.');
-      return;
-    }
-    if (!this.durationValue || this.durationValue.trim() == '') {
-      alert('Duration is required.');
+      this.assessmentNameInput.nativeElement.focus(); // Set focus to assessment name field
       return;
     }
     if (!this.newCourse.durationTime) {
       alert('Course Duration Time is required.');
+      this.durationTimeSelect.nativeElement.focus(); // Set focus to course duration field
       return;
     }
+    if (!this.durationValue || this.durationValue.trim() == '') {
+      alert('Duration is required.');
+      this.durationInput.nativeElement.focus(); // Set focus to duration field
+      return;
+    }
+   
     if (!this.questionsCount || this.questionsCount <= 0) {
-      alert('Please enter no of Questions');
+      alert('Please enter number of Questions');
+      this.questionsCountInput.nativeElement.focus(); // Set focus to questions count field
       return;
     }
     if (!this.totalMarks || this.totalMarks <= 0) {
       alert('Please enter Total Marks');
+      this.totalMarksInput.nativeElement.focus(); // Set focus to total marks field
       return;
     }
     if (!this.passingMarks || this.passingMarks <= 0) {
       alert('Please enter Passing Marks');
+      this.passingMarksInput.nativeElement.focus(); // Set focus to passing marks field
       return;
     }
     if (!this.noOfAttempts || this.noOfAttempts <= 0) {
       alert('Please enter Number of Attempts');
+      this.noOfAttemptsInput.nativeElement.focus(); // Set focus to number of attempts field
       return;
     }
     const apiUrl = '/api/webCourseMaster/SaveandUpdateAssessmentDetails';
@@ -225,7 +237,6 @@ export class AssessmentComponent {
       }
     );
   }
-  
   
   editAssessment(assessmentID: number): void {
     this.modalHeaderText = 'Update Assessment Details';

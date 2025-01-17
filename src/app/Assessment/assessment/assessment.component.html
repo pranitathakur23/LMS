@@ -4,7 +4,7 @@
       <span class="icon">+</span>Create Assessment
     </button>
     <div class="card mt-4">
-      <table class="table table-striped">
+      <table class="table table-bordered" style="margin-bottom: auto;"> 
         <thead>
           <tr>
             <th>SR. No</th>
@@ -20,10 +20,14 @@
             <td>{{ item.name }}</td>
             <td>{{ item.duration }}</td>
             <td>
-              <button class="edit-btn" (click)="editAssessment(item.assessmentID)">Edit</button>
+              <button class="edit-btn" (click)="editAssessment(item.assessmentID)" style="background: green; border: none;color: white;">
+                <i class="fa fa-edit" style="font-size: 18px;"></i>
+              </button>
             </td>
             <td>
-              <button class="delete-btn" (click)="deleteAssessment(item.assessmentID)">Delete</button>
+              <button class="delete-btn" (click)="deleteAssessment(item.assessmentID)" style="background: rgb(224, 33, 33); border: none;color: white;">
+                <i class="fa fa-trash" style="font-size: 18px;"></i>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -31,7 +35,7 @@
     </div>  
     <!-- Main Course Modal -->
     <div *ngIf="isModalOpen" class="modal">
-      <div class=" modal-content">
+      <div class="modal-content">
         <button class="close-btn" (click)="closeModal()">&times;</button>
         <h3 class="modal-header">{{ modalHeaderText }}</h3>
         <form>
@@ -39,20 +43,20 @@
           <div class="row">
             <div class="col-md-6">
               <label for="department" style="font-weight: bold;">Course</label>
-              <select class="form-control" id="department" [(ngModel)]="selectedCourseId" name="department" required>
+              <select class="form-control" id="department" [(ngModel)]="selectedCourseId" name="department" required #courseSelect>
                 <option [value]="null" disabled>Select Course</option>
                 <option *ngFor="let course of courses" [value]="course.courseId">{{ course.name }}</option>
               </select>
             </div>          
             <div class="col-md-6">
               <label for="courseTitle" style="font-weight: bold;">Assessment Name</label>
-              <input class="form-control" type="text" id="courseTitle" [(ngModel)]="assessmentName" name="courseTitle" placeholder="Enter Assessment Name" required />
+              <input class="form-control" type="text" id="courseTitle" [(ngModel)]="assessmentName" name="courseTitle" placeholder="Enter Assessment Name" required #assessmentNameInput />
             </div>
           </div>
           <div class="row">
             <div class="col-md-4">
               <label for="questionPaper" style="font-weight: bold;">Question Paper</label>
-              <select class="form-control" id="questionPaper" [(ngModel)]="selectedQuestionPaper" name="questionPaper" required>
+              <select class="form-control" id="questionPaper" [(ngModel)]="selectedQuestionPaper" name="questionPaper" required #questionPaperSelect>
                 <option [value]="null" disabled selected>Select Question Papers</option>
                 <option *ngFor="let paper of questionPapers" [value]="paper">
                   {{ paper }}
@@ -60,59 +64,40 @@
               </select>
             </div>
             <div class="col-md-4">
-              <label for="chapterDuration" style="font-weight: bold;">Duration</label>
-              <input 
-                class="form-control"
-                type="text"
-                id="chapterDuration"
-                [(ngModel)]="durationValue"
-                name="chapterDuration" placeholder="Enter Duration"
-                required />
+              <label for="durationTime" style="font-weight: bold;"> Duration In</label>
+              <select class="form-control" id="durationTime" [(ngModel)]="newCourse.durationTime" name="durationTime" required #durationTimeSelect>
+                <option [value]="null" disabled selected>Select Course Duration</option>
+                <option *ngFor="let time of durationTimes" [value]="time.DurationID">{{ time.DurationName }}</option>
+              </select>
             </div>
             <div class="col-md-4">
-              <label for="durationTime" style="font-weight: bold;"> Duration In</label>
-                <select class="form-control" id="durationTime" [(ngModel)]="newCourse.durationTime" name="durationTime" required>
-                  <option [value]="null" disabled selected>Select Course Duration</option>
-                  <option *ngFor="let time of durationTimes" [value]="time.DurationID">{{ time.DurationName }}</option>
-                </select>
+              <label for="chapterDuration" style="font-weight: bold;">Duration</label>
+              <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="durationValue" name="chapterDuration" placeholder="Enter Duration" required #durationInput />
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <label for="questionsCount" style="font-weight: bold;">
-                Number Of Question
-              </label>
-              <input class="form-control" type="text" id="questionsCount" [(ngModel)]="questionsCount"
-                name="questionsCount" placeholder="Enter no of Questions" required />
+              <label for="questionsCount" style="font-weight: bold;">Number Of Questions</label>
+              <input class="form-control" type="text" id="questionsCount" [(ngModel)]="questionsCount" name="questionsCount" placeholder="Enter no of Questions" required #questionsCountInput />
             </div>
             <div class="col-md-6">
-              <label for="totalMarks" style="font-weight: bold;">
-                Total Marks
-              </label>
-              <input class="form-control" type="text" id="totalMarks" [(ngModel)]="totalMarks"
-                name="totalMarks" placeholder="Enter total Marks" required />
+              <label for="totalMarks" style="font-weight: bold;">Total Marks</label>
+              <input class="form-control" type="text" id="totalMarks" [(ngModel)]="totalMarks" name="totalMarks" placeholder="Enter total Marks" required #totalMarksInput />
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <label for="passingMarks" style="font-weight: bold;">
-                Passing Marks
-              </label>
-              <input class="form-control" type="text" id="passingMarks" [(ngModel)]="passingMarks"
-                name="passingMarks" placeholder="Enter Passing Marks" required />
+              <label for="passingMarks" style="font-weight: bold;">Passing Marks</label>
+              <input class="form-control" type="text" id="passingMarks" [(ngModel)]="passingMarks" name="passingMarks" placeholder="Enter Passing Marks" required #passingMarksInput />
             </div>
             <div class="col-md-6">
-              <label for="passingMarks" style="font-weight: bold;">
-                Number Of Attempts </label>
-              <input class="form-control" type="text" id="noOfAttempts" [(ngModel)]="noOfAttempts"
-                name="noOfAttempts" placeholder="Enter No of Attempts" required />
+              <label for="passingMarks" style="font-weight: bold;">Number Of Attempts</label>
+              <input class="form-control" type="text" id="noOfAttempts" [(ngModel)]="noOfAttempts" name="noOfAttempts" placeholder="Enter No of Attempts" required #noOfAttemptsInput />
             </div>
           </div>
           <div class="row mt-3">
             <div class="col-md-12">
-              <button class="submit-btn" (click)="SaveandUpdateAssessmentDetails()">
-                Submit
-              </button>
+              <button class="submit-btn" (click)="SaveandUpdateAssessmentDetails()">Submit</button>
             </div>
           </div>
         </form>
