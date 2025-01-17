@@ -102,39 +102,7 @@ table td {
     background-color: #c82333;
 }
 
-/* Data Table Styling */
-.styled-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
 
-/* Table Header Styling */
-.styled-table thead {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    text-align: left;
-}
-
-.styled-table th, .styled-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-/* Alternate Row Color */
-.styled-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-/* Table Row Hover Effect */
-.styled-table tbody tr:hover {
-    background-color: #f1f1f1;
-}
 
 /* Edit and Delete Button Styling */
 .edit-btn, .delete-btn {
@@ -200,4 +168,5 @@ table td {
         padding: 6px 10px;
         font-size: 12px;
     }
+    
 }

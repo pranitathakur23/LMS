@@ -7,8 +7,8 @@
     </button>
 
     <div class="card mt-4">
-      <table class="table table-striped">
-        <thead>
+      <table class="table table-bordered" style="margin-bottom: auto;">     
+           <thead>
           <tr>
             <th>SR. No</th>
             <th>Course Name</th>
@@ -26,8 +26,16 @@
           <tr *ngFor="let course of courses; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ course.name }}</td>
-            <td><button class="edit-btn" (click)="editCourse(course)">Edit</button></td>
-            <td><button class="delete-btn" (click)="deleteCourse(course)">Delete</button></td>
+            <td>
+              <button class="edit-btn" (click)="editCourse(course)" style="background: green; border: none;color: white;">
+                <i class="fa fa-edit" style="font-size: 18px;"></i>
+              </button>
+            </td>
+            <td>
+              <button class="delete-btn" (click)="deleteCourse(course)" style="background: rgb(224, 33, 33); border: none;color: white;">
+                <i class="fa fa-trash" style="font-size: 18px;"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -108,7 +116,7 @@
               id="duration"
               [(ngModel)]="newCourse.duration"
               name="duration"
-              placeholder="Enter Course Duration "
+              placeholder="Enter Course Duration Time "
               required
               #durationInput
             />
