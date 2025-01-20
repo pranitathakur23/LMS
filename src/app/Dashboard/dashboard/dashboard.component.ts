@@ -31,5 +31,8 @@ export class DashboardComponent {
   questionpaperNavigate(path: string): void {
     this.router.navigate(['layout/Questions/question-bank']);
   }
+  userNavigate(path: string): void {
+    this.router.navigate(['layout/User/user-creation']);
+  }
 }
 

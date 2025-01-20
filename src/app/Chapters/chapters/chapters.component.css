@@ -8,6 +8,16 @@ body {
     overflow-x: hidden;
 }
 
+.btn-warning[_ngcontent-ng-c639737587] {
+    background-color: #198754;
+    color: white;
+    border-color: #198754;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
 /* Modal Styling */
 .modal {
     position: fixed;

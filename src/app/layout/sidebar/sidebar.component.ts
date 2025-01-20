@@ -10,7 +10,11 @@ import { Router } from '@angular/router';
 export class SidebarComponent {
 
   constructor(private router: Router) {}
-  
+  isOpen = false;
+
+  toggleSidebar() {
+    this.isOpen = !this.isOpen;
+  }
     navigateTo(): void {
       this.router.navigate(['layout/Dashboard/Dashboard']);
     }

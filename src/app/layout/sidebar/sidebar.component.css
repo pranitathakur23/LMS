@@ -1,14 +1,13 @@
-/* sidebar.component.css */
 .sidebar {
-  background: linear-gradient(135deg, #3e77b0, #6799cc);
-    color: white;
-    height: 100%;
-    width: 142px;
-    position: fixed;
-    top: 81px;
-    left: 0;
-    padding-top: 20px;
-    box-shadow: 5px 0px 15px rgba(0, 0)
+  background: linear-gradient(135deg, #0a48b3, #3e77b0, #6799cc); /* Adding #0a48b3 to the gradient */
+  color: white;
+  height: 100%;
+  width: 142px;
+  position: fixed;
+  top: 81px;
+  left: 0;
+  padding-top: 20px;
+  box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-header {
@@ -25,9 +24,9 @@
   text-align: center;
 }
 
-.sidebar-links {
+.sidebar-links[_ngcontent-ng-c712419419] {
   list-style: none;
-  padding-left: 0;
+  padding-left: 17px;
 }
 
 .sidebar-item {

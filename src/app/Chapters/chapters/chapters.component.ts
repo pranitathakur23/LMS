@@ -220,7 +220,6 @@ contentOptions: any;
         (response) => {
           if (response.status === true) {
             this.chapters = this.chapters.filter((c: { chapterId: any; }) => c.chapterId !== chapter.chapterId);
-            alert('Chapter deleted successfully');
           } else {
             alert('Error: ' + response.message);
           }
