@@ -28,6 +28,7 @@ body {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -49,7 +50,8 @@ body {
 }
 
 /* Submit and Cancel Button Styling */
-.submit-btn, .cancel-btn {
+.submit-btn,
+.cancel-btn {
     padding: 12px 20px;
     border: none;
     border-radius: 8px;
@@ -67,6 +69,7 @@ body {
 .submit-btn:hover {
     background-color: #218838;
 }
+
 .close-btn {
     position: absolute;
     top: 10px;
@@ -80,8 +83,10 @@ body {
 }
 
 .close-btn:hover {
-    color: #dc3545; /* Red color on hover */
+    color: #dc3545;
+    /* Red color on hover */
 }
+
 /* Cancel Button Styling */
 .cancel-btn {
     background-color: #dc3545;
@@ -110,7 +115,8 @@ body {
     text-align: left;
 }
 
-.styled-table th, .styled-table td {
+.styled-table th,
+.styled-table td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -127,7 +133,8 @@ body {
 }
 
 /* Edit and Delete Button Styling */
-.edit-btn, .delete-btn {
+.edit-btn,
+.delete-btn {
     padding: 6px 12px;
     border: none;
     border-radius: 5px;
@@ -157,6 +164,7 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+
     /* Modal Content Styling */
     .modal-content {
         width: 80%;
@@ -173,7 +181,8 @@ body {
         font-size: 14px;
     }
 
-    .submit-btn, .cancel-btn {
+    .submit-btn,
+    .cancel-btn {
         width: 100%;
         margin-top: 10px;
     }
@@ -186,8 +195,22 @@ body {
         padding: 10px 15px;
     }
 
-    .edit-btn, .delete-btn {
+    .edit-btn,
+    .delete-btn {
         padding: 6px 10px;
         font-size: 12px;
     }
+}
+
+.btnSubmit {
+    background-color: #218838;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+    transition: background-color 0.3s ease;
 }

@@ -52,12 +52,6 @@ export class AssessmentComponent {
     this.fetchDurationOptions();
     this.fetchCourses();
     this.fetchQuestionsType();
-    const employeeCode = sessionStorage.getItem('employeeCode');
-    if (employeeCode) {
-      console.log('EmployeeCode:', employeeCode);
-    } else {
-      console.log('EmployeeCode not found in sessionStorage');
-    }
   }
 
   openModal() {

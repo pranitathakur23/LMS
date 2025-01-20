@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -21,52 +21,43 @@ interface ContentType {
   styleUrls: ['./chapters.component.css']
 })
 export class ChaptersComponent {
+  @ViewChild('courseSelect') courseSelect!: ElementRef;
+  @ViewChild('chapterNameInput') chapterNameInput!: ElementRef;
+  @ViewChild('durationTimeSelect') durationTimeSelect!: ElementRef;
+  @ViewChild('durationInput') durationInput!: ElementRef;
+  @ViewChild('contentTypeSelect') contentTypeSelect!: ElementRef;
+
   chapters: any;
-  courses: any[] = [];  // New array to hold course data
-  contentTypes: ContentType[] = [];  // New array to hold content type data
-
+  courses: any[] = [];
+  contentTypes: ContentType[] = [];
+  currentMode: number = 1;
+  modalHeaderText: string = 'Create New Chapter';
   isModalOpen = false;
-  isChapterModalOpen = false;  
-  selectedContent: string = '';  // This stores the selected content ID
-  durationTimes: Duration[] = [];  // New array to hold Course Duration In options
-
-  newCourse = {
-    title: '',
-    department: '',
-    duration: '',
-    questionPaper: '',
-    durationTime: '',
-    description: '',
-    file: null
-  };
-
-  newChapter = {
-    name: '',
-    duration: '',
-    description: '',
-    file: null,
-    contentType: '',
-    thumbnail: null
-  };
-
-  departments = ['Computer Science', 'Information Technology', 'Electrical Engineering'];
-  questionPapers = ['MCQ', 'Descriptive', 'Practical'];
+  isChapterModalOpen = false;
+  selectedContent: string = '';
+  durationTimes: Duration[] = [];
+  selectedCourseId: number | null = null;
+  chapterName: string | null = null;
+  durationInId: number | null = null;
+  duration: string | null = null;
+  contentType: number | null = null;
   thumbnailPreview: string | null = null;
-contentOptions: any;
+  contentOptions: any;
+  selectedChapterID: number | null = null;
+  fileAcceptType: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.fetchChapters();
+    this.fetchCourses();
     this.fetchDurationOptions();
-    this.fetchCourses();  // Fetch the courses
-    this.fetchContentTypes();  // Fetch the content types
+    this.fetchContentTypes();
   }
 
   fetchChapters() {
     const apiUrl = '/api/webCourseMaster/GetChapterDetailsforWEB';
     const requestBody = { mode: 1 };
-
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status === true) {
@@ -86,39 +77,15 @@ contentOptions: any;
     );
   }
 
-  
-  fetchDurationOptions() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo'; // Full URL
-    const requestBody = {
-      mode: 2  // Pass mode: 2 to fetch Course Duration In options
-    };
-    this.http.post<any>(apiUrl, requestBody).subscribe(
-      response => {
-        if (response.status == true) {
-          // Map the response data to 'durationTimes'
-          this.durationTimes = response.data.map((duration: any) => {
-            return {
-              DurationID: duration.DurationID,   // Use DurationID directly
-              DurationName: duration.DurationName // Use DurationName directly
-            };
-          });
-        }
-      },
-    );
-  }
-
-
   fetchCourses() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';  // The same URL as per your request
-    const requestBody = { mode: 4 };  // Mode: 4 for fetching courses
-
+    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const requestBody = { mode: 4 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status === true) {
-          // Populate the courses array with fetched data
           this.courses = response.data.map((course: any) => ({
-            id: course.courseId,
-            name: course.courseName
+            name: course.courseName,
+            courseId: course.courseId
           }));
         } else {
           alert('No courses found.');
@@ -131,18 +98,36 @@ contentOptions: any;
     );
   }
 
-  // New method to fetch content types (PPT, PDF, Video)
+  fetchDurationOptions() {
+    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const requestBody = {
+      mode: 2
+    };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      response => {
+        if (response.status == true) {
+          this.durationTimes = response.data.map((duration: any) => {
+            return {
+              DurationID: duration.DurationID,
+              DurationName: duration.DurationName
+            };
+          });
+        }
+      },
+    );
+  }
+
   fetchContentTypes() {
     const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
-    const requestBody = { mode: 5 };  // Mode 5 for content types (PPT, PDF, Video)
-
+    const requestBody = { mode: 5 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
-        if (response.status === true) {
+        if (response.status == true) {
           this.contentTypes = response.data.map((contentType: any) => ({
             ContentID: contentType.ContentID,
             ContentName: contentType.ContentName
           }));
+          console.log('Content Types:', this.contentTypes);
         } else {
           alert('No content types found.');
         }
@@ -155,59 +140,158 @@ contentOptions: any;
   }
 
   openModal() {
-    console.log('Modal is opening...');
+    this.modalHeaderText = 'Create New Chapter'
+    this.currentMode = 0;
     this.isModalOpen = true;
+    this.selectedCourseId = null; 
+    this.chapterName = '';
+    this.durationInId = null;
+    this.duration = null; 
+    this.contentType = null; 
+    this.fileAcceptType = 'file/*';
   }
 
   closeModal() {
     this.isModalOpen = false;
   }
 
-  handleFileUpload(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.newCourse.file = file;
-
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.thumbnailPreview = e.target.result;
-      };
-      reader.readAsDataURL(file);
+  updateFileAcceptType(contentId: number | null) {
+    console.log('Received contentId:', contentId);
+    console.log('Content Types:', this.contentTypes);
+    const numericContentId = Number(contentId);
+    const selectedContentType = this.contentTypes.find(
+      (type) => type.ContentID === numericContentId
+    );
+    const fileInput = document.getElementById('fileUploadChapter') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; 
     }
-  }
 
-  submitForm() {
-    if (this.newCourse.title && this.newCourse.department && this.newCourse.duration && this.newCourse.questionPaper && this.newCourse.durationTime && this.newCourse.description) {
-      alert('New course created successfully!');
-      this.resetForm();
-      this.closeModal();
+    if (selectedContentType) {
+      switch (selectedContentType.ContentName) { 
+        case "Video":
+          this.fileAcceptType = 'video/*';
+          break;
+        case "PDF":
+          this.fileAcceptType = 'application/pdf';
+          break;
+        case "PPT":
+          this.fileAcceptType =
+            '.ppt,.pptx,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation';
+          break;
+        default:
+          this.fileAcceptType = 'file/*';
+      }
     } else {
-      alert('Please fill out all fields');
+      this.fileAcceptType = 'file/*';
     }
   }
+  
+  SaveandUpdateChapterDetails(): void {
+    const employeeCode = sessionStorage.getItem('employeeCode');
+    if (!employeeCode) {
+      alert('Employee not logged in');
+      return;
+    }
 
-  resetForm() {
-    this.newCourse = {
-      title: '',
-      department: '',
-      duration: '',
-      questionPaper: '',
-      durationTime: '',
-      description: '',
-      file: null
-    };
-    this.thumbnailPreview = null;
+    if (!this.selectedCourseId) {
+      alert('Please select Course.');
+      this.courseSelect.nativeElement.focus();
+      return;
+    }
+    if (!this.chapterName || this.chapterName.trim() == '') {
+      alert('Please enter ChapterName.');
+      this.chapterNameInput.nativeElement.focus();
+      return;
+    }
+    if (!this.durationInId) {
+      alert('Please select Duration In.');
+      this.durationTimeSelect.nativeElement.focus();
+      return;
+    }
+    if (!this.duration || this.duration.trim() == '') {
+      alert('Please enter Chapter duration.');
+      this.durationInput.nativeElement.focus();
+      return;
+    }
+    if (!this.contentType) {
+      alert('Please select Content Type.');
+      this.contentTypeSelect.nativeElement.focus();
+      return;
+    }
+
+    const fileUploadChapter = (document.getElementById('fileUploadChapter') as HTMLInputElement).files?.[0];
+    const chapterThumbnail = (document.getElementById('chapterThumbnail') as HTMLInputElement).files?.[0];
+  
+    const apiUrl = '/api/webCourseMaster/SaveandUpdateChapterDetails';
+    const formData: FormData = new FormData();
+    formData.append('mode', this.currentMode.toString());
+
+    if (this.currentMode == 0 && !fileUploadChapter) {
+      alert('Please upload a file for the chapter.');
+      return;
+    }
+    else if(fileUploadChapter != null){
+      formData.append('contentLink', fileUploadChapter, fileUploadChapter.name);
+    }
+
+    if (chapterThumbnail != null) {
+      formData.append('thumbnail', chapterThumbnail, chapterThumbnail.name);
+    }
+
+    if (this.selectedChapterID != null) {
+      formData.append('chapterId', this.selectedChapterID.toString());
+    }
+    formData.append('courseId', this.selectedCourseId.toString());
+    formData.append('chapterName', this.chapterName);
+    formData.append('courseDurationIn', this.durationInId.toString());
+    formData.append('duration', this.duration);
+    formData.append('contentID', this.contentType.toString());
+    formData.append('EmployeeCode', employeeCode);
+    this.http.post<any>(apiUrl, formData).subscribe(
+      response => {
+        if (response.status === true) {
+          alert('Chapter details saved/updated successfully.');
+          this.fetchChapters();
+          this.closeModal();
+        } else {
+          alert('Failed to save/update chapter details.');
+        }
+      },
+      error => {
+        console.error('Error saving/updating chapter details:', error);
+        alert('An error occurred while saving/updating chapter details.');
+      }
+    );
   }
 
-  resetChapterForm() {
-    this.newChapter = {
-      name: '',
-      duration: '',
-      description: '',
-      file: null,
-      contentType: '',
-      thumbnail: null
+  editChapter(chapter: any): void {
+    this.modalHeaderText = 'Update Chapter Details';
+    const apiUrl = '/api/webCourseMaster/GetChapterDetailsforWEB';
+    const requestBody = {
+      mode: 2, chapterId: chapter.chapterId
     };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      response => {
+        if (response.status == true) {
+          const chapterDetails = response.data[0];
+          this.selectedCourseId = chapterDetails.courseId;
+          this.chapterName = chapterDetails.chapterName;
+          this.durationInId = chapterDetails.durationIn;
+          this.duration = chapterDetails.duration;
+          this.contentType = chapterDetails.contentType;
+          this.isModalOpen = true;
+          this.currentMode = 1;
+          this.selectedChapterID = chapterDetails.chapterId;
+        } else {
+          alert('Failed to load Chapter details');
+        }
+      },
+      error => {
+        console.error('Error fetching Chapter details:', error);
+        alert('An error occurred while fetching Chapter details');
+      }
+    );
   }
 
   deleteChapter(chapter: any) {
@@ -233,7 +317,4 @@ contentOptions: any;
     }
   }
 
-  editCourse(course: any) {
-    alert(`Editing course: ${course.name}`);
-  }
 }
