@@ -1,0 +1,160 @@
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Add User Button -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="mb-0">User List</h5>
+          <button class="btn btn-success" (click)="openModal(false)">
+            <i class="fas fa-plus-circle"></i> Add User
+          </button>
+        </div>
+  
+        <!-- User List Table -->
+        <div class="table-container">
+          <table class="table table-hover table-striped custom-table">
+            <thead>
+              <tr>
+                <th>Employee Code</th>
+                <th>First Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Role</th>
+                <th>Employment Status</th>
+                <th>Bank Partner</th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>State</th>
+                <th>Area</th>
+                <th>Branch</th>
+                <th>Date of Joining</th>
+                <th>Date of Leaving</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users">
+                <td>{{ user.employeeCode }}</td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.mobile }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.status }}</td>
+                <td>{{ user.bankPartner }}</td>
+                <td>{{ user.department }}</td>
+                <td>{{ user.designation }}</td>
+                <td>{{ user.state }}</td>
+                <td>{{ user.area }}</td>
+                <td>{{ user.branch }}</td>
+                <td>{{ user.dateOfJoining }}</td>
+                <td>{{ user.dateOfLeaving }}</td>
+                <td class="actions-column">
+                  <button class="btn btn-warning btn-sm mr-2" (click)="editUser(user)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm mr-2" (click)="deleteUser(user)">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal for Add/Edit User -->
+  <div *ngIf="isModalOpen" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" (click)="closeModal()">&times;</span>
+      <h3>{{ isEditMode ? 'Edit User' : 'Add New User' }}</h3>
+      <hr />
+      <form (ngSubmit)="saveUser()">
+        <div class="row">
+          <div class="col-md-4 form-group">
+            <label for="employeeCode" style="font-weight: bold;">Employee Code</label>
+            <input type="text" id="employeeCode" class="form-control" [(ngModel)]="newUser.employeeCode" name="employeeCode" placeholder="Enter Employee Code" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="firstName" style="font-weight: bold;">First Name</label>
+            <input type="text" id="firstName" class="form-control" [(ngModel)]="newUser.firstName" name="firstName" placeholder="Enter First Name" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="email" style="font-weight: bold;">Email</label>
+            <input type="email" id="email" class="form-control" [(ngModel)]="newUser.email" name="email" placeholder="Enter Email" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 form-group">
+            <label for="mobile" style="font-weight: bold;">Mobile</label>
+            <input type="text" id="mobile" class="form-control" [(ngModel)]="newUser.mobile" name="mobile" placeholder="Enter Mobile Number" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="status" style="font-weight: bold;">Employment Status</label>
+            <input 
+              type="text" 
+              id="status" 
+              class="form-control" 
+              [(ngModel)]="newUser.status" 
+              name="status" 
+              placeholder="Enter Employment Status" 
+              required
+            />
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="bankPartner" style="font-weight: bold;">Bank Partner</label>
+            <input type="text" id="bankPartner" class="form-control" [(ngModel)]="newUser.bankPartner" name="bankPartner" placeholder="Enter Bank Partner" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 form-group">
+            <label for="department" style="font-weight: bold;">Department</label>
+            <input type="text" id="department" class="form-control" [(ngModel)]="newUser.department" name="department" placeholder="Enter Department" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="designation" style="font-weight: bold;">Designation</label>
+            <input type="text" id="designation" class="form-control" [(ngModel)]="newUser.designation" name="designation" placeholder="Enter Designation" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="state" style="font-weight: bold;">State</label>
+            <input type="text" id="state" class="form-control" [(ngModel)]="newUser.state" name="state" placeholder="Enter State" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 form-group">
+            <label for="area" style="font-weight: bold;">Area</label>
+            <input type="text" id="area" class="form-control" [(ngModel)]="newUser.area" name="area" placeholder="Enter Area" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="branch" style="font-weight: bold;">Branch</label>
+            <input type="text" id="branch" class="form-control" [(ngModel)]="newUser.branch" name="branch" placeholder="Enter Branch" required>
+          </div>
+          <div class="col-md-4 mt-4 form-group">
+            <label for="isActive" style="font-weight: bold;">Is Active</label>
+            <br />
+            <input type="checkbox" id="isActive" [(ngModel)]="newUser.isActive" name="isActive" />
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 form-group">
+                <label for="role" style="font-weight: bold;">Role</label>
+                <select id="role" class="form-control" [(ngModel)]="newUser.role" name="role" required>
+                  <option value="" disabled selected>Select Role</option> <!-- Placeholder for prompt -->
+                  <option *ngFor="let role of roles" [value]="role.name">{{ role.name }}</option>
+                </select>
+              </div>
+          <div class="col-md-4 form-group">
+            <label for="dateOfLeaving" style="font-weight: bold;">Date of Leaving</label>
+            <input type="date" id="dateOfLeaving" class="form-control" [(ngModel)]="newUser.dateOfLeaving" name="dateOfLeaving">
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="dateOfJoining" style="font-weight: bold;">Date of Joining</label>
+            <input type="date" id="dateOfJoining" class="form-control" [(ngModel)]="newUser.dateOfJoining" name="dateOfJoining">
+          </div>
+        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update User' : 'Save User' }}</button>
+      </form>
+    </div>
+  </div>
+  
