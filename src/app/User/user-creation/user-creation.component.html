@@ -69,25 +69,25 @@
       <span class="close-btn" (click)="closeModal()">&times;</span>
       <h3>{{ isEditMode ? 'Edit User' : 'Add New User' }}</h3>
       <hr />
-      <form (ngSubmit)="saveUser()">
+      <form>
         <div class="row">
           <div class="col-md-4 form-group">
             <label for="employeeCode" style="font-weight: bold;">Employee Code</label>
-            <input type="text" id="employeeCode" class="form-control" [(ngModel)]="newUser.employeeCode" name="employeeCode" placeholder="Enter Employee Code" required>
+            <input type="text" id="employeeCode" class="form-control" [(ngModel)]="newUser.employeeCode" name="employeeCode" placeholder="Enter Employee Code" required #employeeCodeSelect>
           </div>
           <div class="col-md-4 form-group">
             <label for="firstName" style="font-weight: bold;">First Name</label>
-            <input type="text" id="firstName" class="form-control" [(ngModel)]="newUser.firstName" name="firstName" placeholder="Enter First Name" required>
+            <input type="text" id="firstName" class="form-control" [(ngModel)]="newUser.firstName" name="firstName" placeholder="Enter First Name" required #firstNameSelect>
           </div>
           <div class="col-md-4 form-group">
             <label for="email" style="font-weight: bold;">Email</label>
-            <input type="email" id="email" class="form-control" [(ngModel)]="newUser.email" name="email" placeholder="Enter Email" required>
+            <input type="email" id="email" class="form-control" [(ngModel)]="newUser.email" name="email" placeholder="Enter Email" required #emailSelect>
           </div>
         </div>
         <div class="row">
           <div class="col-md-4 form-group">
             <label for="mobile" style="font-weight: bold;">Mobile</label>
-            <input type="text" id="mobile" class="form-control" [(ngModel)]="newUser.mobile" name="mobile" placeholder="Enter Mobile Number" required>
+            <input type="text" id="mobile" class="form-control" [(ngModel)]="newUser.mobile" name="mobile" placeholder="Enter Mobile Number" required #mobileNoSelect>
           </div>
           <div class="col-md-4 form-group">
             <label for="status" style="font-weight: bold;">Employment Status</label>
@@ -98,36 +98,36 @@
               [(ngModel)]="newUser.status" 
               name="status" 
               placeholder="Enter Employment Status" 
-              required
+              required #employeeStatusSelet
             />
           </div>
           <div class="col-md-4 form-group">
             <label for="bankPartner" style="font-weight: bold;">Bank Partner</label>
-            <input type="text" id="bankPartner" class="form-control" [(ngModel)]="newUser.bankPartner" name="bankPartner" placeholder="Enter Bank Partner" required>
+            <input type="text" id="bankPartner" class="form-control" [(ngModel)]="newUser.bankPartner" name="bankPartner" placeholder="Enter Bank Partner" required #bankPartnerSelect>
           </div>
         </div>
         <div class="row">
           <div class="col-md-4 form-group">
             <label for="department" style="font-weight: bold;">Department</label>
-            <input type="text" id="department" class="form-control" [(ngModel)]="newUser.department" name="department" placeholder="Enter Department" required>
+            <input type="text" id="department" class="form-control" [(ngModel)]="newUser.department" name="department" placeholder="Enter Department" required #departmentSelect>
           </div>
           <div class="col-md-4 form-group">
             <label for="designation" style="font-weight: bold;">Designation</label>
-            <input type="text" id="designation" class="form-control" [(ngModel)]="newUser.designation" name="designation" placeholder="Enter Designation" required>
+            <input type="text" id="designation" class="form-control" [(ngModel)]="newUser.designation" name="designation" placeholder="Enter Designation" required #designationSelect>
           </div>
           <div class="col-md-4 form-group">
             <label for="state" style="font-weight: bold;">State</label>
-            <input type="text" id="state" class="form-control" [(ngModel)]="newUser.state" name="state" placeholder="Enter State" required>
+            <input type="text" id="state" class="form-control" [(ngModel)]="newUser.state" name="state" placeholder="Enter State" required #stateSelect>
           </div>
         </div>
         <div class="row">
           <div class="col-md-4 form-group">
             <label for="area" style="font-weight: bold;">Area</label>
-            <input type="text" id="area" class="form-control" [(ngModel)]="newUser.area" name="area" placeholder="Enter Area" required>
+            <input type="text" id="area" class="form-control" [(ngModel)]="newUser.area" name="area" placeholder="Enter Area" required #areaSelect>
           </div>
           <div class="col-md-4 form-group">
             <label for="branch" style="font-weight: bold;">Branch</label>
-            <input type="text" id="branch" class="form-control" [(ngModel)]="newUser.branch" name="branch" placeholder="Enter Branch" required>
+            <input type="text" id="branch" class="form-control" [(ngModel)]="newUser.branch" name="branch" placeholder="Enter Branch" required #branchSelect>
           </div>
           <div class="col-md-4 mt-4 form-group">
             <label for="isActive" style="font-weight: bold;">Is Active</label>
@@ -138,22 +138,22 @@
         <div class="row">
             <div class="col-md-4 form-group">
                 <label for="role" style="font-weight: bold;">Role</label>
-                <select id="role" class="form-control" [(ngModel)]="newUser.role" name="role" required>
-                  <option value="" disabled selected>Select Role</option> <!-- Placeholder for prompt -->
-                  <option *ngFor="let role of roles" [value]="role.name">{{ role.name }}</option>
+                <select id="role" class="form-control" [(ngModel)]="newUser.role" name="role" required #roleSelect>
+                  <option value="" disabled selected>Select Role</option>
+                  <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
                 </select>
               </div>
           <div class="col-md-4 form-group">
             <label for="dateOfLeaving" style="font-weight: bold;">Date of Leaving</label>
-            <input type="date" id="dateOfLeaving" class="form-control" [(ngModel)]="newUser.dateOfLeaving" name="dateOfLeaving">
+            <input type="date" id="dateOfLeaving" class="form-control" [(ngModel)]="newUser.dateOfLeaving" name="dateOfLeaving" #dateOfLeavingSelect>
           </div>
           <div class="col-md-4 form-group">
             <label for="dateOfJoining" style="font-weight: bold;">Date of Joining</label>
-            <input type="date" id="dateOfJoining" class="form-control" [(ngModel)]="newUser.dateOfJoining" name="dateOfJoining">
+            <input type="date" id="dateOfJoining" class="form-control" [(ngModel)]="newUser.dateOfJoining" name="dateOfJoining" #dateOfJoiningSelect>
           </div>
         </div>
         <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update User' : 'Save User' }}</button>
+        <button type="submit" (click)="SaveandUpdateUserDetails()" class="btn btn-primary">{{ isEditMode ? 'Update User' : 'Save User' }}</button>
       </form>
     </div>
   </div>
