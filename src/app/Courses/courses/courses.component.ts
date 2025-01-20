@@ -188,7 +188,6 @@ fetchDepartments() {
     }
     this.http.post<any>(apiUrl, formData).subscribe(response => {
       if (response.status == true) {
-        alert('Course processed successfully!');
         this.closeModal();
         this.fetchCourses();
       } else {

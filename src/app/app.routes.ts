@@ -6,6 +6,7 @@ import { CoursesComponent } from './Courses/courses/courses.component';
 import { AssessmentComponent } from './Assessment/assessment/assessment.component';
 import { ChaptersComponent } from './Chapters/chapters/chapters.component';
 import { QuestionBankComponent } from './Questions/question-bank/question-bank.component';
+import { UserCreationComponent } from './User/user-creation/user-creation.component'; 
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,7 +19,8 @@ export const routes: Routes = [
       { path: 'Courses/courses', component: CoursesComponent },  // Modified this path
       { path: 'Assessment/assessment', component: AssessmentComponent },
       { path: 'Chapters/chapters', component: ChaptersComponent },  // Modified this path
-      { path: 'Questions/question-bank', component: QuestionBankComponent }  // Modified this path
+      { path: 'Questions/question-bank', component: QuestionBankComponent } , // Modified this path
+      { path: 'User/user-creation', component: UserCreationComponent }  // Modified this path
 
       // Modified this path
     ]
