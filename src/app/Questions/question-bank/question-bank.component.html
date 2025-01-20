@@ -1,132 +1,72 @@
 <div class="big-card mt-4">
-    <div class="container">
-      <button class="create-btn" (click)="openModal()" style="    background-color: #218838;
+  <div class="container">
+    <button class="create-btn" (click)="openModal()" style="    background-color: #218838;
       color: white;
       border: none;">
-        <span class="icon">+</span>Create Questions
-      </button>
-  
-      <div class="card mt-4">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>SR. No</th>
-              <th>Question Paper Name</th>
-              <th>Edit</th>
-              <th>Delete</th>
-
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Introduction to Angular</td>
-        
-              <td><button style="  background-color: #218838;
-                color: white;
-                border: none; padding: 6px 12px;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 14px;
-color: white;
-transition: background-color 0.3s ease;">Edit</button></td>                  <td><button class="delete-btn">Delete</button></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Angular Components</td>
-           
-              <td><button style="  background-color: #218838;
-                color: white;
-                border: none; padding: 6px 12px;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 14px;
-color: white;
-transition: background-color 0.3s ease;">Edit</button></td>                  <td><button class="delete-btn">Delete</button></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Angular Routing</td>
-           
-              <td><button style="  background-color: #218838;
-                color: white;
-                border: none; padding: 6px 12px;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 14px;
-color: white;
-transition: background-color 0.3s ease;">Edit</button></td>                  <td><button class="delete-btn">Delete</button></td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Angular Services</td>
-         
-              <td><button style="  background-color: #218838;
-                color: white;
-                border: none; padding: 6px 12px;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 14px;
-color: white;
-transition: background-color 0.3s ease;">Edit</button></td>                  <td><button class="delete-btn">Delete</button></td>
-            </tr>
-           </tbody>
-
-        </table>
-      </div>
-  
-      <!-- Main Course Modal -->
-      <div *ngIf="isModalOpen" class="modal">
-        <div class=" modal-content">
-          <button class="close-btn" (click)="closeModal()">&times;</button>
-  
-          <h3 class="modal-header">Create New Assessment</h3>
-  
-          <form (ngSubmit)="submitForm()">
-            <!-- Course Form Fields -->
-            <div class="row">
-             
-              <div class="col-md-6">
-                <label for="courseTitle" style="font-weight: bold;">
-                    Question Title
-
-                </label>
-                <input class="form-control" type="text" id="courseTitle"  placeholder="Enter Course Title" name="courseTitle" required />
-              </div>
-              <div class="col-md-6">
-                <label for="questionPaper" style="font-weight: bold;">
-               Question Upload Excel
-                </label>
-                <input class="form-control" type="file" id="courseTitle"  placeholder="Enter Course Title" name="courseTitle" required />
-
-              </div>
-             
+      <span class="icon">+</span>Create Questions
+    </button>
+    <div class="card mt-4">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>SR. No</th>
+            <th>Question Paper Name</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let question of questions; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ question.questionTitle}}</td>
+            <td>
+              <button class="edit-btn" style="background: green; border: none;color: white;"
+                (click)="editQuestions(question)">
+                <i class="fa fa-edit" style="font-size: 18px;"></i>
+              </button>
+            </td>
+            <td>
+              <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;"
+                (click)="deleteQuestions(question)">
+                <i class="fa fa-trash" style="font-size: 18px;"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Main Course Modal -->
+    <div *ngIf="isModalOpen" class="modal">
+      <div class=" modal-content">
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+        <h3 class="modal-header">{{ modalHeaderText }}</h3>
+        <form>
+          <!-- Course Form Fields -->
+          <div class="row">
+            <div class="col-md-6">
+              <label for="questionTitle" style="font-weight: bold;">
+                Question Title
+              </label>
+              <input class="form-control" type="text" id="questionTitle" [(ngModel)]="selectedQuestionCategory"
+                placeholder="Enter Course Title" name="questionTitle" required #questionTitleSelect />
             </div>
-           
- 
-  
+            <div class="col-md-6">
+              <label for="uploadExcel" style="font-weight: bold;">
+                Question Upload Excel
+              </label>
+              <input class="form-control" type="file" id="uploadExcel" placeholder="select Excel file"
+                name="uploadExcel" required />
+            </div>
+          </div>
           <div class="row mt-3">
-              <div class="col-md-12">
-                <button class="create-btn" style=" background-color: #218838;
-                color: white;
-                border: none; padding: 6px 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      color: white;
-      transition: background-color 0.3s ease;">
-               Submit
-                </button> 
-   </div>
-   </div>
-   </form>
-        </div>
+            <div class="col-md-12">
+              <button class="btnSubmit" (click)="SaveandUpdateQuestionDetails()">
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-  
+</div>
