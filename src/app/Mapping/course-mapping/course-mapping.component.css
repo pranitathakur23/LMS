@@ -1,0 +1,79 @@
+/* Table Header Styling */
+table th {
+ background-color: #0a48b3 !important;  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Table Row Styling */
+table td {
+  text-align: center;
+  padding: 8px;
+}
+
+/* Styling for Checkboxes */
+table input[type="checkbox"] {
+  accent-color: #007bff; /* Blue accent color for checked state */
+}
+
+/* Table Border Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+}
+
+/* Table Row Hover Effect */
+table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Table Responsive Design */
+.table-responsive {
+  max-height: 500px;
+  overflow-y: auto;
+  margin-top: 20px;
+}
+
+/* Button Styling */
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+button.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Form and Input Styling */
+form .form-select, form .form-control {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+}
+
+/* Adjust the width of the columns in the form */
+.form-select, .form-control {
+  margin-bottom: 15px;
+}
+
+/* Align the search and allocate buttons at the bottom of each row */
+.d-flex {
+  display: flex;
+  justify-content: flex-end;
+}
