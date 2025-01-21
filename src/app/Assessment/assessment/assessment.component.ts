@@ -84,6 +84,7 @@ export class AssessmentComponent {
           this.assessment = response.data.map((course: any) => {
             return {
               SrNo: course.SrNo,
+              CourseName: course.courseName,
               name: course.assessmentName,
               assessmentID: course.assessmentId,
               duration: course.duration,
