@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';  // Import HttpClientModule and HttpClient
-
+import { Router } from '@angular/router';  // Import Router service
 interface Department {
   DepartmentID: number;
   DepartmentName: string;
@@ -67,8 +67,11 @@ handleFileUpload(event: any) {
     this.newCourse.file = file;  // Assign the file to newCourse.file
   }
 }
-  constructor(private http: HttpClient) {}  // Inject HttpClient
-
+  constructor(private http: HttpClient, private router: Router) {}  // Inject HttpClient
+  mapCourse() {
+    // Navigate to the desired route when mapCourse() is called
+    this.router.navigate(['/layout/Mapping/course-mapping']);
+  }
   ngOnInit() {
     if (!this.courses) {
       this.courses = [];  // Initialize courses if it's undefined
