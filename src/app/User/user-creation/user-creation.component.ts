@@ -1,25 +1,38 @@
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
-import { Component, OnInit } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http'; // Import HttpClient and HttpClientModule
+import { FormsModule } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-creation',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],  // Add HttpClientModule here
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './user-creation.component.html',
   styleUrls: ['./user-creation.component.css']
 })
+
 export class UserCreationComponent implements OnInit {
+  @ViewChild('employeeCodeSelect') employeeCodeSelect!: ElementRef;
+  @ViewChild('firstNameSelect') firstNameSelect!: ElementRef;
+  @ViewChild('emailSelect') emailSelect!: ElementRef;
+  @ViewChild('mobileNoSelect') mobileNoSelect!: ElementRef;
+  @ViewChild('employeeStatusSelet') employeeStatusSelet!: ElementRef;
+  @ViewChild('bankPartnerSelect') bankPartnerSelect!: ElementRef;
+  @ViewChild('departmentSelect') departmentSelect!: ElementRef;
+  @ViewChild('designationSelect') designationSelect!: ElementRef;
+  @ViewChild('stateSelect') stateSelect!: ElementRef;
+  @ViewChild('areaSelect') areaSelect!: ElementRef;
+  @ViewChild('branchSelect') branchSelect!: ElementRef;
+  @ViewChild('dateOfLeavingSelect') dateOfLeavingSelect!: ElementRef;
+  @ViewChild('dateOfJoiningSelect') dateOfJoiningSelect!: ElementRef;
+  @ViewChild('roleSelect') roleSelect!: ElementRef;
 
-  // User list which will be populated from API
   users: any[] = [];
-
-  // Modal flag
   isModalOpen = false;
-  isEditMode = false;  // Flag to differentiate between Add and Edit
+  isEditMode = false;
+  roles: any[] = [];
+  CurrentID: number = 0; 
 
-  // New user object for binding form values
   newUser = {
     employeeCode: '',
     firstName: '',
@@ -35,70 +48,59 @@ export class UserCreationComponent implements OnInit {
     branch: '',
     dateOfJoining: '',
     dateOfLeaving: '',
-    isActive: false  // Default to false, as isActive is a boolean
+    isActive: false
   };
-  roles: any[] = [];  // This will hold the roles fetched from the API
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  // On component initialization, fetch users
   ngOnInit() {
     this.fetchUsers();
-    this.fetchRoles();  // Fetch roles when the component initializes
+    this.fetchRoles();
   }
 
-  // Method to fetch users from the API
-fetchUsers() {
-  const url = '/api/webCourseMaster/GetUsersDetailsforWEB';
-  const body = {
-    mode: 1
-  };
-
-  this.http.post<any>(url, body).subscribe(
-    (response) => {
-      if (response.status) {
-        this.users = response.data.map((user: any) => ({
-          employeeCode: user.EmployeeCode || '',
-          firstName: user.EmployeeName || '',
-          email: user.Email || '',
-          mobile: user.MobileNo || '',
-          role: user.RoleCode  ? '' : '',  // Adjust role mapping as needed
-          status: user.Employmentstatus || '',  // Directly assign Employmentstatus if it's a string
-          bankPartner: user.BankPartners || '',  // Directly assign BankPartners if it's a string
-          department: user.Department || '',  // Directly assign Department if it's a string
-          designation: user.Designation || '',  // Directly assign Designation if it's a string
-          state: user.States || '',  // Directly assign States if it's a string
-          area: user.Area || '',  // Directly assign Area if it's a string
-          branch: user.Branches || '',  // Directly assign Branches if it's a string
-          dateOfJoining: user.Dateofjoining || '',
-          dateOfLeaving: user.DateofLeaving || ''
-        }));
-      } else {
-        console.error('Failed to fetch users');
+  fetchUsers() {
+    const url = '/api/webCourseMaster/GetUsersDetailsforWEB';
+    const body = { mode: 1 };
+    this.http.post<any>(url, body).subscribe(
+      (response) => {
+        if (response.status == true) {
+          this.users = response.data.map((user: any) => ({
+            employeeCode: user.EmployeeCode || '',
+            firstName: user.EmployeeName || '',
+            email: user.Email || '',
+            mobile: user.MobileNo || '',
+            role: user.RoleCode ? '' : '',
+            status: user.Employmentstatus || '',
+            bankPartner: user.BankPartners || '',
+            department: user.Department || '',
+            designation: user.Designation || '',
+            state: user.States || '',
+            area: user.Area || '',
+            branch: user.Branches || '',
+            dateOfJoining: user.joiningDate || '',
+            dateOfLeaving: user.leavingDate || ''
+          }));
+        } else {
+          console.error('Failed to fetch users');
+        }
+      },
+      (error) => {
+        console.error('Error fetching users:', error);
       }
-    },
-    (error) => {
-      console.error('Error fetching users:', error);
-    }
-  );
-}
+    );
+  }
 
   deleteUser(user: any) {
-    // Display a confirmation dialog
     const isConfirmed = window.confirm('Are you sure you want to delete this user?');
-  
     if (isConfirmed) {
       const url = '/api/webCourseMaster/GetUsersDetailsforWEB';
       const body = {
-        mode: 3,  // Mode for delete
-        EMPLOYEECODE: user.employeeCode  // Pass the employee code of the user to delete
+        mode: 3,
+        EMPLOYEECODE: user.employeeCode
       };
-  
-      // Perform the delete request
       this.http.post<any>(url, body).subscribe(
         (response) => {
-          if (response.status) {
-            // Successfully deleted, so remove the user from the list
+          if (response.status == true) {
             this.users = this.users.filter((u) => u.employeeCode !== user.employeeCode);
             console.log('User deleted successfully');
           } else {
@@ -113,18 +115,16 @@ fetchUsers() {
       console.log('User deletion cancelled');
     }
   }
-  
-  // Fetch roles from the API
+
   fetchRoles() {
     const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 6 };
-
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status) {
           this.roles = response.data.map((role: { RoleCode: any; RoleName: any; }) => ({
-            id: role.RoleCode,  // Assuming RoleCode is returned by the API
-            name: role.RoleName // Assuming RoleName is returned by the API
+            id: role.RoleCode,
+            name: role.RoleName
           }));
         }
       },
@@ -134,16 +134,13 @@ fetchUsers() {
     );
   }
 
-  // Open the modal for Add/Edit user
   openModal(isEditMode: boolean, user?: any) {
     this.isModalOpen = true;
+    this.CurrentID = 0;
     this.isEditMode = isEditMode;
-
     if (isEditMode && user) {
-      // If in edit mode, pre-fill the modal with user data
-      this.fetchUserDetails(user.employeeCode);  // Fetch the user details based on employee code
+      this.fetchUserDetails(user.employeeCode);
     } else {
-      // Reset form for adding new user
       this.newUser = {
         employeeCode: '',
         firstName: '',
@@ -159,92 +156,184 @@ fetchUsers() {
         branch: '',
         dateOfJoining: '',
         dateOfLeaving: '',
-        isActive: false  // Default to false
+        isActive: false
       };
     }
   }
 
-  // Close the modal
   closeModal() {
     this.isModalOpen = false;
   }
 
-  // Save new user after form submission
-  saveUser() {
-    if (this.isEditMode) {
-      // Update existing user
-      const index = this.users.findIndex(user => user.employeeCode === this.newUser.employeeCode);
-      if (index !== -1) {
-        this.users[index] = { ...this.newUser };  // Replace old user with updated data
+  fetchUserDetails(employeeCode: string) {
+    const apiUrl = '/api/webCourseMaster/GetUsersDetailsforWEB';
+    const requestBody = {
+      mode: 2,
+      EMPLOYEECODE: employeeCode
+    };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status== true) {
+          const userData = response.data[0];
+          console.log('API Response:', response);
+          this.CurrentID = userData.ID;
+          this.newUser = {
+            employeeCode: userData.EmployeeCode || '',
+            firstName: userData.EmployeeName || '',
+            email: userData.Email || '',
+            mobile: userData.MobileNo || '',
+            role: userData.RoleCode,
+            status: userData.Employmentstatus || '',
+            bankPartner: userData.BankPartners || '',
+            department: userData.Department || '',
+            designation: userData.Designation || '',
+            state: userData.States || '',
+            area: userData.Area || '',
+            branch: userData.Branches || '',
+            dateOfJoining: userData.joiningDate || '',
+            dateOfLeaving: userData.leavingDate || '',
+            isActive: userData.IsActive || false
+          };
+        } else {
+          console.error('Error fetching user details:', response.message);
+        }
+      },
+      (error) => {
+        console.error('Error fetching user details:', error);
       }
-    } else {
-      // Add new user to the list
-      this.users.push({ ...this.newUser });
-    }
-
-    this.closeModal(); // Close modal after saving
+    );
   }
 
-  // Method to fetch detailed user information based on EmployeeCode
-// Method to fetch detailed user information based on EmployeeCode
-fetchUserDetails(employeeCode: string) {
-  const apiUrl = '/api/webCourseMaster/GetUsersDetailsforWEB';
-  const requestBody = {
-    mode: 2,
-    EMPLOYEECODE: employeeCode // Pass the employee code to the API
-  };
-
-  this.http.post<any>(apiUrl, requestBody).subscribe(
-    (response) => {
-      if (response.status) {
-        const userData = response.data[0];  // Assuming response.data is an array
-        console.log('API Response:', response);
-
-        // Map the response data to the newUser object
-        this.newUser = {
-          employeeCode: userData.EmployeeCode || '',
-          firstName: userData.EmployeeName || '',
-          email: userData.Email || '',
-          mobile: userData.MobileNo || '',
-          role: this.getRoleByCode(userData.RoleCode),  // Map the role code to the role name
-          status: userData.Employmentstatus || '',  // Directly assign Employmentstatus
-          bankPartner: userData.BankPartners || '',
-          department: userData.Department || '',
-          designation: userData.Designation || '',
-          state: userData.States || '',
-          area: userData.Area || '',
-          branch: userData.Branches || '',
-          dateOfJoining: userData.Dateofjoining || '',
-          dateOfLeaving: userData.DateofLeaving || '',
-          isActive: userData.IsActive || false  // Ensure it's a boolean value (true/false)
-        };
-      } else {
-        console.error('Error fetching user details:', response.message);
-      }
-    },
-    (error) => {
-      console.error('Error fetching user details:', error);
-    }
-  );
-}
-
-  // Method to get the role name based on RoleCode (you can adjust this logic as needed)
-  getRoleByCode(roleCode: number): string {
-    switch (roleCode) {
-      case 1:
-        return 'Teacher';
-      case 2:
-        return 'Admin';
-      default:
-        return 'Unknown';
-    }
-  }
-
-  // Edit user
   editUser(user: any) {
-    this.openModal(true, user);  // Open the modal in edit mode and pass the user data
-
-    // Fetch the detailed user data by EmployeeCode
+    this.openModal(true, user);
     this.fetchUserDetails(user.employeeCode);
+  }
+
+  SaveandUpdateUserDetails(): void {
+    const employeeCode = sessionStorage.getItem('employeeCode');
+    if (!employeeCode) {
+      alert('Employee not logged in');
+      return;
+    }
+
+    if (!this.newUser.employeeCode) {
+      alert('Please enter EmployeeCode.');
+      this.employeeCodeSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.firstName || this.newUser.firstName.trim() == '') {
+      alert('Please enter First Name.');
+      this.firstNameSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.email) {
+      alert('Please enter Email.');
+      this.emailSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.mobile) {
+      alert('Please enter Mobile No.');
+      this.mobileNoSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.status) {
+      alert('Please enter Employment Status Content Type.');
+      this.employeeStatusSelet.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.bankPartner) {
+      alert('Please enter bank partner.');
+      this.bankPartnerSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.department) {
+      alert('Please enter department.');
+      this.departmentSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.designation) {
+      alert('Please enter designation.');
+      this.designationSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.state) {
+      alert('Please enter State.');
+      this.stateSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.area) {
+      alert('Please enter Area.');
+      this.areaSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.branch) {
+      alert('Please enter Branch.');
+      this.branchSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.role) {
+      alert('Please select Role.');
+      this.roleSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.dateOfLeaving) {
+      alert('Please select dateOfLeaving.');
+      this.dateOfLeavingSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.newUser.dateOfJoining) {
+      alert('Please select dateOfJoining.');
+      this.dateOfJoiningSelect.nativeElement.focus();
+      return;
+    }
+
+    const apiUrl = '/api/webCourseMaster/SaveUserData';
+    const requestBody = {
+      id: this.CurrentID,
+      employeeCode: this.newUser.employeeCode,
+      EmployeeName: this.newUser.firstName,
+      email: this.newUser.email,
+      MobileNo: this.newUser.mobile,
+      Employmentstatus: this.newUser.status,
+      BankPartners: this.newUser.bankPartner,
+      Department: this.newUser.department,
+      Designation: this.newUser.designation,
+      States: this.newUser.state,
+      Area: this.newUser.area,
+      Branches: this.newUser.branch,
+      Dateofjoining: this.newUser.dateOfJoining,
+      DateofLeaving: this.newUser.dateOfLeaving,
+      RoleCode: this.newUser.role,
+      CreatedBy: employeeCode,
+      IsActive: this.newUser.isActive
+    };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      response => {
+        if (response.status == true) {
+          alert('User updated successfully.');
+          this.fetchUsers();
+          this.closeModal();
+        } else {
+          alert('Failed to save/update user details.');
+        }
+      },
+      error => {
+        console.error('Error saving/updating user details:', error);
+        alert('An error occurred while saving/updating user details.');
+      }
+    );
   }
 }
