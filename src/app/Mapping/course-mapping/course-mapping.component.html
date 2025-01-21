@@ -1,4 +1,4 @@
-<h2 class="text-center" style="    margin-left: -78%; ">Course Mapping</h2>
+<h2 class="text-center" style="margin-left: -78%;">Course Mapping</h2>
 
 <div class="container mt-4">
   <!-- Page Header -->
@@ -9,21 +9,23 @@
       <!-- Bank Dropdown -->
       <div class="col-md-3">
         <label for="bank">Bank</label>
-        <select id="bank" class="form-select" [(ngModel)]="formData.bank" name="bank" required>
-          <option value="">Select Bank</option>
-          <option *ngFor="let bank of banks" [value]="bank">{{ bank }}</option>
+        <select id="bank" class="form-select custom-dropdown" [(ngModel)]="formData.bank" 
+        name="bank" required 
+        >
+          <option value="" style="height: 50px;">Select Bank</option>
+          <option *ngFor="let bank of banks" [value]="bank" style="height: 50px;">{{ bank }}</option>
         </select>
       </div>
-
       <!-- State Dropdown -->
       <div class="col-md-3">
         <label for="state">State</label>
-        <select id="state" class="form-select" [(ngModel)]="formData.state" name="state" required>
+        <select id="state" class="form-select" [(ngModel)]="formData.state" name="state" 
+        required  
+         >
           <option value="">Select State</option>
           <option *ngFor="let state of states" [value]="state">{{ state }}</option>
         </select>
       </div>
-
       <!-- Area Dropdown -->
       <div class="col-md-3">
         <label for="area">Area</label>
@@ -32,7 +34,7 @@
           <option *ngFor="let area of areas" [value]="area">{{ area }}</option>
         </select>
       </div>
-
+      
       <!-- Branch Dropdown -->
       <div class="col-md-3">
         <label for="branch">Branch</label>
@@ -87,7 +89,6 @@
           <th>Area</th>
           <th>Branch</th>
           <th>Designation</th> <!-- Added Designation column -->
-
         </tr>
       </thead>
       <tbody>
@@ -102,14 +103,14 @@
           <td>{{ employee.area }}</td>
           <td>{{ employee.branch }}</td>
           <td>{{ employee.designation }}</td> <!-- Displaying Designation -->
-
         </tr>
       </tbody>
     </table>
   </div>
 </div>
- <!-- Modal for Allocation -->
- <div *ngIf="isModalOpen" class="modal">
+
+<!-- Modal for Allocation -->
+<div *ngIf="isModalOpen" class="modal">
   <div class="modal-content">
     <span class="close-btn" (click)="closeModal()">&times;</span>
     <h4 class="text-center">Allocate Course</h4>
@@ -119,9 +120,6 @@
         <label for="allocateFrom">Allocate From</label>
         <input type="date" id="allocateFrom" class="form-control" [(ngModel)]="allocateFormData.allocateFrom" name="allocateFrom" required>
       </div>
-
-    
-
 
       <!-- Allocate To Date -->
       <div class="form-group mb-3">
@@ -134,3 +132,5 @@
       </div>
     </form>
   </div>
+</div>
+
