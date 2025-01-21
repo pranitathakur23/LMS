@@ -8,7 +8,17 @@ import { HttpClientModule } from '@angular/common/http'; // Import HttpClientMod
 interface Bank {
   BankPartners: string;
 }
-
+interface Employee {
+  EmployeeCode: string;
+  EmployeeName: string;
+  BankPartners: string;
+  States: string;
+  Area: string;
+  Branches: string;
+  Designation: string;
+  Dateofjoining: string;  // Add Dateofjoining property
+  selected: boolean;
+}
 @Component({
   selector: 'app-course-mapping',
   standalone: true,
@@ -45,15 +55,10 @@ export class CourseMappingComponent implements OnInit {
   branches: string[] = [];
   designations: string[] = [];
 
-  // Static employees data for table
-  employees = [
-    { code: 'E001', name: 'John Doe', bank: 'Bank 1', state: 'State 1', area: 'Area 1', branch: 'Branch 1', designation: 'Designation 1', selected: false },
-    { code: 'E002', name: 'Jane Smith', bank: 'Bank 2', state: 'State 2', area: 'Area 2', branch: 'Branch 2', designation: 'Designation 2', selected: false },
-    { code: 'E003', name: 'Robert Brown', bank: 'Bank 3', state: 'State 3', area: 'Area 3', branch: 'Branch 3', designation: 'Designation 3', selected: false },
-  ];
+  employees: Employee[] = [];  // Employee array to store the employees data
+  selectAll = false;  // Select All checkbox status
 
   // Select all checkbox status binding
-  selectAll = false;
 
   constructor(private http: HttpClient) {}
 
@@ -64,6 +69,7 @@ export class CourseMappingComponent implements OnInit {
     this.fetchAreas();
     this.fetchBranches();
     this.fetchDesignations();
+    this.submitForm()
   }
 
   // Fetch Banks data
@@ -174,7 +180,46 @@ fetchDesignations() {
     }
   );
 }
+submitForm() {
+  const params = {
+    BankPartners: this.formData.bank || 'AB', 
+    States: this.formData.state || 'AB',  
+    Area: this.formData.area || 'AB',  
+    Branches: this.formData.branch || 'AB',  
+    Designation: this.formData.designation || 'AB', 
+    doj: this.formData.date || '',
+  };
+  console.log('Params:', params);
 
+  // API Call to fetch employees
+  this.http.post<any>('/api/webCourseMaster/GetAllUserData', params).subscribe(
+    (response) => {
+      console.log('API Response:', response);  // Log the API response
+      if (response.status && response.data.length > 0) {
+        console.log('Mapped Employees:', response.data);
+        this.employees = response.data.map((employee: any) => ({
+          ...employee,
+          selected: false,  // Initialize the selected property for checkboxes
+        }));
+      } else {
+        console.log('No employees found');
+        this.employees = [];  // Clear employees if no data is found
+      }
+    },
+    (error) => {
+      console.error('API error:', error);
+      this.employees = [];  // Clear employees on error
+    }
+  );
+}
+
+
+toggleSelectAll() {
+  this.selectAll = !this.selectAll;
+  this.employees.forEach((employee) => {
+    employee.selected = this.selectAll;
+  });
+}
   // Open Modal
   openModal() {
     this.isModalOpen = true;
@@ -185,13 +230,7 @@ fetchDesignations() {
     this.isModalOpen = false;
   }
 
-  // Toggle Select All Checkbox
-  toggleSelectAll() {
-    this.selectAll = !this.selectAll;
-    this.employees.forEach((employee) => {
-      employee.selected = this.selectAll;
-    });
-  }
+  
 
   // Submit the form
   onSubmit() {

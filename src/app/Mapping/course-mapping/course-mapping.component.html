@@ -1,28 +1,24 @@
 <h2 class="text-center" style="margin-left: -78%;">Course Mapping</h2>
 
 <div class="container mt-4">
-  <!-- Page Header -->
-
-  <!-- Form with Dropdowns and Buttons -->
   <form (ngSubmit)="onSubmit()">
     <div class="row mb-3">
       <!-- Bank Dropdown -->
       <div class="col-md-3">
         <label for="bank">Bank</label>
         <select id="bank" class="form-select custom-dropdown" [(ngModel)]="formData.bank" 
-        name="bank" required 
-        >
-          <option value="" style="height: 50px;">Select Bank</option>
-          <option *ngFor="let bank of banks" [value]="bank" style="height: 50px;">{{ bank }}</option>
+        name="bank" required>
+          <option value="">Select Bank</option>
+          <option value="AB">All</option>
+          <option *ngFor="let bank of banks" [value]="bank">{{ bank }}</option>
         </select>
       </div>
       <!-- State Dropdown -->
       <div class="col-md-3">
         <label for="state">State</label>
-        <select id="state" class="form-select" [(ngModel)]="formData.state" name="state" 
-        required  
-         >
+        <select id="state" class="form-select" [(ngModel)]="formData.state" name="state" required>
           <option value="">Select State</option>
+          <option value="AB">All</option>
           <option *ngFor="let state of states" [value]="state">{{ state }}</option>
         </select>
       </div>
@@ -31,15 +27,16 @@
         <label for="area">Area</label>
         <select id="area" class="form-select" [(ngModel)]="formData.area" name="area" required>
           <option value="">Select Area</option>
+          <option value="AB">All</option>
           <option *ngFor="let area of areas" [value]="area">{{ area }}</option>
         </select>
       </div>
-      
       <!-- Branch Dropdown -->
       <div class="col-md-3">
         <label for="branch">Branch</label>
         <select id="branch" class="form-select" [(ngModel)]="formData.branch" name="branch" required>
           <option value="">Select Branch</option>
+          <option value="AB">All</option>
           <option *ngFor="let branch of branches" [value]="branch">{{ branch }}</option>
         </select>
       </div>
@@ -51,6 +48,7 @@
         <label for="designation">Designation</label>
         <select id="designation" class="form-select" [(ngModel)]="formData.designation" name="designation" required>
           <option value="">Select Designation</option>
+          <option value="AB">All</option>
           <option *ngFor="let designation of designations" [value]="designation">{{ designation }}</option>
         </select>
       </div>
@@ -63,7 +61,7 @@
 
       <!-- Search Button -->
       <div class="col-md-1 mt-4">
-        <button type="submit" class="btn btn-primary">Search</button>
+        <button type="button" class="btn btn-primary" (click)="submitForm()">Search</button>
       </div>
 
       <!-- Allocate Button -->
@@ -88,25 +86,33 @@
           <th>State</th>
           <th>Area</th>
           <th>Branch</th>
-          <th>Designation</th> <!-- Added Designation column -->
+          <th>Designation</th>
+          <th>Date of Joining</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf="employees.length > 0">
         <tr *ngFor="let employee of employees">
           <td>
             <input type="checkbox" [(ngModel)]="employee.selected" />
           </td>
-          <td>{{ employee.code }}</td>
-          <td>{{ employee.name }}</td>
-          <td>{{ employee.bank }}</td>
-          <td>{{ employee.state }}</td>
-          <td>{{ employee.area }}</td>
-          <td>{{ employee.branch }}</td>
-          <td>{{ employee.designation }}</td> <!-- Displaying Designation -->
+          <td>{{ employee.EmployeeCode }}</td>
+          <td>{{ employee.EmployeeName }}</td>
+          <td>{{ employee.BankPartners }}</td>
+          <td>{{ employee.States }}</td>
+          <td>{{ employee.Area }}</td>
+          <td>{{ employee.Branches }}</td>
+          <td>{{ employee.Designation }}</td>
+          <td>{{ employee.Dateofjoining | date:'yyyy-MM-dd' }}</td>
         </tr>
       </tbody>
+      <ng-template #noDataTemplate>
+        <tr>
+          <td colspan="9" class="text-center">Data not available</td>
+        </tr>
+      </ng-template>
     </table>
   </div>
+  
 </div>
 
 <!-- Modal for Allocation -->
