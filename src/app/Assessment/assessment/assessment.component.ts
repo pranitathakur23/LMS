@@ -88,6 +88,7 @@ export class AssessmentComponent {
               name: course.assessmentName,
               assessmentID: course.assessmentId,
               duration: course.duration,
+              CourseID: course.courseId,
             };
           });
         } else {
@@ -100,6 +101,25 @@ export class AssessmentComponent {
       }
     );
   }
+
+  SaveAssessmentAllocation(courseId: number, assessmentId: number) {
+    const apiUrl = '/api/webCourseMaster/SaveAssessmentAllocationForWEB';
+    const requestBody = { mode: 1, courseId: courseId, assessmentID: assessmentId };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      response => {
+        if (response.status === true) {
+          alert('Assessment allocated successfully');
+        } else {
+          alert('Failed to allocate Assessment');
+        }
+      },
+      error => {
+        console.error('Error while allocating Assessment:', error);
+        alert('Error while allocating Assessment');
+      }
+    );
+  }
+  
 
   fetchCourses() {
     const apiUrl = '/api/webCourseMaster/GetCourseDetailsforWEB';

@@ -33,9 +33,10 @@
               </button>
             </td>
             <td>
-              <button class="btn btn-info btn-sm mr-2" style="background-color: #0dcaf0; border-color: #0dcaf0;">
-                <i class="fas fa-exchange-alt"></i>
-              </button>
+              <button class="btn btn-info btn-sm mr-2" style="background-color: #0dcaf0; border-color: #0dcaf0;" 
+              [disabled]="item.CourseID == 0" (click)="SaveAssessmentAllocation(item.CourseID, item.assessmentID)">
+              <i class="fas fa-exchange-alt"></i>
+            </button>
             </td>
           </tr>
         </tbody>
