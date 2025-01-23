@@ -8,15 +8,18 @@
         <thead>
           <tr>
             <th>SR. No</th>
+            <th>Course Name</th>
             <th>Assessment Name</th>
             <th>Duration</th>
             <th>Edit</th>
             <th>Delete</th>
+            <th>Allocate</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of assessment">
             <td>{{ item.SrNo }}</td>
+            <td>{{ item.CourseName }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.duration }}</td>
             <td>
@@ -28,6 +31,12 @@
               <button class="delete-btn" (click)="deleteAssessment(item.assessmentID)" style="background: rgb(224, 33, 33); border: none;color: white;">
                 <i class="fa fa-trash" style="font-size: 18px;"></i>
               </button>
+            </td>
+            <td>
+              <button class="btn btn-info btn-sm mr-2" style="background-color: #0dcaf0; border-color: #0dcaf0;" 
+              [disabled]="item.CourseID == 0" (click)="SaveAssessmentAllocation(item.CourseID, item.assessmentID)">
+              <i class="fas fa-exchange-alt"></i>
+            </button>
             </td>
           </tr>
         </tbody>

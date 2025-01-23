@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule and HttpClient
+import { HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
-// Interface for Bank object
 interface Bank {
   BankPartners: string;
 }
@@ -16,7 +16,7 @@ interface Employee {
   Area: string;
   Branches: string;
   Designation: string;
-  Dateofjoining: string;  // Add Dateofjoining property
+  Dateofjoining: string;
   selected: boolean;
 }
 @Component({
@@ -27,7 +27,10 @@ interface Employee {
   styleUrls: ['./course-mapping.component.css'],
 })
 export class CourseMappingComponent implements OnInit {
-  // Define data models for form and allocation
+  @ViewChild('allocateFromSelect') allocateFromSelect!: ElementRef;
+  @ViewChild('allocateToSelect') allocateToSelect!: ElementRef;
+  courseId: number | null = null;
+
   formData = {
     bank: '',
     state: '',
@@ -46,45 +49,37 @@ export class CourseMappingComponent implements OnInit {
     fromBranch: '',
   };
 
-  isModalOpen = false;
-
-  // Declare arrays for dropdowns
+  isModalOpen: boolean = false;
   banks: Bank[] = [];
   states: string[] = [];
   areas: string[] = [];
   branches: string[] = [];
   designations: string[] = [];
-
-  employees: Employee[] = [];  // Employee array to store the employees data
-  selectAll = false;  // Select All checkbox status
-
-  // Select all checkbox status binding
-
-  constructor(private http: HttpClient) {}
+  employees: Employee[] = [];
+  selectAll = false;
+  constructor(private http: HttpClient,private route: ActivatedRoute,) { }
 
   ngOnInit() {
-    // Fetch dropdown data for each Mode
+    this.route.queryParams.subscribe(params => {
+      this.courseId = +params['courseId'];
+      if (!this.courseId) {
+        alert('No courseId provided.');
+      }
+    });
     this.fetchBanks();
     this.fetchStates();
     this.fetchAreas();
     this.fetchBranches();
     this.fetchDesignations();
-    this.submitForm()
+    this.submitForm();
   }
 
-  // Fetch Banks data
   fetchBanks() {
     const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
-    const requestBody = { mode: 7 }; // Mode 7 for Banks
-
+    const requestBody = { mode: 7 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
-        console.log('API Response:', response);
-
         if (response.status == true) {
-          console.log('Banks Data:', response.data);
-
-          // Extract BankPartners from each object and map to the banks array
           this.banks = response.data.map((item: { BankPartners: string }) => item.BankPartners);
           console.log('Mapped Banks:', this.banks);
         } else {
@@ -97,154 +92,162 @@ export class CourseMappingComponent implements OnInit {
     );
   }
 
- // Fetch States data
-fetchStates() {
-  const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
-  const requestBody = { mode: 8 }; // Mode 8 for States
-  this.http.post<any>(apiUrl, requestBody).subscribe(
-    (response) => {
-      console.log('State Data:', response.data);
-
-      if (response.status == true) {
-        // Map the response data to the states array, assuming the response data is an array of objects
-        // with the key 'States'
-        this.states = response.data.map((item: { States: string }) => item.States);
-        console.log('Mapped States:', this.states);
+  fetchStates() {
+    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const requestBody = { mode: 8 };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status == true) {
+          this.states = response.data.map((item: { States: string }) => item.States);
+          console.log('Mapped States:', this.states);
+        }
+      },
+      (error) => {
+        console.error('Error fetching states:', error);
       }
-    },
-    (error) => {
-      console.error('Error fetching states:', error);
-    }
-  );
-}
-  // Fetch Areas data
-// Fetch Areas data
-fetchAreas() {
-  const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
-  const requestBody = { mode: 9 }; // Mode 9 for Areas
-  this.http.post<any>(apiUrl, requestBody).subscribe(
-    (response) => {
-      console.log('Area Data:', response.data);
+    );
+  }
 
-      if (response.status == true) {
-        // Map the response data to the areas array, assuming the response data is an array of objects
-        // with the key 'Area'
-        this.areas = response.data.map((item: { Area: string }) => item.Area);
-        console.log('Mapped Areas:', this.areas);
+  fetchAreas() {
+    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const requestBody = { mode: 9 };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status == true) {
+          this.areas = response.data.map((item: { Area: string }) => item.Area);
+          console.log('Mapped Areas:', this.areas);
+        }
+      },
+      (error) => {
+        console.error('Error fetching areas:', error);
       }
-    },
-    (error) => {
-      console.error('Error fetching areas:', error);
-    }
-  );
-}
-  // Fetch Branches data
- // Fetch Branches data
-fetchBranches() {
-  const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
-  const requestBody = { mode: 10 }; // Mode 10 for Branches
-  this.http.post<any>(apiUrl, requestBody).subscribe(
-    (response) => {
-      console.log('Branch Data:', response.data);
+    );
+  }
 
-      if (response.status == true) {
-        // Map the response data to the branches array, assuming the response data is an array of objects
-        // with the key 'Branches'
-        this.branches = response.data.map((item: { Branches: string }) => item.Branches);
-        console.log('Mapped Branches:', this.branches);
+  fetchBranches() {
+    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const requestBody = { mode: 10 };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status == true) {
+          this.branches = response.data.map((item: { Branches: string }) => item.Branches);
+          console.log('Mapped Branches:', this.branches);
+        }
+      },
+      (error) => {
+        console.error('Error fetching branches:', error);
       }
-    },
-    (error) => {
-      console.error('Error fetching branches:', error);
-    }
-  );
-}
+    );
+  }
 
-  // Fetch Designations data
-  // Fetch Designations data
-fetchDesignations() {
-  const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
-  const requestBody = { mode: 11 }; // Mode 11 for Designations
-  this.http.post<any>(apiUrl, requestBody).subscribe(
-    (response) => {
-      console.log('Designation Data:', response.data);
-
-      if (response.status  == true) {
-        // Map the response data to the designations array, assuming the response data contains 'Designation' keys
-        this.designations = response.data.map((item: { Designation: string }) => item.Designation);
-        console.log('Mapped Designations:', this.designations);
+  fetchDesignations() {
+    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const requestBody = { mode: 11 };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status == true) {
+          this.designations = response.data.map((item: { Designation: string }) => item.Designation);
+          console.log('Mapped Designations:', this.designations);
+        }
+      },
+      (error) => {
+        console.error('Error fetching designations:', error);
       }
-    },
-    (error) => {
-      console.error('Error fetching designations:', error);
-    }
-  );
-}
-submitForm() {
-  const params = {
-    BankPartners: this.formData.bank || 'AB', 
-    States: this.formData.state || 'AB',  
-    Area: this.formData.area || 'AB',  
-    Branches: this.formData.branch || 'AB',  
-    Designation: this.formData.designation || 'AB', 
-    doj: this.formData.date || '',
-  };
-  console.log('Params:', params);
+    );
+  }
 
-  // API Call to fetch employees
-  this.http.post<any>('/api/webCourseMaster/GetAllUserData', params).subscribe(
-    (response) => {
-      console.log('API Response:', response);  // Log the API response
-      if (response.status && response.data.length > 0) {
-        console.log('Mapped Employees:', response.data);
-        this.employees = response.data.map((employee: any) => ({
-          ...employee,
-          selected: false,  // Initialize the selected property for checkboxes
-        }));
-      } else {
-        console.log('No employees found');
-        this.employees = [];  // Clear employees if no data is found
+  submitForm() {
+    const params = {
+      BankPartners: this.formData.bank || 'AB',
+      States: this.formData.state || 'AB',
+      Area: this.formData.area || 'AB',
+      Branches: this.formData.branch || 'AB',
+      Designation: this.formData.designation || 'AB',
+      doj: this.formData.date || '',
+    };
+    this.http.post<any>('/api/webCourseMaster/GetAllUserData', params).subscribe(
+      (response) => {
+        if (response.status && response.data.length > 0) {
+          this.employees = response.data.map((employee: any) => ({
+            ...employee,
+            selected: false,
+          }));
+        } else {
+          console.log('No employees found');
+          this.employees = [];
+        }
+      },
+      (error) => {
+        console.error('API error:', error);
+        this.employees = [];
       }
-    },
-    (error) => {
-      console.error('API error:', error);
-      this.employees = [];  // Clear employees on error
-    }
-  );
-}
+    );
+  }
 
+  toggleSelectAll() {
+    this.selectAll = !this.selectAll;
+    this.employees.forEach((employee) => {
+      employee.selected = this.selectAll;
+    });
+  }
 
-toggleSelectAll() {
-  this.selectAll = !this.selectAll;
-  this.employees.forEach((employee) => {
-    employee.selected = this.selectAll;
-  });
-}
-  // Open Modal
   openModal() {
     this.isModalOpen = true;
   }
 
-  // Close Modal
   closeModal() {
     this.isModalOpen = false;
   }
 
-  
+  SaveandUpdateUserDetails(): void {
+    if (!this.courseId) {
+      alert('Course ID is not available.');
+      return;
+    }
 
-  // Submit the form
-  onSubmit() {
-    console.log('Form data:', this.formData);
+    if (!this.allocateFormData.allocateFrom) {
+      alert('Please enter allocateFrom.');
+      this.allocateFromSelect.nativeElement.focus();
+      return;
+    }
+
+    if (!this.allocateFormData.allocateTo) {
+      alert('Please enter allocateTo.');
+      this.allocateToSelect.nativeElement.focus();
+      return;
+    }
+
+    const checkedEmployees = this.employees
+      .filter(employee => employee.selected)
+      .map(employee => employee.EmployeeCode);
+
+    if (checkedEmployees.length == 0) {
+      alert('Please select at least one employee.');
+      return;
+    }
+    const apiUrl = '/api/webCourseMaster/SaveCourseAllocationData';
+    const requestBody = {
+      courseId: this.courseId,
+      allocateFrom: this.allocateFormData.allocateFrom,
+      allocateTo: this.allocateFormData.allocateTo,
+      EmployeeCodes: checkedEmployees,
+    };
+
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      response => {
+        if (response.status === true) {
+          this.submitForm();
+          alert('Course allocated successfully.');
+          this.closeModal();
+        } else {
+          alert('Failed to allocate course details.');
+        }
+      },
+      error => {
+        console.error('Error allocating course details:', error);
+        alert('An error occurred while allocating course.');
+      }
+    );
   }
 
-  // Handle Allocation Save
-  saveAllocation() {
-    console.log('Allocate From:', this.allocateFormData.allocateFrom);
-    console.log('Allocate To:', this.allocateFormData.allocateTo);
-    console.log('From Bank:', this.allocateFormData.fromBank);
-    console.log('From State:', this.allocateFormData.fromState);
-    console.log('From Area:', this.allocateFormData.fromArea);
-    console.log('From Branch:', this.allocateFormData.fromBranch);
-    this.closeModal(); // Close modal after saving
-  }
 }

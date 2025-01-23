@@ -1,13 +1,11 @@
 <h2 class="text-center" style="margin-left: -78%;">Course Mapping</h2>
-
 <div class="container mt-4">
-  <form (ngSubmit)="onSubmit()">
+  <form>
     <div class="row mb-3">
       <!-- Bank Dropdown -->
       <div class="col-md-3">
         <label for="bank">Bank</label>
-        <select id="bank" class="form-select custom-dropdown" [(ngModel)]="formData.bank" 
-        name="bank" required>
+        <select id="bank" class="form-select custom-dropdown" [(ngModel)]="formData.bank" name="bank" required>
           <option value="">Select Bank</option>
           <option value="AB">All</option>
           <option *ngFor="let bank of banks" [value]="bank">{{ bank }}</option>
@@ -41,7 +39,6 @@
         </select>
       </div>
     </div>
-
     <div class="row">
       <!-- Designation Dropdown -->
       <div class="col-md-3">
@@ -52,25 +49,21 @@
           <option *ngFor="let designation of designations" [value]="designation">{{ designation }}</option>
         </select>
       </div>
-
       <!-- Date Picker -->
       <div class="col-md-3">
         <label for="date">Date</label>
         <input type="date" id="date" class="form-control" [(ngModel)]="formData.date" name="date" required>
       </div>
-
       <!-- Search Button -->
       <div class="col-md-1 mt-4">
         <button type="button" class="btn btn-primary" (click)="submitForm()">Search</button>
       </div>
-
       <!-- Allocate Button -->
       <div class="col-md-1 mt-4">
         <button type="button" class="btn btn-success" (click)="openModal()">Allocate</button>
       </div>
     </div>
   </form>
-
   <!-- Static Table with Gradient Background -->
   <div class="table-responsive mt-4">
     <table class="table">
@@ -112,31 +105,40 @@
       </ng-template>
     </table>
   </div>
-  
 </div>
-
 <!-- Modal for Allocation -->
-<div *ngIf="isModalOpen" class="modal">
+<div *ngIf="isModalOpen" class="modal-overlay">
   <div class="modal-content">
     <span class="close-btn" (click)="closeModal()">&times;</span>
     <h4 class="text-center">Allocate Course</h4>
-    <form (ngSubmit)="saveAllocation()">
-      <!-- Allocate From Date -->
+    <form>
       <div class="form-group mb-3">
         <label for="allocateFrom">Allocate From</label>
-        <input type="date" id="allocateFrom" class="form-control" [(ngModel)]="allocateFormData.allocateFrom" name="allocateFrom" required>
+        <input
+          type="date"
+          id="allocateFrom"
+          class="form-control"
+          [(ngModel)]="allocateFormData.allocateFrom"
+          name="allocateFrom"
+          required
+          #allocateFromSelect
+        />
       </div>
-
-      <!-- Allocate To Date -->
       <div class="form-group mb-3">
         <label for="allocateTo">Allocate To</label>
-        <input type="date" id="allocateTo" class="form-control" [(ngModel)]="allocateFormData.allocateTo" name="allocateTo" required>
+        <input
+          type="date"
+          id="allocateTo"
+          class="form-control"
+          [(ngModel)]="allocateFormData.allocateTo"
+          name="allocateTo"
+          required
+          #allocateToSelect
+        />
       </div>
-
       <div class="text-center">
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" (click)="SaveandUpdateUserDetails()" class="btn btn-primary">Save</button>
       </div>
     </form>
   </div>
 </div>
-
