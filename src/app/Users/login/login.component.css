@@ -74,7 +74,9 @@ h4 {
 }
 /* Forgot Password Styling */
 .forgot-password {
-  margin-top: 5px; /* Space between password field and link */
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px; /* Adjusted space between password field and link */
 }
 
 .forgot-password a {
@@ -89,6 +91,12 @@ h4 {
   text-decoration: underline;
 }
 
+/* Ensure form-group allows space for the link */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 .login-btn:active {
   transform: translateY(1px);
   box-shadow: 0 2px 8px rgba(10, 72, 179, 0.2);

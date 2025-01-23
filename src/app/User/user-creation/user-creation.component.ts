@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-user-creation',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule,NgxPaginationModule],
   templateUrl: './user-creation.component.html',
   styleUrls: ['./user-creation.component.css']
 })
@@ -32,6 +34,14 @@ export class UserCreationComponent implements OnInit {
   isEditMode = false;
   roles: any[] = [];
   CurrentID: number = 0; 
+  isLoading: boolean = true;  // Add loading state
+  searchText: string = '';
+  p: number = 1; // Pagination current page
+  entriesPerPage: number = 10; // Number of items per page
+  entriesOptions: number[] = [5, 10, 25, 50]; // Options for the user to select
+  sortKey: string = '';
+  sortAsc: boolean = true;
+  filteredUsers: any[] = [];
 
   newUser = {
     employeeCode: '',
@@ -51,19 +61,24 @@ export class UserCreationComponent implements OnInit {
     isActive: false
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private location: Location) { }
 
   ngOnInit() {
     this.fetchUsers();
     this.fetchRoles();
+    
   }
-
+  goBack(): void {
+    this.location.back();  // This will navigate back to the previous page
+  }
   fetchUsers() {
+    this.isLoading = true; // Ensure loading state is true when data is being fetched
     const url = '/api/webCourseMaster/GetUsersDetailsforWEB';
     const body = { mode: 1 };
+  
     this.http.post<any>(url, body).subscribe(
       (response) => {
-        if (response.status == true) {
+        if (response.status === true) {
           this.users = response.data.map((user: any) => ({
             employeeCode: user.EmployeeCode || '',
             firstName: user.EmployeeName || '',
@@ -80,16 +95,55 @@ export class UserCreationComponent implements OnInit {
             dateOfJoining: user.joiningDate || '',
             dateOfLeaving: user.leavingDate || ''
           }));
+          this.filteredUsers = [...this.users];
         } else {
           console.error('Failed to fetch users');
         }
       },
       (error) => {
         console.error('Error fetching users:', error);
+      },
+      () => {
+        this.isLoading = false; // Hide the loading spinner once data is fetched
       }
     );
   }
+  
 
+  sortData(key: string) {
+    this.sortAsc = this.sortKey === key ? !this.sortAsc : true;
+    this.sortKey = key;
+
+    this.filteredUsers.sort((a, b) => {
+      if (a[key] < b[key]) return this.sortAsc ? -1 : 1;
+      if (a[key] > b[key]) return this.sortAsc ? 1 : -1;
+      return 0;
+    });
+  }
+
+  searchUsers() {
+    if (!this.searchText) {
+      this.filteredUsers = [...this.users];
+    } else {
+      this.filteredUsers = this.users.filter(user =>
+        Object.values(user).some(val =>
+          String(val).toLowerCase().includes(this.searchText.toLowerCase())
+        )
+      );
+    }
+  }
+
+  changeEntriesPerPage() {
+    this.p = 1; // Reset to the first page whenever entries per page is changed
+  }
+ 
+  // Calculate the range and total records
+  get rangeInfo() {
+    const start = (this.p - 1) * this.entriesPerPage + 1;
+    const end = Math.min(this.p * this.entriesPerPage, this.filteredUsers.length);
+    const total = this.filteredUsers.length;
+    return { start, end, total };
+  }
   deleteUser(user: any) {
     const isConfirmed = window.confirm('Are you sure you want to delete this user?');
     if (isConfirmed) {
@@ -133,6 +187,7 @@ export class UserCreationComponent implements OnInit {
       }
     );
   }
+
 
   openModal(isEditMode: boolean, user?: any) {
     this.isModalOpen = true;

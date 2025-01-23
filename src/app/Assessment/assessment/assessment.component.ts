@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-assessment',
@@ -37,7 +38,8 @@ export class AssessmentComponent {
   passingMarks: number | null = null;
   noOfAttempts: number | null = null;
   modalHeaderText: string = 'Create New Assessment';
-
+  selectedType: string = 'course'; // Set 'course' as the default value
+  isCourseDisabled: boolean = false; // New property to track whether course dropdown is disabled
   newCourse = {
     durationTime: null
   };
@@ -45,7 +47,7 @@ export class AssessmentComponent {
   assessment: any[] = [];
   durationTimes: any[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private location: Location) { }
 
   ngOnInit() {
     this.GetAssessmentdetails();
@@ -54,6 +56,21 @@ export class AssessmentComponent {
     this.fetchQuestionsType();
   }
 
+   // Method to set the selected type based on radio button change
+   setSelection(type: string) {
+    this.selectedType = type;
+    console.log(type); // Log the selected type to the console
+
+    // If 'General' is selected, set selectedCourseId to 0 and disable the course dropdown
+    if (this.selectedType === 'general') {
+      this.selectedCourseId = 0;
+      this.isCourseDisabled = true;
+    } else if (this.selectedType === 'course') {
+      // If 'Course' is selected, reset selectedCourseId to null and enable the course dropdown
+      this.selectedCourseId = null;
+      this.isCourseDisabled = false;
+    }
+  }
   openModal() {
     this.modalHeaderText = 'Create New Assessment'
     this.currentMode = 1;
@@ -70,7 +87,9 @@ export class AssessmentComponent {
       durationTime: null,
     };
   }
-  
+  goBack(): void {
+    this.location.back();  // This will navigate back to the previous page
+  }
   closeModal() {
     this.isModalOpen = false;
   }
@@ -160,10 +179,11 @@ export class AssessmentComponent {
 
   SaveandUpdateAssessmentDetails(): void {
     const employeeCode = sessionStorage.getItem('employeeCode');
-    if (!this.selectedCourseId) {
-      alert('Please select Course.');
-      this.courseSelect.nativeElement.focus(); // Set focus to course field
-      return;
+  
+    // Validation: Check if 'course' is selected and a course is chosen
+    if (this.selectedType === 'course' && !this.selectedCourseId) {
+      alert('Please select a Course.');
+      return; // Prevent form submission if no course is selected
     }
     if (!this.assessmentName || this.assessmentName.trim() == '') {
       alert('Assessment Name is required.');
@@ -205,7 +225,7 @@ export class AssessmentComponent {
     const requestBody = {
       mode: this.currentMode,
       assessmentID: this.selectedAssessmentID,
-      courseId: this.selectedCourseId,
+      courseId: this.selectedCourseId, // Will be either course ID or 0 if 'general' is selected
       assessmentName: this.assessmentName,
       questionPaperSetName: this.selectedQuestionPaper,
       duration: this.durationValue,
@@ -216,6 +236,7 @@ export class AssessmentComponent {
       noOfAttempts: this.noOfAttempts,
       EmployeeCode: employeeCode
     };
+    console.log('Body', requestBody)
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status === true) {
@@ -239,19 +260,30 @@ export class AssessmentComponent {
       mode: 2,
       assessmentID: assessmentID
     };
+  
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
-        if (response.status == true) {
+        if (response.status === true) {
           const assessmentDetails = response.data[0];
           this.selectedCourseId = assessmentDetails.courseId;
           this.assessmentName = assessmentDetails.assessmentName;
           this.selectedQuestionPaper = assessmentDetails.questionPaperSetName;
           this.durationValue = assessmentDetails.Duration;
           this.questionsCount = assessmentDetails.questionsCount;
-          this.totalMarks= assessmentDetails.totalMarks,
-          this.passingMarks= assessmentDetails.passingMarks,
-          this.noOfAttempts= assessmentDetails.noOfAttempts
+          this.totalMarks = assessmentDetails.totalMarks;
+          this.passingMarks = assessmentDetails.passingMarks;
+          this.noOfAttempts = assessmentDetails.noOfAttempts;
           this.newCourse.durationTime = assessmentDetails.DurationID;
+  
+          // जर courseId = 0 असेल तर 'general' निवडा आणि कोर्स ड्रॉपडाऊन डिसेबल करा
+          if (this.selectedCourseId === 0) {
+            this.selectedType = 'general'; // General निवडले
+            this.isCourseDisabled = true; // Course ड्रॉपडाऊन डिसेबल करा
+          } else {
+            this.selectedType = 'course'; // Course निवडले
+            this.isCourseDisabled = false; // Course ड्रॉपडाऊन सक्षम करा
+          }
+  
           this.isModalOpen = true;
           this.currentMode = 2;
           this.selectedAssessmentID = assessmentID;
@@ -265,7 +297,7 @@ export class AssessmentComponent {
       }
     );
   }
-
+  
   deleteAssessment(assessmentID: number) {
     const confirmDelete = window.confirm(`Are you sure you want to delete the Assessment: ${assessmentID}?`);
     if (confirmDelete == true) {

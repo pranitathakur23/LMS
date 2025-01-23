@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-question-bank',
@@ -20,12 +21,14 @@ export class QuestionBankComponent {
   selectedQuestionCategory: string | null = null;
   currentMode: number = 1;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private location: Location) { }
 
   ngOnInit() {
     this.fetchQuestionsList();
   }
-
+  goBack(): void {
+    this.location.back();  // This will navigate back to the previous page
+  }
   openModal() {
     this.modalHeaderText = 'Create New Question'
     this.isModalOpen = true;

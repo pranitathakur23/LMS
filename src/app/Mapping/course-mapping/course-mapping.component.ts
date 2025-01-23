@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule and HttpClient
+import { NgxPaginationModule } from 'ngx-pagination';
+import { Location } from '@angular/common';
 
 // Interface for Bank object
 interface Bank {
@@ -22,7 +24,7 @@ interface Employee {
 @Component({
   selector: 'app-course-mapping',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule, HttpClientModule,NgxPaginationModule],
   templateUrl: './course-mapping.component.html',
   styleUrls: ['./course-mapping.component.css'],
 })
@@ -45,22 +47,35 @@ export class CourseMappingComponent implements OnInit {
     fromArea: '',
     fromBranch: '',
   };
-
   isModalOpen = false;
-
+ searchTerm: string = '';  // For the global search term
   // Declare arrays for dropdowns
   banks: Bank[] = [];
   states: string[] = [];
   areas: string[] = [];
   branches: string[] = [];
   designations: string[] = [];
-
-  employees: Employee[] = [];  // Employee array to store the employees data
+  employees: Employee[] = [];
   selectAll = false;  // Select All checkbox status
+  isLoading: boolean = false; // Loading spinner flag
+
+    // Pagination and Data
+    p: number = 1;  // Current page
+    entriesPerPage: number = 10;
+    entriesOptions = [10, 15, 15, 15];
+    filteredEmployees: any[] = []; // Filtered employees for search
+    searchText: string = '';
+  
+    rangeInfo = {
+      start: 1,
+      end: 10,
+      total: 0,
+    };
+  
 
   // Select all checkbox status binding
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private location: Location) {}
 
   ngOnInit() {
     // Fetch dropdown data for each Mode
@@ -70,8 +85,11 @@ export class CourseMappingComponent implements OnInit {
     this.fetchBranches();
     this.fetchDesignations();
     this.submitForm()
+    
   }
-
+  goBack() {
+    this.location.back();  // Goes back to the previous page
+  }
   // Fetch Banks data
   fetchBanks() {
     const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
@@ -180,40 +198,77 @@ fetchDesignations() {
     }
   );
 }
-submitForm() {
-  const params = {
-    BankPartners: this.formData.bank || 'AB', 
-    States: this.formData.state || 'AB',  
-    Area: this.formData.area || 'AB',  
-    Branches: this.formData.branch || 'AB',  
-    Designation: this.formData.designation || 'AB', 
-    doj: this.formData.date || '',
-  };
-  console.log('Params:', params);
 
-  // API Call to fetch employees
-  this.http.post<any>('/api/webCourseMaster/GetAllUserData', params).subscribe(
-    (response) => {
-      console.log('API Response:', response);  // Log the API response
-      if (response.status && response.data.length > 0) {
-        console.log('Mapped Employees:', response.data);
-        this.employees = response.data.map((employee: any) => ({
-          ...employee,
-          selected: false,  // Initialize the selected property for checkboxes
-        }));
-      } else {
-        console.log('No employees found');
-        this.employees = [];  // Clear employees if no data is found
-      }
-    },
-    (error) => {
-      console.error('API error:', error);
-      this.employees = [];  // Clear employees on error
+
+  // Method to change entries per page
+  changeEntriesPerPage() {
+    this.p = 1; // Reset to first page when entries per page changes
+    this.searchEmployees(); // Reapply filtering when entries per page change
+  }
+
+  // Handle Search functionality
+  searchEmployees() {
+    console.log(this.searchText);  // Log the search term to check if it's updating
+    if (this.searchText) {
+      // Filter employees based on searchText
+      this.filteredEmployees = this.employees.filter(employee => 
+        Object.values(employee).some(val =>
+          val.toString().toLowerCase().includes(this.searchText.toLowerCase())
+        )
+      );
+    } else {
+      // Reset to show all employees if the search term is empty
+      this.filteredEmployees = [...this.employees];
     }
-  );
-}
+  }
 
+  // Update range information for pagination
+  updateRangeInfo() {
+    const totalEmployees = this.filteredEmployees.length;
+    const start = (this.p - 1) * this.entriesPerPage + 1;
+    const end = Math.min(this.p * this.entriesPerPage, totalEmployees);
+    this.rangeInfo = {
+      start: start,
+      end: end,
+      total: totalEmployees,
+    };
+  }
 
+  // Handle form submission for employee data fetch
+  submitForm() {
+    const params = {
+      BankPartners: this.formData.bank || 'AB',
+      States: this.formData.state || 'AB',
+      Area: this.formData.area || 'AB',
+      Branches: this.formData.branch || 'AB',
+      Designation: this.formData.designation || 'AB',
+      doj: this.formData.date || '',
+    };
+    console.log('Params:', params); // Make sure parameters are correct
+    
+    // Pass 'params' in the POST request
+    this.isLoading = true;
+    this.http.post<any>('/api/webCourseMaster/GetAllUserData', params).subscribe(
+      (response) => {
+        if (response.status && response.data && response.data.length > 0) {
+          this.employees = response.data.map((employee: any) => ({
+            ...employee,
+            selected: false, // Initialize all employees as unselected
+          }));
+          this.filteredEmployees = [...this.employees]; // Initially display all employees
+          this.updateRangeInfo();
+        } else {
+          this.filteredEmployees = [];
+        }
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+  
 toggleSelectAll() {
   this.selectAll = !this.selectAll;
   this.employees.forEach((employee) => {
@@ -229,8 +284,6 @@ toggleSelectAll() {
   closeModal() {
     this.isModalOpen = false;
   }
-
-  
 
   // Submit the form
   onSubmit() {

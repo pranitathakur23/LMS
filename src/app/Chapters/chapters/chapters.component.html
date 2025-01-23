@@ -1,40 +1,50 @@
-<div class="big-card mt-4">
-  <div class="container">
-    <button class="create-btn" (click)="openModal()" style="background-color: #218838;
-      color: white;
-      border: none;">
-      <span class="icon">+</span>Create Chapters
-    </button>
-    <div class="card mt-4">
-      <table class="table table-bordered" style="margin-bottom: auto;">
-        <thead>
-          <tr>
-            <th>SR. No</th>
-            <th>Chapter Name</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let chapter of chapters; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ chapter.name}}</td>
-            <td>
-              <button class="edit-btn" style="background: green; border: none;color: white;"
-              (click)="editChapter(chapter)">
-                <i class="fa fa-edit" style="font-size: 18px;"></i>
-              </button>
-            </td>
-            <td>
-              <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;"
-                (click)="deleteChapter(chapter)">
-                <i class="fa fa-trash" style="font-size: 18px;"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+<div class="container" style="    margin-top: 7%;"  >
+  <div class="row">
+    <div class="col-md-12">
+      <!-- Add User Button -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <button class="btn btn-warning" (click)="goBack()" style="color: white;">
+          <i class="fas fa-arrow-left" ></i> 
+        </button>
+        <h3 style="font-weight: bold;    margin-left: -61%;"> Chapters Details</h3>
+        <button class="btn btn-success" (click)="openModal()">
+          <i class="fas fa-plus-circle"></i> Create Chapters
+        </button>
+      </div>
+
+      <!-- User List Table -->
+      <div class="table-container">
+        <table class="table table-hover table-striped custom-table">
+          <thead>
+            <tr>
+               <th>SR. No</th>
+          <th>Chapter Name</th>
+          <th>Action</th>
+          
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let chapter of chapters; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ chapter.name}}</td>
+          <td>
+            <button class="edit-btn" style="background: green; border: none;color: white;"
+            (click)="editChapter(chapter)">
+              <i class="fa fa-edit" style="font-size: 18px;"></i>
+            </button> &nbsp;
+            <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;"
+              (click)="deleteChapter(chapter)">
+              <i class="fa fa-trash" style="font-size: 18px;"></i>
+            </button>
+          </td>
+      
+        </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
+</div>
     <!-- Main Course Modal -->
     <div *ngIf="isModalOpen" class="modal">
       <div class=" modal-content">
@@ -93,9 +103,7 @@
             <div class="col-md-6">
               <label for="chapterThumbnail" style="font-weight: bold;">Thumbnail</label>
               <input type="file" class="form-control" id="chapterThumbnail" accept="image/*" />
-              <div class="mt-2">
-                <label for="thumbnailPreview" style="font-weight: bold;">Thumbnail Preview</label>
-              </div>
+              
             </div>
           </div>
           <div class="row mt-3">
@@ -106,5 +114,4 @@
         </form>
       </div>
     </div>
-  </div>
-</div>
+
