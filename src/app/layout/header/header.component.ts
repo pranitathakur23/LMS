@@ -9,8 +9,12 @@ import { Router } from '@angular/router';  // Import Router
   styleUrls: ['./header.component.css']  // Corrected typo: should be styleUrls not styleUrl
 })
 export class HeaderComponent {
+  employeeName: string = '';  // Variable to hold EmployeeName
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.employeeName = sessionStorage.getItem('EmployeeName') || '';  // Default to 'Guest' if not found
+
+  }
 
   // Logout method to navigate to login page
   logout() {

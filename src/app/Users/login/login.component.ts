@@ -49,8 +49,11 @@ export class LoginComponent {
 
     this.http.post(apiUrl, loginData).subscribe({
       next: (response: any) => {
+        console.log('API Response:', response);
+
         if (response.status) {
           sessionStorage.setItem('employeeCode', this.employeeCode); // Store only EmployeeCode
+          sessionStorage.setItem('EmployeeName', response.data[0].EmployeeName); // Store EmployeeName
 
           // Assuming response contains the necessary user info
           localStorage.setItem('user', JSON.stringify(response.data[0])); // Store user info in localStorage
