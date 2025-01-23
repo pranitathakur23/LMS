@@ -69,11 +69,13 @@ handleFileUpload(event: any) {
     this.newCourse.file = file;  // Assign the file to newCourse.file
   }
 }
+
   constructor(private http: HttpClient, private router: Router, private location: Location) {}  // Inject HttpClient
   mapCourse() {
     // Navigate to the desired route when mapCourse() is called
     this.router.navigate(['/layout/Mapping/course-mapping']);
   }
+  
   ngOnInit() {
     if (!this.courses) {
       this.courses = [];  // Initialize courses if it's undefined

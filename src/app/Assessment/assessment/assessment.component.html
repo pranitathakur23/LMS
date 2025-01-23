@@ -27,6 +27,7 @@
     <tbody>
       <tr *ngFor="let item of assessment">
        <td>{{ item.SrNo }}</td>
+
             <td>{{ item.name }}</td>
             <td>{{ item.duration }}</td>
             <td>
@@ -37,11 +38,12 @@
                 <i class="fa fa-trash" style="font-size: 18px;"></i>
               </button>
             </td>
-           
+          
       </tr>
     </tbody>
   </table>
 </div>
+
 
     <!-- Main Course Modal -->
     <div *ngIf="isModalOpen" class="modal">
