@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
 
 interface Duration {
   DurationID: number;
@@ -46,7 +47,7 @@ export class ChaptersComponent {
   selectedChapterID: number | null = null;
   fileAcceptType: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private location: Location) { }
 
   ngOnInit() {
     this.fetchChapters();
@@ -54,7 +55,9 @@ export class ChaptersComponent {
     this.fetchDurationOptions();
     this.fetchContentTypes();
   }
-
+  goBack(): void {
+    this.location.back();  // This will navigate back to the previous page
+  }
   fetchChapters() {
     const apiUrl = '/api/webCourseMaster/GetChapterDetailsforWEB';
     const requestBody = { mode: 1 };

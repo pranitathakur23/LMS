@@ -8,6 +8,58 @@ body {
     overflow-x: hidden;
 }
 
+/* Adjust column width and spacing */
+.table th:nth-child(1), .table td:nth-child(1) {
+    min-width: 150px; /* Employee Code */
+}
+
+.table th:nth-child(2), .table td:nth-child(2) {
+    min-width: 200px; /* First Name */
+}
+
+.table th:nth-child(3), .table td:nth-child(3) {
+    min-width: 220px; /* Email */
+}
+
+/* General Table Styling */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%; /* Ensure the table takes full width */
+    table-layout: auto; /* Let browser auto-calculate column width */
+}
+
+.table th, .table td {
+    text-align: center;
+    padding: 12px 20px; /* Increased padding for better spacing */
+    white-space: nowrap; /* Prevent text overflow */
+}
+
+table th {
+    background-color: #0a48b3 !important;
+
+    color: white;
+}
+
+/* Alternate row styling */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e2e6ea;
+}
+
+.table-responsive {
+    max-height: none; /* Remove height limitation */
+    overflow: visible; /* Allow for table expansion */
+}
+
+/* Actions Column Styling */
+.actions-column {
+    display: flex;
+    justify-content: space-evenly;
+}
 /* Modal Styling */
 .modal {
     position: fixed;

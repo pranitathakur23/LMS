@@ -216,5 +216,18 @@ table th {
         padding: 6px 10px;
         font-size: 12px;
     }
-    
+    .row .col-12.text-right {
+        text-align: right; /* Aligns button to the right */
+      }
+      
+      .row .col-12.text-right .btn {
+        margin-left: auto; /* Optional: Ensures margin for spacing if needed */
+      }
+      
+      /* For better mobile responsiveness */
+      @media (max-width: 768px) {
+        .row .col-12.text-right {
+          text-align: center; /* Center the button on smaller screens */
+        }
+      }
 }
