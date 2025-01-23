@@ -43,18 +43,16 @@ export class LoginComponent {
       Password: this.password
     };
     // Log the login data to the console
-    console.log('Login Data:', loginData);
-    
     const apiUrl = '/api/webusers/WebLogin';
 
     this.http.post(apiUrl, loginData).subscribe({
       next: (response: any) => {
-        if (response.status) {
+        console.log(JSON.stringify(response.data[0]))
+        if (response.status==true) {
           sessionStorage.setItem('employeeCode', this.employeeCode); // Store only EmployeeCode
-
           // Assuming response contains the necessary user info
           localStorage.setItem('user', JSON.stringify(response.data[0])); // Store user info in localStorage
-          this.router.navigate(['/layout/Dashboard/Dashboard']);  // Navigate to Dashboard
+           this.router.navigate(['/layout/Dashboard/Dashboard']);  // Navigate to Dashboard
         } else {
           alert(response.message);
         }
