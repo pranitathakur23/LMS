@@ -24,7 +24,7 @@ interface Employee {
 @Component({
   selector: 'app-course-mapping',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule,NgxPaginationModule],
+  imports: [FormsModule, CommonModule, HttpClientModule, NgxPaginationModule],
   templateUrl: './course-mapping.component.html',
   styleUrls: ['./course-mapping.component.css'],
 })
@@ -50,7 +50,7 @@ export class CourseMappingComponent implements OnInit {
     fromArea: '',
     fromBranch: '',
   };
- searchTerm: string = '';  // For the global search term
+  searchTerm: string = '';  // For the global search term
   // Declare arrays for dropdowns
 
   isModalOpen: boolean = false;
@@ -63,23 +63,23 @@ export class CourseMappingComponent implements OnInit {
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
 
-    // Pagination and Data
-    p: number = 1;  // Current page
-    entriesPerPage: number = 10;
-    entriesOptions = [10, 15, 15, 15];
-    filteredEmployees: any[] = []; // Filtered employees for search
-    searchText: string = '';
-  
-    rangeInfo = {
-      start: 1,
-      end: 10,
-      total: 0,
-    };
-  
+  // Pagination and Data
+  p: number = 1;  // Current page
+  entriesPerPage: number = 10;
+  entriesOptions = [10, 15, 15, 15];
+  filteredEmployees: any[] = []; // Filtered employees for search
+  searchText: string = '';
+
+  rangeInfo = {
+    start: 1,
+    end: 10,
+    total: 0,
+  };
+
 
   // Select all checkbox status binding
 
-  constructor(private http: HttpClient,private location: Location,private route: ActivatedRoute) {}
+  constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute) { }
 
 
   ngOnInit() {
@@ -96,7 +96,7 @@ export class CourseMappingComponent implements OnInit {
     this.fetchDesignations();
 
     this.submitForm()
-    
+
   }
   goBack() {
     this.location.back();  // Goes back to the previous page
@@ -182,9 +182,9 @@ export class CourseMappingComponent implements OnInit {
       (error) => {
         console.error('Error fetching designations:', error);
       }
-   
-  );
-}
+
+    );
+  }
 
 
   // Method to change entries per page
@@ -198,7 +198,7 @@ export class CourseMappingComponent implements OnInit {
     console.log(this.searchText);  // Log the search term to check if it's updating
     if (this.searchText) {
       // Filter employees based on searchText
-      this.filteredEmployees = this.employees.filter(employee => 
+      this.filteredEmployees = this.employees.filter(employee =>
         Object.values(employee).some(val =>
           val.toString().toLowerCase().includes(this.searchText.toLowerCase())
         )
@@ -232,7 +232,7 @@ export class CourseMappingComponent implements OnInit {
       doj: this.formData.date || '',
     };
     console.log('Params:', params); // Make sure parameters are correct
-    
+
     // Pass 'params' in the POST request
     this.isLoading = true;
     this.http.post<any>('/api/webCourseMaster/GetAllUserData', params).subscribe(
@@ -255,13 +255,13 @@ export class CourseMappingComponent implements OnInit {
       }
     );
   }
-  
-toggleSelectAll() {
-  this.selectAll = !this.selectAll;
-  this.employees.forEach((employee) => {
-    employee.selected = this.selectAll;
-  });
-}
+
+  toggleSelectAll() {
+    this.selectAll = !this.selectAll;
+    this.employees.forEach((employee) => {
+      employee.selected = this.selectAll;
+    });
+  }
   // Open Modal
 
   openModal() {
@@ -275,7 +275,7 @@ toggleSelectAll() {
 
   // Submit the form
   onSubmit() {
-   
+
   }
 
   SaveandUpdateUserDetails(): void {
@@ -295,39 +295,40 @@ toggleSelectAll() {
       this.allocateToSelect.nativeElement.focus();
       return;
     }
-
-
-    const checkedEmployees = this.employees
-      .filter(employee => employee.selected)
-      .map(employee => employee.EmployeeCode);
-
-    if (checkedEmployees.length == 0) {
-      alert('Please select at least one employee.');
-      return;
-    }
-    const apiUrl = '/api/webCourseMaster/SaveCourseAllocationData';
-    const requestBody = {
-      courseId: this.courseId,
-      allocateFrom: this.allocateFormData.allocateFrom,
-      allocateTo: this.allocateFormData.allocateTo,
-      EmployeeCodes: checkedEmployees,
-    };
-
-    this.http.post<any>(apiUrl, requestBody).subscribe(
-      response => {
-        if (response.status === true) {
-          this.submitForm();
-          alert('Course allocated successfully.');
-          this.closeModal();
-        } else {
-          alert('Failed to allocate course details.');
-        }
-      },
-      error => {
-        console.error('Error allocating course details:', error);
-        alert('An error occurred while allocating course.');
-      }
-    );
   }
 
-}
+    saveAllocation() {
+      const checkedEmployees = this.employees
+        .filter(employee => employee.selected)
+        .map(employee => employee.EmployeeCode);
+
+      if (checkedEmployees.length == 0) {
+        alert('Please select at least one employee.');
+        return;
+      }
+      const apiUrl = '/api/webCourseMaster/SaveCourseAllocationData';
+      const requestBody = {
+        courseId: this.courseId,
+        allocateFrom: this.allocateFormData.allocateFrom,
+        allocateTo: this.allocateFormData.allocateTo,
+        EmployeeCodes: checkedEmployees,
+      };
+
+      this.http.post<any>(apiUrl, requestBody).subscribe(
+        response => {
+          if (response.status === true) {
+            this.submitForm();
+            alert('Course allocated successfully.');
+            this.closeModal();
+          } else {
+            alert('Failed to allocate course details.');
+          }
+        },
+        error => {
+          console.error('Error allocating course details:', error);
+          alert('An error occurred while allocating course.');
+        }
+      );
+    }
+
+  }
