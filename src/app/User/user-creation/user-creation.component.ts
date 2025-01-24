@@ -8,7 +8,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-user-creation',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule,NgxPaginationModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, NgxPaginationModule],
   templateUrl: './user-creation.component.html',
   styleUrls: ['./user-creation.component.css']
 })
@@ -33,12 +33,12 @@ export class UserCreationComponent implements OnInit {
   isModalOpen = false;
   isEditMode = false;
   roles: any[] = [];
-  CurrentID: number = 0; 
+  CurrentID: number = 0;
   isLoading: boolean = true;  // Add loading state
   searchText: string = '';
   p: number = 1; // Pagination current page
   entriesPerPage: number = 10; // Number of items per page
-  entriesOptions: number[] = [10, 25, 50,100]; // Options for the user to select
+  entriesOptions: number[] = [10, 25, 50, 100]; // Options for the user to select
   sortKey: string = '';
   sortAsc: boolean = true;
   filteredUsers: any[] = [];
@@ -66,7 +66,6 @@ export class UserCreationComponent implements OnInit {
   ngOnInit() {
     this.fetchUsers();
     this.fetchRoles();
-  }
 
   goBack(): void {
     this.location.back();
@@ -108,7 +107,7 @@ export class UserCreationComponent implements OnInit {
       }
     );
   }
-  
+
   sortData(key: string) {
     this.sortAsc = this.sortKey === key ? !this.sortAsc : true;
     this.sortKey = key;
@@ -135,7 +134,7 @@ export class UserCreationComponent implements OnInit {
   changeEntriesPerPage() {
     this.p = 1; // Reset to the first page whenever entries per page is changed
   }
- 
+
   // Calculate the range and total records
   get rangeInfo() {
     const start = (this.p - 1) * this.entriesPerPage + 1;
@@ -188,7 +187,6 @@ export class UserCreationComponent implements OnInit {
     );
   }
 
-
   openModal(isEditMode: boolean, user?: any) {
     this.isModalOpen = true;
     this.CurrentID = 0;
@@ -228,7 +226,7 @@ export class UserCreationComponent implements OnInit {
     };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
-        if (response.status== true) {
+        if (response.status == true) {
           const userData = response.data[0];
           console.log('API Response:', response);
           this.CurrentID = userData.ID;
@@ -263,6 +261,12 @@ export class UserCreationComponent implements OnInit {
     this.openModal(true, user);
     this.fetchUserDetails(user.employeeCode);
   }
+  allowOnlyNumbers(event: KeyboardEvent): void {
+    const charCode = event.key.charCodeAt(0);
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
+  }
 
   SaveandUpdateUserDetails(): void {
     const employeeCode = sessionStorage.getItem('employeeCode');
@@ -285,6 +289,13 @@ export class UserCreationComponent implements OnInit {
 
     if (!this.newUser.email) {
       alert('Please enter Email.');
+      this.emailSelect.nativeElement.focus();
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!this.newUser.email.endsWith('.com') || !emailRegex.test(this.newUser.email)) {
+      alert('Enter valid Email.');
       this.emailSelect.nativeElement.focus();
       return;
     }
