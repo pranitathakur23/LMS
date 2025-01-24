@@ -144,4 +144,12 @@ export class QuestionBankComponent {
     );
   }
 
+  downloadExcel(): void {
+    const filePath = 'assets/QuestionPaperTemplate.xlsx';
+        const link = document.createElement('a');
+    link.href = filePath;
+    link.download = 'QuestionPaperTemplate.xlsx';
+    link.click();
+  }
+  
 }
