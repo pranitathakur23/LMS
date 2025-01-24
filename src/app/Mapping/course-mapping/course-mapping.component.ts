@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http'; // Import HttpClientMod
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 interface Bank {
   BankPartners: string;
@@ -73,7 +74,7 @@ export class CourseMappingComponent implements OnInit {
     total: 0,
   };
 
-  constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute) { }
+  constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -91,7 +92,7 @@ export class CourseMappingComponent implements OnInit {
 
   }
   goBack() {
-    this.location.back(); 
+    this.location.back();
   }
 
   // Fetch Banks data
@@ -276,35 +277,37 @@ export class CourseMappingComponent implements OnInit {
       this.allocateToSelect.nativeElement.focus();
       return;
     }
-      const checkedEmployees = this.employees
-        .filter(employee => employee.selected)
-        .map(employee => employee.EmployeeCode);
+    const checkedEmployees = this.employees
+      .filter(employee => employee.selected)
+      .map(employee => employee.EmployeeCode);
 
-      if (checkedEmployees.length == 0) {
-        alert('Please select at least one employee.');
-        return;
-      }
-      const apiUrl = '/api/webCourseMaster/SaveCourseAllocationData';
-      const requestBody = {
-        courseId: this.courseId,
-        allocateFrom: this.allocateFormData.allocateFrom,
-        allocateTo: this.allocateFormData.allocateTo,
-        EmployeeCodes: checkedEmployees,
-      };
-
-      this.http.post<any>(apiUrl, requestBody).subscribe(
-        response => {
-          if (response.status === true) {
-            this.submitForm();
-            this.closeModal();
-          } else {
-            console.error(response.message);
-          }
-        },
-        error => {
-          console.error('Error allocating course details:', error);
-        }
-      );
+    if (checkedEmployees.length == 0) {
+      alert('Please select at least one employee.');
+      return;
     }
+    const apiUrl = '/api/webCourseMaster/SaveCourseAllocationData';
+    const requestBody = {
+      courseId: this.courseId,
+      allocateFrom: this.allocateFormData.allocateFrom,
+      allocateTo: this.allocateFormData.allocateTo,
+      EmployeeCodes: checkedEmployees,
+    };
 
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      response => {
+        if (response.status === true) {
+          this.submitForm();
+          this.closeModal();
+          this.router.navigate(['/layout/Courses/courses']);
+          
+        } else {
+          console.error(response.message);
+        }
+      },
+      error => {
+        console.error('Error allocating course details:', error);
+      }
+    );
   }
+
+}
