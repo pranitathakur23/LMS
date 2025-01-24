@@ -66,7 +66,8 @@ export class UserCreationComponent implements OnInit {
   ngOnInit() {
     this.fetchUsers();
     this.fetchRoles();
-
+  }
+  
   goBack(): void {
     this.location.back();
   }
