@@ -51,8 +51,6 @@ export class CourseMappingComponent implements OnInit {
     fromBranch: '',
   };
   searchTerm: string = '';  // For the global search term
-  // Declare arrays for dropdowns
-
   isModalOpen: boolean = false;
   banks: Bank[] = [];
   states: string[] = [];
@@ -69,24 +67,19 @@ export class CourseMappingComponent implements OnInit {
   entriesOptions = [10, 15, 15, 15];
   filteredEmployees: any[] = []; // Filtered employees for search
   searchText: string = '';
-
   rangeInfo = {
     start: 1,
     end: 10,
     total: 0,
   };
 
-
-  // Select all checkbox status binding
-
   constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute) { }
-
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.courseId = +params['courseId'];
       if (!this.courseId) {
-        alert('No courseId provided.');
+        console.error('CourseID not provided');
       }
     });
     this.fetchBanks();
@@ -94,15 +87,14 @@ export class CourseMappingComponent implements OnInit {
     this.fetchAreas();
     this.fetchBranches();
     this.fetchDesignations();
-
     this.submitForm()
 
   }
   goBack() {
-    this.location.back();  // Goes back to the previous page
+    this.location.back(); 
   }
-  // Fetch Banks data
 
+  // Fetch Banks data
   fetchBanks() {
     const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 7 };
@@ -186,7 +178,6 @@ export class CourseMappingComponent implements OnInit {
     );
   }
 
-
   // Method to change entries per page
   changeEntriesPerPage() {
     this.p = 1; // Reset to first page when entries per page changes
@@ -231,9 +222,6 @@ export class CourseMappingComponent implements OnInit {
       Designation: this.formData.designation || 'AB',
       doj: this.formData.date || '',
     };
-    console.log('Params:', params); // Make sure parameters are correct
-
-    // Pass 'params' in the POST request
     this.isLoading = true;
     this.http.post<any>('/api/webCourseMaster/GetAllUserData', params).subscribe(
       (response) => {
@@ -262,7 +250,6 @@ export class CourseMappingComponent implements OnInit {
       employee.selected = this.selectAll;
     });
   }
-  // Open Modal
 
   openModal() {
     this.isModalOpen = true;
@@ -270,12 +257,6 @@ export class CourseMappingComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
-  }
-
-
-  // Submit the form
-  onSubmit() {
-
   }
 
   SaveandUpdateUserDetails(): void {
@@ -295,9 +276,6 @@ export class CourseMappingComponent implements OnInit {
       this.allocateToSelect.nativeElement.focus();
       return;
     }
-  }
-
-    saveAllocation() {
       const checkedEmployees = this.employees
         .filter(employee => employee.selected)
         .map(employee => employee.EmployeeCode);
@@ -318,15 +296,13 @@ export class CourseMappingComponent implements OnInit {
         response => {
           if (response.status === true) {
             this.submitForm();
-            alert('Course allocated successfully.');
             this.closeModal();
           } else {
-            alert('Failed to allocate course details.');
+            console.error(response.message);
           }
         },
         error => {
           console.error('Error allocating course details:', error);
-          alert('An error occurred while allocating course.');
         }
       );
     }
