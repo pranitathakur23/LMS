@@ -13,8 +13,7 @@ margin-top: -3%;
 font-weight: bold;">Course Mapping</h2>
 </div>
 <div class="container mt-3">
-  <form (ngSubmit)="onSubmit()">
-
+  <form>
     <div class="row mb-3">
       <!-- Bank Dropdown -->
       <div class="col-md-3">
@@ -25,7 +24,6 @@ font-weight: bold;">Course Mapping</h2>
           <option *ngFor="let bank of banks" [value]="bank">{{ bank }}</option>
         </select>
       </div>
-      
       <!-- State Dropdown -->
       <div class="col-md-3">
         <label for="state">State</label>
@@ -189,7 +187,7 @@ font-weight: bold;">Course Mapping</h2>
   <div class="modal-content">
     <span class="close-btn" (click)="closeModal()">&times;</span>
     <h4 class="text-center">Allocate Course</h4>
-    <form (ngSubmit)="saveAllocation()">
+    <form>
 
       <div class="form-group mb-3">
         <label for="allocateFrom">Allocate From</label>
