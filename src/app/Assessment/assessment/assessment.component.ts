@@ -74,6 +74,7 @@ export class AssessmentComponent {
   openModal() {
     this.modalHeaderText = 'Create New Assessment'
     this.currentMode = 1;
+    this.selectedType = 'course';
     this.isModalOpen = true;
     this.selectedCourseId = null; 
     this.selectedQuestionPaper = null;
