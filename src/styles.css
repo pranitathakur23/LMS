@@ -1,4 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
-*{
-   font-family:Verdana, Geneva, Tahoma, sans-serif; 
-}
+/* Apply this to the entire body */
+body {
+   font-family: Verdana, Geneva, Tahoma, sans-serif;
+} 
+ /* Allow scrolling only for containers with large content (e.g., tables, modals, etc.) */
+ .scrollable-content {
+   overflow-y: auto; /* Enable vertical scrolling */
+   max-height: calc(100vh - 50px); /* Adjust height as needed */
+ }
+ 

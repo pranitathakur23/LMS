@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Location } from '@angular/common';
+
 import { HttpClientModule, HttpClient } from '@angular/common/http';  // Import HttpClientModule and HttpClient
 import { Router } from '@angular/router';  // Import Router service
 interface Department {
@@ -67,10 +69,11 @@ handleFileUpload(event: any) {
     this.newCourse.file = file;  // Assign the file to newCourse.file
   }
 }
-  constructor(private http: HttpClient, private router: Router) {}  // Inject HttpClient
-  
-  mapCourse(courseId: number) {
-    this.router.navigate(['/layout/Mapping/course-mapping'], { queryParams: { courseId: courseId } });
+
+  constructor(private http: HttpClient, private router: Router, private location: Location) {}  // Inject HttpClient
+  mapCourse() {
+    // Navigate to the desired route when mapCourse() is called
+    this.router.navigate(['/layout/Mapping/course-mapping']);
   }
   
   ngOnInit() {
@@ -89,6 +92,9 @@ handleFileUpload(event: any) {
   }
   }
 
+  goBack(): void {
+    this.location.back();  // This will navigate back to the previous page
+  }
   fetchCourses() {
     const apiUrl = '/api/webCourseMaster/GetCourseDetailsforWEB';
     const requestBody = { mode: 1 };

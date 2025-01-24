@@ -1,68 +1,112 @@
-<div class="container mt-5">
-    <div class="row">
-      <div class="col-md-12">
-        <!-- Add User Button -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h5 class="mb-0">User List</h5>
-          <button class="btn btn-success" (click)="openModal(false)">
-            <i class="fas fa-plus-circle"></i> Add User
-          </button>
+<div class="container" style="    margin-top: 7%;">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- Add User Button -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <button class="btn btn-warning" (click)="goBack()" style="color: white;">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <h3 style="font-weight: bold; margin-left: -72%;">User Details</h3>
+        <button class="btn btn-success" (click)="openModal(false)">
+          <i class="fas fa-plus-circle"></i> Add User
+        </button>
+      </div>
+
+      <!-- Loading Spinner (only show when loading) -->
+     <!-- Loading Spinner (only show when loading) -->
+<div *ngIf="isLoading" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+      <!-- Search Box and Show Entries -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Show entries -->
+        <div>
+          <label for="entriesPerPage">Show entries</label>
+          <select id="entriesPerPage" class="form-control" [(ngModel)]="entriesPerPage" (ngModelChange)="changeEntriesPerPage()">
+            <option *ngFor="let option of entriesOptions" [value]="option">{{ option }}</option>
+          </select>
         </div>
-  
-        <!-- User List Table -->
-        <div class="table-container">
-          <table class="table table-hover table-striped custom-table">
-            <thead>
-              <tr>
-                <th>Employee Code</th>
-                <th>First Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>Role</th>
-                <th>Employment Status</th>
-                <th>Bank Partner</th>
-                <th>Department</th>
-                <th>Designation</th>
-                <th>State</th>
-                <th>Area</th>
-                <th>Branch</th>
-                <th>Date of Joining</th>
-                <th>Date of Leaving</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let user of users">
-                <td>{{ user.employeeCode }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.mobile }}</td>
-                <td>{{ user.role }}</td>
-                <td>{{ user.status }}</td>
-                <td>{{ user.bankPartner }}</td>
-                <td>{{ user.department }}</td>
-                <td>{{ user.designation }}</td>
-                <td>{{ user.state }}</td>
-                <td>{{ user.area }}</td>
-                <td>{{ user.branch }}</td>
-                <td>{{ user.dateOfJoining }}</td>
-                <td>{{ user.dateOfLeaving }}</td>
-                <td class="actions-column">
-                  <button class="btn btn-warning btn-sm mr-2" (click)="editUser(user)">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="btn btn-danger btn-sm mr-2" (click)="deleteUser(user)">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+        <!-- Search box -->
+        <div>
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Search users..." 
+            [(ngModel)]="searchText" 
+            (ngModelChange)="searchUsers()"
+          />
+        </div>
+      </div>
+
+      <!-- User List Table -->
+      <div class="table-container" *ngIf="!isLoading">
+        <table class="table table-hover table-striped custom-table">
+          <thead>
+            <tr>
+              <th (click)="sortData('employeeCode')">Employee Code</th>
+              <th (click)="sortData('firstName')">First Name</th>
+              <th (click)="sortData('email')">Email</th>
+              <th (click)="sortData('mobile')">Mobile</th>
+              <th (click)="sortData('role')">Role</th>
+              <th (click)="sortData('status')">Status</th>
+              <th (click)="sortData('bankPartner')">Bank Partner</th>
+              <th (click)="sortData('department')">Department</th>
+              <th (click)="sortData('designation')">Designation</th>
+              <th (click)="sortData('state')">State</th>
+              <th (click)="sortData('area')">Area</th>
+              <th (click)="sortData('branch')">Branch</th>
+              <th (click)="sortData('dateOfJoining')">Date of Joining</th>
+              <th (click)="sortData('dateOfLeaving')">Date of Leaving</th>
+             <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of filteredUsers | paginate: { itemsPerPage: entriesPerPage, currentPage: p }">
+              <td>{{ user.employeeCode }}</td>
+              <td>{{ user.firstName }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.mobile }}</td>
+              <td>{{ user.role }}</td>
+              <td>{{ user.status }}</td>
+              <td>{{ user.bankPartner }}</td>
+              <td>{{ user.department }}</td>
+              <td>{{ user.designation }}</td>
+              <td>{{ user.state }}</td>
+              <td>{{ user.area }}</td>
+              <td>{{ user.branch }}</td>
+              <td>{{ user.dateOfJoining }}</td>
+              <td>{{ user.dateOfLeaving }}</td>
+              <td>
+                <button class="edit-btn" style="background: green; border: none;color: white;"
+                (click)="editUser(user)">
+                  <i class="fa fa-edit" style="font-size: 18px;"></i>
+                </button> &nbsp;
+                <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;"
+                  (click)="deleteUser(user)">
+                  <i class="fa fa-trash" style="font-size: 18px;"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Pagination Controls and Showing X to Y of Z entries -->
+        <div class="d-flex justify-content-between align-items-center">
+          <!-- Pagination controls -->
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          
+          <!-- Showing X to Y of Z entries -->
+          <div class="text-right">
+            <span>Showing {{ rangeInfo.start }} to {{ rangeInfo.end }} of {{ rangeInfo.total }} entries</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
+
+
   <!-- Modal for Add/Edit User -->
   <div *ngIf="isModalOpen" class="modal">
     <div class="modal-content">
@@ -129,11 +173,11 @@
             <label for="branch" style="font-weight: bold;">Branch</label>
             <input type="text" id="branch" class="form-control" [(ngModel)]="newUser.branch" name="branch" placeholder="Enter Branch" required #branchSelect>
           </div>
-          <div class="col-md-4 mt-4 form-group">
-            <label for="isActive" style="font-weight: bold;">Is Active</label>
-            <br />
-            <input type="checkbox" id="isActive" [(ngModel)]="newUser.isActive" name="isActive" />
-        </div>
+        <!-- Is Active checkbox placed in the same row as other fields -->
+  <div class="col-md-4 form-group d-flex align-items-center" style="margin-top: 6%;">
+    <label for="isActive" style="font-weight: bold; margin-right: 10px;">Is Active</label>
+    <input type="checkbox" id="isActive" [(ngModel)]="newUser.isActive" name="isActive" />
+  </div>
         </div>
         <div class="row">
             <div class="col-md-4 form-group">
@@ -153,7 +197,7 @@
           </div>
         </div>
         <!-- Submit Button -->
-        <button type="submit" (click)="SaveandUpdateUserDetails()" class="btn btn-primary">{{ isEditMode ? 'Update User' : 'Save User' }}</button>
+        <button type="submit" (click)="SaveandUpdateUserDetails()" class="btn btn-success">{{ isEditMode ? 'Update' : 'Save' }}</button>
       </form>
     </div>
   </div>

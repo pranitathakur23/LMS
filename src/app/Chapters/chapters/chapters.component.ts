@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
 
 interface Duration {
   DurationID: number;
@@ -46,7 +47,7 @@ export class ChaptersComponent {
   selectedChapterID: number | null = null;
   fileAcceptType: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private location: Location) { }
 
   ngOnInit() {
     this.fetchChapters();
@@ -54,7 +55,9 @@ export class ChaptersComponent {
     this.fetchDurationOptions();
     this.fetchContentTypes();
   }
-
+  goBack(): void {
+    this.location.back();  // This will navigate back to the previous page
+  }
   fetchChapters() {
     const apiUrl = '/api/webCourseMaster/GetChapterDetailsforWEB';
     const requestBody = { mode: 1 };
@@ -143,11 +146,11 @@ export class ChaptersComponent {
     this.modalHeaderText = 'Create New Chapter'
     this.currentMode = 0;
     this.isModalOpen = true;
-    this.selectedCourseId = null; 
+    this.selectedCourseId = null;
     this.chapterName = '';
     this.durationInId = null;
-    this.duration = null; 
-    this.contentType = null; 
+    this.duration = null;
+    this.contentType = null;
     this.fileAcceptType = 'file/*';
   }
 
@@ -164,11 +167,11 @@ export class ChaptersComponent {
     );
     const fileInput = document.getElementById('fileUploadChapter') as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = ''; 
+      fileInput.value = '';
     }
 
     if (selectedContentType) {
-      switch (selectedContentType.ContentName) { 
+      switch (selectedContentType.ContentName) {
         case "Video":
           this.fileAcceptType = 'video/*';
           break;
@@ -186,7 +189,7 @@ export class ChaptersComponent {
       this.fileAcceptType = 'file/*';
     }
   }
-  
+
   SaveandUpdateChapterDetails(): void {
     const employeeCode = sessionStorage.getItem('employeeCode');
     if (!employeeCode) {
@@ -222,7 +225,7 @@ export class ChaptersComponent {
 
     const fileUploadChapter = (document.getElementById('fileUploadChapter') as HTMLInputElement).files?.[0];
     const chapterThumbnail = (document.getElementById('chapterThumbnail') as HTMLInputElement).files?.[0];
-  
+
     const apiUrl = '/api/webCourseMaster/SaveandUpdateChapterDetails';
     const formData: FormData = new FormData();
     formData.append('mode', this.currentMode.toString());
@@ -231,7 +234,7 @@ export class ChaptersComponent {
       alert('Please upload a file for the chapter.');
       return;
     }
-    else if(fileUploadChapter != null){
+    else if (fileUploadChapter != null) {
       formData.append('contentLink', fileUploadChapter, fileUploadChapter.name);
     }
 
@@ -251,7 +254,6 @@ export class ChaptersComponent {
     this.http.post<any>(apiUrl, formData).subscribe(
       response => {
         if (response.status === true) {
-          alert('Chapter details saved/updated successfully.');
           this.fetchChapters();
           this.closeModal();
         } else {

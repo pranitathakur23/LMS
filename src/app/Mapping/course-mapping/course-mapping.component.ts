@@ -2,7 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule and HttpClient
+import { NgxPaginationModule } from 'ngx-pagination';
+import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 interface Bank {
@@ -22,7 +24,7 @@ interface Employee {
 @Component({
   selector: 'app-course-mapping',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule, HttpClientModule, NgxPaginationModule],
   templateUrl: './course-mapping.component.html',
   styleUrls: ['./course-mapping.component.css'],
 })
@@ -48,6 +50,8 @@ export class CourseMappingComponent implements OnInit {
     fromArea: '',
     fromBranch: '',
   };
+  searchTerm: string = '';  // For the global search term
+  // Declare arrays for dropdowns
 
   isModalOpen: boolean = false;
   banks: Bank[] = [];
@@ -56,8 +60,27 @@ export class CourseMappingComponent implements OnInit {
   branches: string[] = [];
   designations: string[] = [];
   employees: Employee[] = [];
-  selectAll = false;
-  constructor(private http: HttpClient,private route: ActivatedRoute,) { }
+  selectAll = false;  // Select All checkbox status
+  isLoading: boolean = false; // Loading spinner flag
+
+  // Pagination and Data
+  p: number = 1;  // Current page
+  entriesPerPage: number = 10;
+  entriesOptions = [10, 15, 15, 15];
+  filteredEmployees: any[] = []; // Filtered employees for search
+  searchText: string = '';
+
+  rangeInfo = {
+    start: 1,
+    end: 10,
+    total: 0,
+  };
+
+
+  // Select all checkbox status binding
+
+  constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute) { }
+
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -71,8 +94,14 @@ export class CourseMappingComponent implements OnInit {
     this.fetchAreas();
     this.fetchBranches();
     this.fetchDesignations();
-    this.submitForm();
+
+    this.submitForm()
+
   }
+  goBack() {
+    this.location.back();  // Goes back to the previous page
+  }
+  // Fetch Banks data
 
   fetchBanks() {
     const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
@@ -153,9 +182,46 @@ export class CourseMappingComponent implements OnInit {
       (error) => {
         console.error('Error fetching designations:', error);
       }
+
     );
   }
 
+
+  // Method to change entries per page
+  changeEntriesPerPage() {
+    this.p = 1; // Reset to first page when entries per page changes
+    this.searchEmployees(); // Reapply filtering when entries per page change
+  }
+
+  // Handle Search functionality
+  searchEmployees() {
+    console.log(this.searchText);  // Log the search term to check if it's updating
+    if (this.searchText) {
+      // Filter employees based on searchText
+      this.filteredEmployees = this.employees.filter(employee =>
+        Object.values(employee).some(val =>
+          val.toString().toLowerCase().includes(this.searchText.toLowerCase())
+        )
+      );
+    } else {
+      // Reset to show all employees if the search term is empty
+      this.filteredEmployees = [...this.employees];
+    }
+  }
+
+  // Update range information for pagination
+  updateRangeInfo() {
+    const totalEmployees = this.filteredEmployees.length;
+    const start = (this.p - 1) * this.entriesPerPage + 1;
+    const end = Math.min(this.p * this.entriesPerPage, totalEmployees);
+    this.rangeInfo = {
+      start: start,
+      end: end,
+      total: totalEmployees,
+    };
+  }
+
+  // Handle form submission for employee data fetch
   submitForm() {
     const params = {
       BankPartners: this.formData.bank || 'AB',
@@ -165,21 +231,27 @@ export class CourseMappingComponent implements OnInit {
       Designation: this.formData.designation || 'AB',
       doj: this.formData.date || '',
     };
+    console.log('Params:', params); // Make sure parameters are correct
+
+    // Pass 'params' in the POST request
+    this.isLoading = true;
     this.http.post<any>('/api/webCourseMaster/GetAllUserData', params).subscribe(
       (response) => {
-        if (response.status && response.data.length > 0) {
+        if (response.status && response.data && response.data.length > 0) {
           this.employees = response.data.map((employee: any) => ({
             ...employee,
-            selected: false,
+            selected: false, // Initialize all employees as unselected
           }));
+          this.filteredEmployees = [...this.employees]; // Initially display all employees
+          this.updateRangeInfo();
         } else {
-          console.log('No employees found');
-          this.employees = [];
+          this.filteredEmployees = [];
         }
+        this.isLoading = false;
       },
       (error) => {
-        console.error('API error:', error);
-        this.employees = [];
+        console.error('Error fetching data:', error);
+        this.isLoading = false;
       }
     );
   }
@@ -190,6 +262,7 @@ export class CourseMappingComponent implements OnInit {
       employee.selected = this.selectAll;
     });
   }
+  // Open Modal
 
   openModal() {
     this.isModalOpen = true;
@@ -197,6 +270,12 @@ export class CourseMappingComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
+  }
+
+
+  // Submit the form
+  onSubmit() {
+
   }
 
   SaveandUpdateUserDetails(): void {
@@ -216,38 +295,40 @@ export class CourseMappingComponent implements OnInit {
       this.allocateToSelect.nativeElement.focus();
       return;
     }
-
-    const checkedEmployees = this.employees
-      .filter(employee => employee.selected)
-      .map(employee => employee.EmployeeCode);
-
-    if (checkedEmployees.length == 0) {
-      alert('Please select at least one employee.');
-      return;
-    }
-    const apiUrl = '/api/webCourseMaster/SaveCourseAllocationData';
-    const requestBody = {
-      courseId: this.courseId,
-      allocateFrom: this.allocateFormData.allocateFrom,
-      allocateTo: this.allocateFormData.allocateTo,
-      EmployeeCodes: checkedEmployees,
-    };
-
-    this.http.post<any>(apiUrl, requestBody).subscribe(
-      response => {
-        if (response.status === true) {
-          this.submitForm();
-          alert('Course allocated successfully.');
-          this.closeModal();
-        } else {
-          alert('Failed to allocate course details.');
-        }
-      },
-      error => {
-        console.error('Error allocating course details:', error);
-        alert('An error occurred while allocating course.');
-      }
-    );
   }
 
-}
+    saveAllocation() {
+      const checkedEmployees = this.employees
+        .filter(employee => employee.selected)
+        .map(employee => employee.EmployeeCode);
+
+      if (checkedEmployees.length == 0) {
+        alert('Please select at least one employee.');
+        return;
+      }
+      const apiUrl = '/api/webCourseMaster/SaveCourseAllocationData';
+      const requestBody = {
+        courseId: this.courseId,
+        allocateFrom: this.allocateFormData.allocateFrom,
+        allocateTo: this.allocateFormData.allocateTo,
+        EmployeeCodes: checkedEmployees,
+      };
+
+      this.http.post<any>(apiUrl, requestBody).subscribe(
+        response => {
+          if (response.status === true) {
+            this.submitForm();
+            alert('Course allocated successfully.');
+            this.closeModal();
+          } else {
+            alert('Failed to allocate course details.');
+          }
+        },
+        error => {
+          console.error('Error allocating course details:', error);
+          alert('An error occurred while allocating course.');
+        }
+      );
+    }
+
+  }
