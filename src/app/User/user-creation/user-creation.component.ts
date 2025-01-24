@@ -66,16 +66,16 @@ export class UserCreationComponent implements OnInit {
   ngOnInit() {
     this.fetchUsers();
     this.fetchRoles();
-    
   }
+
   goBack(): void {
-    this.location.back();  // This will navigate back to the previous page
+    this.location.back();
   }
+
   fetchUsers() {
-    this.isLoading = true; // Ensure loading state is true when data is being fetched
+    this.isLoading = true;
     const url = '/api/webCourseMaster/GetUsersDetailsforWEB';
     const body = { mode: 1 };
-  
     this.http.post<any>(url, body).subscribe(
       (response) => {
         if (response.status === true) {
@@ -97,19 +97,18 @@ export class UserCreationComponent implements OnInit {
           }));
           this.filteredUsers = [...this.users];
         } else {
-          console.error('Failed to fetch users');
+          console.error('Failed to fetch users',response.message);
         }
       },
       (error) => {
         console.error('Error fetching users:', error);
       },
       () => {
-        this.isLoading = false; // Hide the loading spinner once data is fetched
+        this.isLoading = false;
       }
     );
   }
   
-
   sortData(key: string) {
     this.sortAsc = this.sortKey === key ? !this.sortAsc : true;
     this.sortKey = key;
@@ -144,6 +143,7 @@ export class UserCreationComponent implements OnInit {
     const total = this.filteredUsers.length;
     return { start, end, total };
   }
+
   deleteUser(user: any) {
     const isConfirmed = window.confirm('Are you sure you want to delete this user?');
     if (isConfirmed) {
@@ -155,7 +155,7 @@ export class UserCreationComponent implements OnInit {
       this.http.post<any>(url, body).subscribe(
         (response) => {
           if (response.status == true) {
-            this.users = this.users.filter((u) => u.employeeCode !== user.employeeCode);
+            this.fetchUsers();
             console.log('User deleted successfully');
           } else {
             console.error('Failed to delete user');
@@ -381,12 +381,11 @@ export class UserCreationComponent implements OnInit {
           this.fetchUsers();
           this.closeModal();
         } else {
-          alert('Failed to save/update user details.');
+          console.error('Failed to save/update user details.',response.message);
         }
       },
       error => {
         console.error('Error saving/updating user details:', error);
-        alert('An error occurred while saving/updating user details.');
       }
     );
   }

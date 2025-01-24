@@ -55,9 +55,17 @@ export class ChaptersComponent {
     this.fetchDurationOptions();
     this.fetchContentTypes();
   }
+
   goBack(): void {
-    this.location.back();  // This will navigate back to the previous page
+    this.location.back();
   }
+
+  validateNumberInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^0-9]/g, '');
+    this.duration = input.value;
+  }
+
   fetchChapters() {
     const apiUrl = '/api/webCourseMaster/GetChapterDetailsforWEB';
     const requestBody = { mode: 1 };
