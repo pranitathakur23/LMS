@@ -74,7 +74,7 @@ export class UserCreationComponent implements OnInit {
 
   fetchUsers() {
     this.isLoading = true;
-    const url = '/api/webCourseMaster/GetUsersDetailsforWEB';
+    const url = '/api/api/webCourseMaster/GetUsersDetailsforWEB';
     const body = { mode: 1 };
     this.http.post<any>(url, body).subscribe(
       (response) => {
@@ -147,7 +147,7 @@ export class UserCreationComponent implements OnInit {
   deleteUser(user: any) {
     const isConfirmed = window.confirm('Are you sure you want to delete this user?');
     if (isConfirmed) {
-      const url = '/api/webCourseMaster/GetUsersDetailsforWEB';
+      const url = '/api/api/webCourseMaster/GetUsersDetailsforWEB';
       const body = {
         mode: 3,
         EMPLOYEECODE: user.employeeCode
@@ -171,7 +171,7 @@ export class UserCreationComponent implements OnInit {
   }
 
   fetchRoles() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 6 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -220,7 +220,7 @@ export class UserCreationComponent implements OnInit {
   }
 
   fetchUserDetails(employeeCode: string) {
-    const apiUrl = '/api/webCourseMaster/GetUsersDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetUsersDetailsforWEB';
     const requestBody = {
       mode: 2,
       EMPLOYEECODE: employeeCode
@@ -367,7 +367,7 @@ export class UserCreationComponent implements OnInit {
       return;
     }
 
-    const apiUrl = '/api/webCourseMaster/SaveUserData';
+    const apiUrl = '/api/api/webCourseMaster/SaveUserData';
     const requestBody = {
       id: this.CurrentID,
       employeeCode: this.newUser.employeeCode,

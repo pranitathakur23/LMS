@@ -41,7 +41,7 @@ export class QuestionBankComponent {
   }
 
   fetchQuestionsList() {
-    const apiUrl = '/api/webCourseMaster/GetQuestionsDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetQuestionsDetailsforWEB';
     const requestBody = { mode: 1 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -62,7 +62,7 @@ export class QuestionBankComponent {
 
   editQuestions(question: any): void {
     this.modalHeaderText = 'Update Questions';
-    const apiUrl = '/api/webCourseMaster/GetQuestionsDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetQuestionsDetailsforWEB';
     const requestBody = {
       mode: 2, categoryName: question.questionTitle
     };
@@ -86,7 +86,7 @@ export class QuestionBankComponent {
   deleteQuestions(question: any) {
     const confirmDelete = confirm(`Are you sure you want to delete the question "${question.questionTitle}"?`);
     if (confirmDelete) {
-      const apiUrl = '/api/webCourseMaster/GetQuestionsDetailsforWEB';
+      const apiUrl = '/api/api/webCourseMaster/GetQuestionsDetailsforWEB';
       const requestBody = { mode: 3, categoryName: question.questionTitle };
 
       this.http.post<any>(apiUrl, requestBody).subscribe(
@@ -124,7 +124,7 @@ export class QuestionBankComponent {
       return;
     }
 
-    const apiUrl = '/api/webCourseMaster/SaveQuestionPaperExcelsheet';
+    const apiUrl = '/api/api/webCourseMaster/SaveQuestionPaperExcelsheet';
     const formData: FormData = new FormData();
     formData.append('questionPaperTitle', this.selectedQuestionCategory.toString());
     formData.append('employeeCode', employeeCode);

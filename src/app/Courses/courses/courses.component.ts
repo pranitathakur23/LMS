@@ -87,7 +87,7 @@ export class CoursesComponent {
     this.location.back();
   }
   fetchCourses() {
-    const apiUrl = '/api/webCourseMaster/GetCourseDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
     const requestBody = { mode: 1 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -109,7 +109,7 @@ export class CoursesComponent {
   }
 
   fetchDepartments() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 1 };
 
     this.http.post<any>(apiUrl, requestBody).subscribe(
@@ -130,7 +130,7 @@ export class CoursesComponent {
   }
 
   fetchDurationOptions() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = {
       mode: 2
     };
@@ -174,7 +174,7 @@ export class CoursesComponent {
       alert('Employee not logged in');
       return;
     }
-    const apiUrl = '/api/webCourseMaster/SaveandUpdateCourseDetails';
+    const apiUrl = '/api/api/webCourseMaster/SaveandUpdateCourseDetails';
     const formData: FormData = new FormData();
     formData.append('courseName', this.newCourse.title);
     formData.append('description', this.newCourse.description);
@@ -201,7 +201,7 @@ export class CoursesComponent {
 
   editCourse(course: any) {
     this.isCreateMode = false;
-    const apiUrl = '/api/webCourseMaster/GetCourseDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
     const requestBody = {
       mode: 2,
       courseId: course.courseId
@@ -234,7 +234,7 @@ export class CoursesComponent {
       alert('Employee not logged in');
       return;
     }
-    const apiUrl = '/api/webCourseMaster/SaveandUpdateCourseDetails';
+    const apiUrl = '/api/api/webCourseMaster/SaveandUpdateCourseDetails';
     const formData: FormData = new FormData();
     formData.append('courseName', this.newCourse.title);
     formData.append('description', this.newCourse.description);
@@ -274,7 +274,7 @@ export class CoursesComponent {
   deleteCourse(course: any) {
     const confirmDelete = window.confirm(`Are you sure you want to delete the course: ${course.name}?`);
     if (confirmDelete) {
-      const apiUrl = '/api/webCourseMaster/GetCourseDetailsforWEB';
+      const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
       const requestBody = {
         mode: 3,
         courseId: course.courseId 
