@@ -84,7 +84,7 @@
             <div class="col-md-6">
               <label for="duration" style="font-weight: bold;">Course Duration</label>
               <input class="form-control" type="text" id="duration" [(ngModel)]="duration" name="duration"
-                placeholder="Enter Course Duration Time " required #durationInput />
+                placeholder="Enter Course Duration Time " required #durationInput (input)="validateNumberInput($event)"/>
             </div>
           </div>
           <div class="row mt-3">
