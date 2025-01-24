@@ -38,7 +38,7 @@ export class UserCreationComponent implements OnInit {
   searchText: string = '';
   p: number = 1; // Pagination current page
   entriesPerPage: number = 10; // Number of items per page
-  entriesOptions: number[] = [5, 10, 25, 50]; // Options for the user to select
+  entriesOptions: number[] = [10, 25, 50,100]; // Options for the user to select
   sortKey: string = '';
   sortAsc: boolean = true;
   filteredUsers: any[] = [];
@@ -296,7 +296,7 @@ export class UserCreationComponent implements OnInit {
     }
 
     if (!this.newUser.status) {
-      alert('Please enter Employment Status Content Type.');
+      alert('Please enter Employment Status.');
       this.employeeStatusSelet.nativeElement.focus();
       return;
     }
@@ -378,7 +378,6 @@ export class UserCreationComponent implements OnInit {
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status == true) {
-          alert('User updated successfully.');
           this.fetchUsers();
           this.closeModal();
         } else {

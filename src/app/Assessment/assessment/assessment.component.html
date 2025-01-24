@@ -18,10 +18,11 @@
   <table class="table table-hover table-striped custom-table">
     <thead>
       <tr>
-          <th>SR. No</th>
-            <th>Assessment Name</th>
-            <th>Duration</th>
-          <th>Action</th>
+        <th>SR. No</th>
+        <th>Course Name</th>
+        <th>Assessment Name</th>
+        <th>Duration</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -30,19 +31,21 @@
           <td colspan="4" class="text-center">No data available</td> <!-- Adjust colspan to match number of columns -->
         </tr>
       <tr *ngFor="let item of assessment">
-       <td>{{ item.SrNo }}</td>
-
-            <td>{{ item.name }}</td>
-            <td>{{ item.duration }}</td>
+        <td>{{ item.SrNo }}</td>
+        <td>{{ item.CourseName }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.duration }}</td>
             <td>
               <button class="edit-btn" (click)="editAssessment(item.assessmentID)" style="background: green; border: none;color: white;">
                 <i class="fa fa-edit" style="font-size: 18px;"></i>
               </button> &nbsp;
-              <button class="delete-btn" (click)="deleteAssessment(item.assessmentID)" style="background: rgb(224, 33, 33); border: none;color: white;">
+              <button class="delete-btn" (click)="deleteAssessment(item.assessmentID,item.name)" style="background: rgb(224, 33, 33); border: none;color: white;">
                 <i class="fa fa-trash" style="font-size: 18px;"></i>
+              </button>&nbsp;
+              <button class="btn btn-info btn-sm mr-2" [disabled]="item.CourseID == 0"  (click)="SaveAssessmentAllocation(item.CourseID, item.assessmentID)" style="background-color: #0dcaf0; border-color: #0dcaf0;  padding: 6px 12px;">
+                <i class="fas fa-exchange-alt"></i>
               </button>
             </td>
-          
       </tr>
     </tbody>
   </table>

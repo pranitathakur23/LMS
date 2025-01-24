@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http'; // Import HttpClientMod
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 interface Bank {
   BankPartners: string;
@@ -50,9 +51,8 @@ export class CourseMappingComponent implements OnInit {
     fromArea: '',
     fromBranch: '',
   };
- searchTerm: string = '';  // For the global search term
-  // Declare arrays for dropdowns
 
+ searchTerm: string = '';  // For the global search term
   isModalOpen: boolean = false;
   banks: Bank[] = [];
   states: string[] = [];
@@ -63,30 +63,25 @@ export class CourseMappingComponent implements OnInit {
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
 
-    // Pagination and Data
-    p: number = 1;  // Current page
-    entriesPerPage: number = 10;
-    entriesOptions = [10, 15, 15, 15];
-    filteredEmployees: any[] = []; // Filtered employees for search
-    searchText: string = '';
-  
-    rangeInfo = {
-      start: 1,
-      end: 10,
-      total: 0,
-    };
-  
+  // Pagination and Data
+  p: number = 1;  // Current page
+  entriesPerPage: number = 10;
+  entriesOptions = [10, 15, 15, 15];
+  filteredEmployees: any[] = []; // Filtered employees for search
+  searchText: string = '';
+  rangeInfo = {
+    start: 1,
+    end: 10,
+    total: 0,
+  };
 
-  // Select all checkbox status binding
-
-  constructor(private http: HttpClient,private location: Location,private route: ActivatedRoute) {}
-
+  constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.courseId = +params['courseId'];
       if (!this.courseId) {
-        alert('No courseId provided.');
+        console.error('CourseID not provided');
       }
     });
     this.fetchBanks();
@@ -94,15 +89,14 @@ export class CourseMappingComponent implements OnInit {
     this.fetchAreas();
     this.fetchBranches();
     this.fetchDesignations();
-
     this.submitForm()
     
   }
   goBack() {
-    this.location.back();  // Goes back to the previous page
+    this.location.back();
   }
-  // Fetch Banks data
 
+  // Fetch Banks data
   fetchBanks() {
     const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 7 };
@@ -186,7 +180,6 @@ export class CourseMappingComponent implements OnInit {
   );
 }
 
-
   // Method to change entries per page
   changeEntriesPerPage() {
     this.p = 1; // Reset to first page when entries per page changes
@@ -221,7 +214,6 @@ export class CourseMappingComponent implements OnInit {
     };
   }
 
-  // Handle form submission for employee data fetch
   submitForm() {
     const params = {
       BankPartners: this.formData.bank || 'AB',
@@ -231,18 +223,15 @@ export class CourseMappingComponent implements OnInit {
       Designation: this.formData.designation || 'AB',
       doj: this.formData.date || '',
     };
-    console.log('Params:', params); // Make sure parameters are correct
-    
-    // Pass 'params' in the POST request
     this.isLoading = true;
     this.http.post<any>('/api/webCourseMaster/GetAllUserData', params).subscribe(
       (response) => {
         if (response.status && response.data && response.data.length > 0) {
           this.employees = response.data.map((employee: any) => ({
             ...employee,
-            selected: false, // Initialize all employees as unselected
+            selected: false,
           }));
-          this.filteredEmployees = [...this.employees]; // Initially display all employees
+          this.filteredEmployees = [...this.employees];
           this.updateRangeInfo();
         } else {
           this.filteredEmployees = [];
@@ -255,14 +244,13 @@ export class CourseMappingComponent implements OnInit {
       }
     );
   }
-  
-toggleSelectAll() {
-  this.selectAll = !this.selectAll;
-  this.employees.forEach((employee) => {
-    employee.selected = this.selectAll;
-  });
-}
-  // Open Modal
+
+  toggleSelectAll() {
+    this.selectAll = !this.selectAll;
+    this.employees.forEach((employee) => {
+      employee.selected = this.selectAll;
+    });
+  }
 
   openModal() {
     this.isModalOpen = true;
@@ -270,12 +258,6 @@ toggleSelectAll() {
 
   closeModal() {
     this.isModalOpen = false;
-  }
-
-
-  // Submit the form
-  onSubmit() {
-   
   }
 
   SaveandUpdateUserDetails(): void {
@@ -295,10 +277,10 @@ toggleSelectAll() {
       this.allocateToSelect.nativeElement.focus();
       return;
     }
-
     const checkedEmployees = this.employees
       .filter(employee => employee.selected)
       .map(employee => employee.EmployeeCode);
+
     if (checkedEmployees.length == 0) {
       alert('Please select at least one employee.');
       return;
@@ -315,15 +297,15 @@ toggleSelectAll() {
       response => {
         if (response.status === true) {
           this.submitForm();
-          alert('Course allocated successfully.');
           this.closeModal();
+          this.router.navigate(['/layout/Courses/courses']);
+          
         } else {
-          alert('Failed to allocate course details.');
+          console.error(response.message);
         }
       },
       error => {
         console.error('Error allocating course details:', error);
-        alert('An error occurred while allocating course.');
       }
     );
   }

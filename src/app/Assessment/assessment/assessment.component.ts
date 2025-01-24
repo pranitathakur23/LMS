@@ -74,6 +74,7 @@ export class AssessmentComponent {
   openModal() {
     this.modalHeaderText = 'Create New Assessment'
     this.currentMode = 1;
+    this.selectedType = 'course';
     this.isModalOpen = true;
     this.selectedCourseId = null; 
     this.selectedQuestionPaper = null;
@@ -111,12 +112,11 @@ export class AssessmentComponent {
             };
           });
         } else {
-          alert('Failed to load Assessment');
+          console.error('Error fetching Assessment:', response.message);
         }
       },
       error => {
         console.error('Error fetching Assessment:', error);
-        alert('An error occurred while fetching Assessment');
       }
     );
   }
@@ -129,17 +129,15 @@ export class AssessmentComponent {
         if (response.status === true) {
           alert('Assessment allocated successfully');
         } else {
-          alert('Failed to allocate Assessment');
+          console.error(response.message);
         }
       },
       error => {
         console.error('Error while allocating Assessment:', error);
-        alert('Error while allocating Assessment');
       }
     );
   }
   
-
   fetchCourses() {
     const apiUrl = '/api/webCourseMaster/GetCourseDetailsforWEB';
     const requestBody = { mode: 1 };
@@ -153,12 +151,11 @@ export class AssessmentComponent {
             };
           });
         } else {
-          alert('No Courses available');
+          console.error('Error fetching course details:', response.message);
         }
       },
       error => {
         console.error('Error fetching courses:', error);
-        alert('An error occurred while fetching courses');
       }
     );
   }
@@ -171,12 +168,11 @@ export class AssessmentComponent {
         if (response.status === true) {
           this.questionPapers = response.data.map((item: any) => item.Category);
         } else {
-          alert('Failed to load question papers.');
+          console.error('Error fetching question papers:', response.message);
         }
       },
       error => {
         console.error('Error fetching question papers:', error);
-        alert('An error occurred while fetching question papers.');
       }
     );
   }
@@ -264,12 +260,11 @@ export class AssessmentComponent {
           this.GetAssessmentdetails();
           this.closeModal();
         } else {
-          alert('Failed to save/update assessment details.');
+          console.error('Failed to save/update assessment details.',response.message);
         }
       },
       error => {
         console.error('Error saving/updating assessment details:', error);
-        alert('An error occurred while saving/updating assessment details.');
       }
     );
   }
@@ -296,31 +291,29 @@ export class AssessmentComponent {
           this.noOfAttempts = assessmentDetails.noOfAttempts;
           this.newCourse.durationTime = assessmentDetails.DurationID;
   
-          // जर courseId = 0 असेल तर 'general' निवडा आणि कोर्स ड्रॉपडाऊन डिसेबल करा
           if (this.selectedCourseId === 0) {
-            this.selectedType = 'general'; // General निवडले
-            this.isCourseDisabled = true; // Course ड्रॉपडाऊन डिसेबल करा
+            this.selectedType = 'general'; 
+            this.isCourseDisabled = true; 
           } else {
-            this.selectedType = 'course'; // Course निवडले
-            this.isCourseDisabled = false; // Course ड्रॉपडाऊन सक्षम करा
+            this.selectedType = 'course';
+            this.isCourseDisabled = false; 
           }
   
           this.isModalOpen = true;
           this.currentMode = 2;
           this.selectedAssessmentID = assessmentID;
         } else {
-          alert('Failed to load assessment details');
+          console.error(response.message);
         }
       },
       error => {
         console.error('Error fetching assessment details:', error);
-        alert('An error occurred while fetching assessment details');
       }
     );
   }
   
-  deleteAssessment(assessmentID: number) {
-    const confirmDelete = window.confirm(`Are you sure you want to delete the Assessment: ${assessmentID}?`);
+  deleteAssessment(assessmentID: number,assessmentName:any) {
+    const confirmDelete = window.confirm(`Are you sure you want to delete the Assessment: ${assessmentName}?`);
     if (confirmDelete == true) {
       const apiUrl = '/api/webCourseMaster/GetAssessmentDetailsforWEB';
       const requestBody = {
@@ -332,7 +325,7 @@ export class AssessmentComponent {
           if (response.status == true) {
             this.GetAssessmentdetails();
           } else {
-            alert('Failed to delete assessment');
+            console.error(response.message);
           }
         },
 

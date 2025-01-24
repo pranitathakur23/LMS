@@ -16,18 +16,18 @@ export class QuestionBankComponent {
 
   questions: any;
   isModalOpen = false;
-  isChapterModalOpen = false; 
+  isChapterModalOpen = false;
   modalHeaderText: string = 'Create New Question';
   selectedQuestionCategory: string | null = null;
   currentMode: number = 1;
 
-  constructor(private http: HttpClient,private location: Location) { }
+  constructor(private http: HttpClient, private location: Location) { }
 
   ngOnInit() {
     this.fetchQuestionsList();
   }
   goBack(): void {
-    this.location.back();  // This will navigate back to the previous page
+    this.location.back();
   }
   openModal() {
     this.modalHeaderText = 'Create New Question'
@@ -39,7 +39,7 @@ export class QuestionBankComponent {
   closeModal() {
     this.isModalOpen = false;
   }
-  
+
   fetchQuestionsList() {
     const apiUrl = '/api/webCourseMaster/GetQuestionsDetailsforWEB';
     const requestBody = { mode: 1 };
@@ -48,14 +48,13 @@ export class QuestionBankComponent {
         if (response.status === true) {
           this.questions = response.data.map((question: any) => ({
             questionTitle: question.Category
-                    }));
+          }));
         } else {
           this.questions = [];
         }
       },
       (error) => {
         console.error('Error fetching questions:', error);
-        alert('An error occurred while fetching questions');
         this.questions = [];
       }
     );
@@ -75,12 +74,11 @@ export class QuestionBankComponent {
           this.isModalOpen = true;
           this.currentMode = 1;
         } else {
-          alert('Failed to load Questions details');
+          console.error(response.message);
         }
       },
       error => {
         console.error('Error fetching Questions details:', error);
-        alert('An error occurred while fetching Questions details');
       }
     );
   }
@@ -95,14 +93,12 @@ export class QuestionBankComponent {
         (response) => {
           if (response.status === true) {
             this.fetchQuestionsList();
-            alert('Question deleted successfully');
           } else {
-            alert('Error: ' + response.message);
+            console.error(response.message);
           }
         },
         (error) => {
           console.error('Error deleting question:', error);
-          alert('An error occurred while deleting the question');
         }
       );
     }
@@ -127,7 +123,7 @@ export class QuestionBankComponent {
       alert('Please select excel file to upload.');
       return;
     }
-  
+
     const apiUrl = '/api/webCourseMaster/SaveQuestionPaperExcelsheet';
     const formData: FormData = new FormData();
     formData.append('questionPaperTitle', this.selectedQuestionCategory.toString());
@@ -136,18 +132,24 @@ export class QuestionBankComponent {
     this.http.post<any>(apiUrl, formData).subscribe(
       response => {
         if (response.message == 'success') {
-          alert('Question details saved/updated successfully.');
           this.fetchQuestionsList();
           this.closeModal();
         } else {
-          alert('Failed to save/update Question details.');
+          console.error(response.message);
         }
       },
       error => {
         console.error('Error saving/updating Question details:', error);
-        alert('An error occurred while saving/updating Question details.');
       }
     );
   }
 
+  downloadExcel(): void {
+    const filePath = 'assets/QuestionPaperTemplate.xlsx';
+        const link = document.createElement('a');
+    link.href = filePath;
+    link.download = 'QuestionPaperTemplate.xlsx';
+    link.click();
+  }
+  
 }

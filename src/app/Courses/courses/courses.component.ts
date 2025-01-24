@@ -71,9 +71,10 @@ handleFileUpload(event: any) {
 }
 
   constructor(private http: HttpClient, private router: Router, private location: Location) {}  // Inject HttpClient
-  mapCourse() {
+  
+  mapCourse(courseId: number) {
     // Navigate to the desired route when mapCourse() is called
-    this.router.navigate(['/layout/Mapping/course-mapping']);
+    this.router.navigate(['/layout/Mapping/course-mapping'], { queryParams: { courseId: courseId } });
   }
   
   ngOnInit() {
