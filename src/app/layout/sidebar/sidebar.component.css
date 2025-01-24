@@ -33,14 +33,17 @@
   padding: 15px 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  cursor: pointer;
 }
 
 .sidebar-item:hover {
   background-color: #4a8cc2;
+  cursor: pointer;
 }
 
 .sidebar-item a {
   color: white;
   text-decoration: none;
   display: block;
+  cursor: pointer;
 }

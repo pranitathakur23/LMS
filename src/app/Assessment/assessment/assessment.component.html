@@ -25,6 +25,10 @@
       </tr>
     </thead>
     <tbody>
+         <!-- Check if assessment data is available, otherwise display "No data available" -->
+         <tr *ngIf="assessment.length === 0">
+          <td colspan="4" class="text-center">No data available</td> <!-- Adjust colspan to match number of columns -->
+        </tr>
       <tr *ngFor="let item of assessment">
        <td>{{ item.SrNo }}</td>
 

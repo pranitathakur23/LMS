@@ -169,7 +169,7 @@ fetchDepartments() {
     }
     this.isModalOpen = true;
   }
-
+  
   closeModal() {
     this.isModalOpen = false;
     this.resetForm();  // Reset form when closing the modal

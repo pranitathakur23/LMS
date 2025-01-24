@@ -120,7 +120,7 @@ font-weight: bold;">Course Mapping</h2>
         <div *ngIf="isLoading" class="spinner-overlay">
             <div class="spinner"></div>
         </div>
-    
+      
         <!-- Make the table container scrollable with both X and Y axis -->
         <div class="table-container" *ngIf="!isLoading" style="height: 400px; overflow-y: auto; overflow-x: auto;">
             <table class="table">
@@ -140,26 +140,25 @@ font-weight: bold;">Course Mapping</h2>
                         <th>Date of Joining</th>
                     </tr>
                 </thead>
-                <tbody *ngIf="filteredEmployees.length > 0">
-                    <tr *ngFor="let employee of filteredEmployees | paginate: { itemsPerPage: entriesPerPage, currentPage: p }">
-                        <td>
-                            <input type="checkbox" [(ngModel)]="employee.selected" />
-                        </td>
-                        <td>{{ employee.EmployeeCode }}</td>
-                        <td>{{ employee.EmployeeName }}</td>
-                        <td>{{ employee.BankPartners }}</td>
-                        <td>{{ employee.States }}</td>
-                        <td>{{ employee.Area }}</td>
-                        <td>{{ employee.Branches }}</td>
-                        <td>{{ employee.Designation }}</td>
-                        <td>{{ employee.Dateofjoining | date:'yyyy-MM-dd' }}</td>
-                    </tr>
+                <tbody>
+                  <tr *ngIf="filteredEmployees.length === 0" class="text-center">
+                    <!-- <p style="text-align: center;">No data available</p> -->
+                    <td colspan="12" class="text-center">No data available</td> <!-- Adjust colspan to match the number of columns -->
+                  </tr>
+                  <tr *ngFor="let employee of filteredEmployees | paginate: { itemsPerPage: entriesPerPage, currentPage: p }">
+                    <td>
+                      <input type="checkbox" [(ngModel)]="employee.selected" />
+                    </td>
+                    <td>{{ employee.EmployeeCode }}</td>
+                    <td>{{ employee.EmployeeName }}</td>
+                    <td>{{ employee.BankPartners }}</td>
+                    <td>{{ employee.States }}</td>
+                    <td>{{ employee.Area }}</td>
+                    <td>{{ employee.Branches }}</td>
+                    <td>{{ employee.Designation }}</td>
+                    <td>{{ employee.Dateofjoining | date: 'yyyy-MM-dd' }}</td>
+                  </tr>
                 </tbody>
-                <ng-template #noDataTemplate>
-                    <tr>
-                        <td colspan="9" class="text-center">Data not available</td>
-                    </tr>
-                </ng-template>
             </table>
         </div>
     
