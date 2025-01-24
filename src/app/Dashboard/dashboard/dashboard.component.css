@@ -72,11 +72,13 @@ body {
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: fadeIn 0.8s ease-out;
+  cursor: pointer;
 }
 
 .card:hover {
   transform: translateY(-8px); /* Elevated hover effect */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .card-header {

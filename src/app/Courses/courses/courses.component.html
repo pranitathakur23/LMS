@@ -24,6 +24,11 @@
             </tr>
           </thead>
           <tbody>
+              <!-- Check if courses are available, else display no data message -->
+  <tr *ngIf="courses.length === 0">
+    <td colspan="3" class="text-center">No data available</td> <!-- Adjust colspan to match the number of columns -->
+  </tr>
+  
             <tr *ngFor="let course of courses; let i = index">
           <td>{{ i + 1 }}</td>
           <td>{{ course.name }}</td>
@@ -130,9 +135,6 @@ border-color: #dc35">
               #durationInput
             />
             </div>
-          </div>
-        
-          <div class="row mt-3">
             <div class="col-md-6">
               <label for="fileUpload" style="font-weight: bold;">
                 Thumbnail
@@ -146,9 +148,6 @@ border-color: #dc35">
                   accept="image/*"
                   #fileUploadInput
                 />
-              </div>
-              <div *ngIf="thumbnailPreview" class="mt-2">
-                <label for="thumbnailPreview" style="font-weight: bold;">Thumbnail Preview</label>
               </div>
             </div>
             <div class="col-md-6">
@@ -165,6 +164,7 @@ border-color: #dc35">
   #descriptionTextarea
 ></textarea>
             </div>
+
           </div>
         
           <div class="row mt-3">

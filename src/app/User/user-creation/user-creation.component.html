@@ -62,6 +62,9 @@
             </tr>
           </thead>
           <tbody>
+            <tr *ngIf="filteredUsers.length === 0">
+              <td colspan="7" class="text-center">No data available</td> <!-- Adjust colspan to match the number of columns -->
+            </tr>
             <tr *ngFor="let user of filteredUsers | paginate: { itemsPerPage: entriesPerPage, currentPage: p }">
               <td>{{ user.employeeCode }}</td>
               <td>{{ user.firstName }}</td>
