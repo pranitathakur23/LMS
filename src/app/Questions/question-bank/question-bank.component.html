@@ -27,10 +27,13 @@
           <th>SR. No</th>
             <th>Question Paper Name</th>
             <th>Action</th> <!-- Changed the header to "Action" -->
-
       </tr>
     </thead>
     <tbody>
+       <!-- Check if courses are available, else display no data message -->
+  <tr *ngIf="questions.length === 0">
+    <td colspan="3" class="text-center">No data available</td> <!-- Adjust colspan to match the number of columns -->
+  </tr>
       <tr *ngFor="let question of questions; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ question.questionTitle}}</td>

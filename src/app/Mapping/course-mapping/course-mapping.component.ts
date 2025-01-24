@@ -25,7 +25,7 @@ interface Employee {
 @Component({
   selector: 'app-course-mapping',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule, NgxPaginationModule],
+  imports: [FormsModule, CommonModule, HttpClientModule,NgxPaginationModule],
   templateUrl: './course-mapping.component.html',
   styleUrls: ['./course-mapping.component.css'],
 })
@@ -51,7 +51,8 @@ export class CourseMappingComponent implements OnInit {
     fromArea: '',
     fromBranch: '',
   };
-  searchTerm: string = '';  // For the global search term
+
+ searchTerm: string = '';  // For the global search term
   isModalOpen: boolean = false;
   banks: Bank[] = [];
   states: string[] = [];
@@ -89,7 +90,7 @@ export class CourseMappingComponent implements OnInit {
     this.fetchBranches();
     this.fetchDesignations();
     this.submitForm()
-
+    
   }
   goBack() {
     this.location.back();
@@ -175,9 +176,9 @@ export class CourseMappingComponent implements OnInit {
       (error) => {
         console.error('Error fetching designations:', error);
       }
-
-    );
-  }
+   
+  );
+}
 
   // Method to change entries per page
   changeEntriesPerPage() {
@@ -190,7 +191,7 @@ export class CourseMappingComponent implements OnInit {
     console.log(this.searchText);  // Log the search term to check if it's updating
     if (this.searchText) {
       // Filter employees based on searchText
-      this.filteredEmployees = this.employees.filter(employee =>
+      this.filteredEmployees = this.employees.filter(employee => 
         Object.values(employee).some(val =>
           val.toString().toLowerCase().includes(this.searchText.toLowerCase())
         )
@@ -213,7 +214,6 @@ export class CourseMappingComponent implements OnInit {
     };
   }
 
-  // Handle form submission for employee data fetch
   submitForm() {
     const params = {
       BankPartners: this.formData.bank || 'AB',
@@ -229,9 +229,9 @@ export class CourseMappingComponent implements OnInit {
         if (response.status && response.data && response.data.length > 0) {
           this.employees = response.data.map((employee: any) => ({
             ...employee,
-            selected: false, // Initialize all employees as unselected
+            selected: false,
           }));
-          this.filteredEmployees = [...this.employees]; // Initially display all employees
+          this.filteredEmployees = [...this.employees];
           this.updateRangeInfo();
         } else {
           this.filteredEmployees = [];

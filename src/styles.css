@@ -7,4 +7,13 @@ body {
    overflow-y: auto; /* Enable vertical scrolling */
    max-height: calc(100vh - 50px); /* Adjust height as needed */
  }
+ /* This will apply the cursor style to all buttons globally */
+button {
+  cursor: pointer;  /* Makes the cursor a pointer (hand) when hovering over buttons */
+}
+
+/* Optionally, if you want to target only buttons with specific classes like .btn */
+button.btn {
+  cursor: pointer;
+}
  
