@@ -28,7 +28,7 @@
     <tbody>
          <!-- Check if assessment data is available, otherwise display "No data available" -->
          <tr *ngIf="assessment.length === 0">
-          <td colspan="4" class="text-center">No data available</td> <!-- Adjust colspan to match number of columns -->
+          <td colspan="5" class="text-center">No data available</td> <!-- Adjust colspan to match number of columns -->
         </tr>
       <tr *ngFor="let item of assessment">
         <td>{{ item.SrNo }}</td>
@@ -102,27 +102,27 @@
             </div>
             <div class="col-md-4">
               <label for="chapterDuration" style="font-weight: bold;">Duration</label>
-              <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="durationValue" name="chapterDuration" placeholder="Enter Duration" required #durationInput />
+              <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="durationValue" name="chapterDuration" placeholder="Enter Duration" required (input)="validateNumberInput($event)"  #durationInput />
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <label for="questionsCount" style="font-weight: bold;">Number Of Questions</label>
-              <input class="form-control" type="text" id="questionsCount" [(ngModel)]="questionsCount" name="questionsCount" placeholder="Enter no of Questions" required #questionsCountInput />
+              <input class="form-control" type="text" id="questionsCount" [(ngModel)]="questionsCount" name="questionsCount" placeholder="Enter no of Questions" required (input)="validateNumberInput($event)" #questionsCountInput />
             </div>
             <div class="col-md-6">
               <label for="totalMarks" style="font-weight: bold;">Total Marks</label>
-              <input class="form-control" type="text" id="totalMarks" [(ngModel)]="totalMarks" name="totalMarks" placeholder="Enter total Marks" required #totalMarksInput />
+              <input class="form-control" type="text" id="totalMarks" [(ngModel)]="totalMarks" name="totalMarks" placeholder="Enter total Marks" required (input)="validateNumberInput($event)" #totalMarksInput />
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <label for="passingMarks" style="font-weight: bold;">Passing Marks</label>
-              <input class="form-control" type="text" id="passingMarks" [(ngModel)]="passingMarks" name="passingMarks" placeholder="Enter Passing Marks" required #passingMarksInput />
+              <input class="form-control" type="text" id="passingMarks" [(ngModel)]="passingMarks" name="passingMarks" placeholder="Enter Passing Marks" required (input)="validateNumberInput($event)" #passingMarksInput />
             </div>
             <div class="col-md-6">
               <label for="passingMarks" style="font-weight: bold;">Number Of Attempts</label>
-              <input class="form-control" type="text" id="noOfAttempts" [(ngModel)]="noOfAttempts" name="noOfAttempts" placeholder="Enter No of Attempts" required #noOfAttemptsInput />
+              <input class="form-control" type="text" id="noOfAttempts" [(ngModel)]="noOfAttempts" name="noOfAttempts" placeholder="Enter No of Attempts" required (input)="validateNumberInput($event)" #noOfAttemptsInput />
             </div>
           </div>
           <div class="row mt-3">
