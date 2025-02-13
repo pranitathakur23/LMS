@@ -43,7 +43,7 @@ export class LoginComponent {
       Password: this.password
     };
     // Log the login data to the console
-    const apiUrl = '/api/webusers/WebLogin';
+    const apiUrl = '/api/api/webusers/WebLogin';
 
     this.http.post(apiUrl, loginData).subscribe({
       next: (response: any) => {

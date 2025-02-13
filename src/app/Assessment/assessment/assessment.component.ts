@@ -95,7 +95,7 @@ export class AssessmentComponent {
   }
 
   GetAssessmentdetails() {
-    const apiUrl = '/api/webCourseMaster/GetAssessmentDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetAssessmentDetailsforWEB';
     const requestBody = { mode: 1 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
@@ -123,7 +123,7 @@ export class AssessmentComponent {
   }
 
   SaveAssessmentAllocation(courseId: number, assessmentId: number) {
-    const apiUrl = '/api/webCourseMaster/SaveAssessmentAllocationForWEB';
+    const apiUrl = '/api/api/webCourseMaster/SaveAssessmentAllocationForWEB';
     const requestBody = { mode: 1, courseId: courseId, assessmentID: assessmentId };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
@@ -140,7 +140,7 @@ export class AssessmentComponent {
   }
   
   fetchCourses() {
-    const apiUrl = '/api/webCourseMaster/GetCourseDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
     const requestBody = { mode: 1 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
@@ -162,7 +162,7 @@ export class AssessmentComponent {
   }
 
   fetchQuestionsType(): void {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 3 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
@@ -179,7 +179,7 @@ export class AssessmentComponent {
   }
 
   fetchDurationOptions() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 2 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
@@ -255,7 +255,7 @@ export class AssessmentComponent {
       this.noOfAttemptsInput.nativeElement.focus(); // Set focus to number of attempts field
       return;
     }
-    const apiUrl = '/api/webCourseMaster/SaveandUpdateAssessmentDetails';
+    const apiUrl = '/api/api/webCourseMaster/SaveandUpdateAssessmentDetails';
     const requestBody = {
       mode: this.currentMode,
       assessmentID: this.selectedAssessmentID,
@@ -288,7 +288,7 @@ export class AssessmentComponent {
   
   editAssessment(assessmentID: number): void {
     this.modalHeaderText = 'Update Assessment Details';
-    const apiUrl = '/api/webCourseMaster/GetAssessmentDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetAssessmentDetailsforWEB';
     const requestBody = {
       mode: 2,
       assessmentID: assessmentID
@@ -332,7 +332,7 @@ export class AssessmentComponent {
   deleteAssessment(assessmentID: number,assessmentName:any) {
     const confirmDelete = window.confirm(`Are you sure you want to delete the Assessment: ${assessmentName}?`);
     if (confirmDelete == true) {
-      const apiUrl = '/api/webCourseMaster/GetAssessmentDetailsforWEB';
+      const apiUrl = '/api/api/webCourseMaster/GetAssessmentDetailsforWEB';
       const requestBody = {
         mode: 3,
         assessmentID: assessmentID

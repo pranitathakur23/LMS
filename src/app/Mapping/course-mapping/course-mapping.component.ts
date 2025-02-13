@@ -98,7 +98,7 @@ export class CourseMappingComponent implements OnInit {
 
   // Fetch Banks data
   fetchBanks() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 7 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -116,7 +116,7 @@ export class CourseMappingComponent implements OnInit {
   }
 
   fetchStates() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 8 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -132,7 +132,7 @@ export class CourseMappingComponent implements OnInit {
   }
 
   fetchAreas() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 9 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -148,7 +148,7 @@ export class CourseMappingComponent implements OnInit {
   }
 
   fetchBranches() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 10 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -164,7 +164,7 @@ export class CourseMappingComponent implements OnInit {
   }
 
   fetchDesignations() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 11 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -224,7 +224,7 @@ export class CourseMappingComponent implements OnInit {
       doj: this.formData.date || '',
     };
     this.isLoading = true;
-    this.http.post<any>('/api/webCourseMaster/GetAllUserData', params).subscribe(
+    this.http.post<any>('/api/api/webCourseMaster/GetAllUserData', params).subscribe(
       (response) => {
         if (response.status && response.data && response.data.length > 0) {
           this.employees = response.data.map((employee: any) => ({
@@ -285,7 +285,7 @@ export class CourseMappingComponent implements OnInit {
       alert('Please select at least one employee.');
       return;
     }
-    const apiUrl = '/api/webCourseMaster/SaveCourseAllocationData';
+    const apiUrl = '/api/api/webCourseMaster/SaveCourseAllocationData';
     const requestBody = {
       courseId: this.courseId,
       allocateFrom: this.allocateFormData.allocateFrom,

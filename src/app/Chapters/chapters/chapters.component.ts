@@ -67,7 +67,7 @@ export class ChaptersComponent {
   }
 
   fetchChapters() {
-    const apiUrl = '/api/webCourseMaster/GetChapterDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetChapterDetailsforWEB';
     const requestBody = { mode: 1 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -89,7 +89,7 @@ export class ChaptersComponent {
   }
 
   fetchCourses() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 4 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -110,7 +110,7 @@ export class ChaptersComponent {
   }
 
   fetchDurationOptions() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = {
       mode: 2
     };
@@ -129,7 +129,7 @@ export class ChaptersComponent {
   }
 
   fetchContentTypes() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 5 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -234,7 +234,7 @@ export class ChaptersComponent {
     const fileUploadChapter = (document.getElementById('fileUploadChapter') as HTMLInputElement).files?.[0];
     const chapterThumbnail = (document.getElementById('chapterThumbnail') as HTMLInputElement).files?.[0];
 
-    const apiUrl = '/api/webCourseMaster/SaveandUpdateChapterDetails';
+    const apiUrl = '/api/api/webCourseMaster/SaveandUpdateChapterDetails';
     const formData: FormData = new FormData();
     formData.append('mode', this.currentMode.toString());
 
@@ -277,7 +277,7 @@ export class ChaptersComponent {
 
   editChapter(chapter: any): void {
     this.modalHeaderText = 'Update Chapter Details';
-    const apiUrl = '/api/webCourseMaster/GetChapterDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetChapterDetailsforWEB';
     const requestBody = {
       mode: 2, chapterId: chapter.chapterId
     };
@@ -307,7 +307,7 @@ export class ChaptersComponent {
   deleteChapter(chapter: any) {
     const confirmDelete = confirm(`Are you sure you want to delete the chapter "${chapter.name}"?`);
     if (confirmDelete) {
-      const apiUrl = '/api/webCourseMaster/GetChapterDetailsforWEB';
+      const apiUrl = '/api/api/webCourseMaster/GetChapterDetailsforWEB';
       const requestBody = { mode: 3, chapterId: chapter.chapterId };
 
       this.http.post<any>(apiUrl, requestBody).subscribe(
