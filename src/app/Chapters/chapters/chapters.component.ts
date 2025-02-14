@@ -46,6 +46,7 @@ export class ChaptersComponent {
   contentOptions: any;
   selectedChapterID: number | null = null;
   fileAcceptType: string = '';
+  isLoading = false;
 
   constructor(private http: HttpClient, private location: Location) { }
 
@@ -199,6 +200,7 @@ export class ChaptersComponent {
   }
 
   SaveandUpdateChapterDetails(): void {
+    this.isLoading = true;
     const employeeCode = sessionStorage.getItem('employeeCode');
     if (!employeeCode) {
       alert('Employee not logged in');
@@ -262,13 +264,16 @@ export class ChaptersComponent {
     this.http.post<any>(apiUrl, formData).subscribe(
       response => {
         if (response.status === true) {
+          this.isLoading = false;
           this.fetchChapters();
           this.closeModal();
         } else {
+          this.isLoading = false;
           alert('Failed to save/update chapter details.');
         }
       },
       error => {
+        this.isLoading = false;
         console.error('Error saving/updating chapter details:', error);
         alert('An error occurred while saving/updating chapter details.');
       }

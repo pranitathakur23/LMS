@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, HostListener } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Location } from '@angular/common';
@@ -42,6 +42,24 @@ export class UserCreationComponent implements OnInit {
   sortKey: string = '';
   sortAsc: boolean = true;
   filteredUsers: any[] = [];
+  isDropdownOpen = false;
+
+  tableColumns = [
+    { key: 'employeeCode', label: 'Employee Code', isVisible: true },
+    { key: 'firstName', label: 'First Name', isVisible: true },
+    { key: 'email', label: 'Email', isVisible: true },
+    { key: 'mobile', label: 'Mobile', isVisible: true },
+    { key: 'role', label: 'Role', isVisible: true },
+    { key: 'status', label: 'Status', isVisible: true },
+    { key: 'bankPartner', label: 'Bank Partner', isVisible: false },
+    { key: 'department', label: 'Department', isVisible: false },
+    { key: 'designation', label: 'Designation', isVisible: false },
+    { key: 'state', label: 'State', isVisible: false },
+    { key: 'area', label: 'Area', isVisible: false },
+    { key: 'branch', label: 'Branch', isVisible: false },
+    { key: 'dateOfJoining', label: 'Date of Joining', isVisible: false },
+    { key: 'dateOfLeaving', label: 'Date of Leaving', isVisible: false }
+  ];
 
   newUser = {
     employeeCode: '',
@@ -67,7 +85,7 @@ export class UserCreationComponent implements OnInit {
     this.fetchUsers();
     this.fetchRoles();
   }
-  
+
   goBack(): void {
     this.location.back();
   }
@@ -97,7 +115,7 @@ export class UserCreationComponent implements OnInit {
           }));
           this.filteredUsers = [...this.users];
         } else {
-          console.error('Failed to fetch users',response.message);
+          console.error('Failed to fetch users', response.message);
         }
       },
       (error) => {
@@ -107,6 +125,32 @@ export class UserCreationComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  toggleDropdown(event: MouseEvent) {
+    event.stopPropagation();
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  toggleColumnVisibility() {
+    this.filteredUsers = this.users.map(user => {
+      let newUser: { [key: string]: any } = {};
+      this.tableColumns.forEach(column => {
+        if (column.isVisible==true) {
+          newUser[column.key] = user[column.key];
+        }
+      });
+      return newUser;
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeDropdown(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const clickedInsideDropdown = target.closest('.dropdown-menu') !== null;
+    if (!clickedInsideDropdown && !target.closest('.dropdown-toggle')) {
+      this.isDropdownOpen = false;
+    }
   }
 
   sortData(key: string) {
@@ -393,7 +437,7 @@ export class UserCreationComponent implements OnInit {
           this.fetchUsers();
           this.closeModal();
         } else {
-          console.error('Failed to save/update user details.',response.message);
+          console.error('Failed to save/update user details.', response.message);
         }
       },
       error => {
