@@ -200,7 +200,7 @@ export class ChaptersComponent {
   }
 
   SaveandUpdateChapterDetails(): void {
-    this.isLoading = true;
+
     const employeeCode = sessionStorage.getItem('employeeCode');
     if (!employeeCode) {
       alert('Employee not logged in');
@@ -261,6 +261,7 @@ export class ChaptersComponent {
     formData.append('duration', this.duration);
     formData.append('contentID', this.contentType.toString());
     formData.append('EmployeeCode', employeeCode);
+    this.isLoading = true;
     this.http.post<any>(apiUrl, formData).subscribe(
       response => {
         if (response.status === true) {
