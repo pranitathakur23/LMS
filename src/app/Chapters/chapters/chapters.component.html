@@ -18,6 +18,7 @@
           <thead>
             <tr>
                <th>SR. No</th>
+               <th>Course Name</th>
           <th>Chapter Name</th>
           <th>Action</th>
           
@@ -31,6 +32,7 @@
   
               <tr *ngFor="let chapter of chapters; let i = index">
           <td>{{ i + 1 }}</td>
+          <td>{{ chapter.coursename}}</td>
           <td>{{ chapter.name}}</td>
           <td>
             <button class="edit-btn" style="background: green; border: none;color: white;"
