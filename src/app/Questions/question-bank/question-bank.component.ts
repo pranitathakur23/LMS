@@ -20,6 +20,7 @@ export class QuestionBankComponent {
   modalHeaderText: string = 'Create New Question';
   selectedQuestionCategory: string | null = null;
   currentMode: number = 1;
+  isLoading: boolean = false;
 
   constructor(private http: HttpClient, private location: Location) { }
 
@@ -129,16 +130,21 @@ export class QuestionBankComponent {
     formData.append('questionPaperTitle', this.selectedQuestionCategory.toString());
     formData.append('employeeCode', employeeCode);
     formData.append('contentLink', fileUploadQuestion, fileUploadQuestion.name);
+    this.isLoading = true;
     this.http.post<any>(apiUrl, formData).subscribe(
       response => {
         if (response.message == 'success') {
+          alert('Questions saved successfully.');
+          this.isLoading = false;
           this.fetchQuestionsList();
           this.closeModal();
         } else {
+          this.isLoading = false;
           console.error(response.message);
         }
       },
       error => {
+        this.isLoading = false;
         console.error('Error saving/updating Question details:', error);
       }
     );

@@ -210,5 +210,27 @@ form .form-control {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  /* Adjust the dropdown container */
+.dropdown-menu {
+    padding: 5px 10px; /* Reduce padding for the whole dropdown */
+    font-size: 16px; /* Adjust font size */
+    max-height: 500px; /* Limit height if you have a lot of columns */
+    overflow-y: auto; /* Add scroll if the dropdown exceeds max height */
+  }
+  
+  /* Reduce the space between each checkbox item */
+  .dropdown-item {
+    padding: 3px 8px; /* Reduce padding between each label */
+    display: flex;
+    align-items: center; /* Align checkbox and label vertically */
+    gap: 8px; /* Space between the checkbox and label */
+  }
+  
+  /* Adjust the checkbox size */
+  .dropdown-item input[type="checkbox"] {
+    transform: scale(1.1); /* Shrink the checkbox size */
+  }
+  
   
  
