@@ -38,8 +38,8 @@ export class AssessmentComponent {
   passingMarks: number | null = null;
   noOfAttempts: number | null = null;
   modalHeaderText: string = 'Create New Assessment';
-  selectedType: string = 'course'; // Set 'course' as the default value
-  isCourseDisabled: boolean = false; // New property to track whether course dropdown is disabled
+  selectedType: string = 'course';
+  isCourseDisabled: boolean = false;
   newCourse = {
     durationTime: null
   };
@@ -59,18 +59,15 @@ export class AssessmentComponent {
    // Method to set the selected type based on radio button change
    setSelection(type: string) {
     this.selectedType = type;
-    console.log(type); // Log the selected type to the console
-
-    // If 'General' is selected, set selectedCourseId to 0 and disable the course dropdown
     if (this.selectedType === 'general') {
       this.selectedCourseId = 0;
       this.isCourseDisabled = true;
     } else if (this.selectedType === 'course') {
-      // If 'Course' is selected, reset selectedCourseId to null and enable the course dropdown
       this.selectedCourseId = null;
       this.isCourseDisabled = false;
     }
   }
+
   openModal() {
     this.modalHeaderText = 'Create New Assessment'
     this.currentMode = 1;
@@ -88,15 +85,17 @@ export class AssessmentComponent {
       durationTime: null,
     };
   }
+
   goBack(): void {
-    this.location.back();  // This will navigate back to the previous page
+    this.location.back();
   }
+
   closeModal() {
     this.isModalOpen = false;
   }
 
   GetAssessmentdetails() {
-    const apiUrl = '/api/webCourseMaster/GetAssessmentDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetAssessmentDetailsforWEB';
     const requestBody = { mode: 1 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
@@ -113,16 +112,18 @@ export class AssessmentComponent {
           });
         } else {
           console.error('Error fetching Assessment:', response.message);
+          this.assessment = [];
         }
       },
       error => {
         console.error('Error fetching Assessment:', error);
+        this.assessment = [];
       }
     );
   }
 
   SaveAssessmentAllocation(courseId: number, assessmentId: number) {
-    const apiUrl = '/api/webCourseMaster/SaveAssessmentAllocationForWEB';
+    const apiUrl = '/api/api/webCourseMaster/SaveAssessmentAllocationForWEB';
     const requestBody = { mode: 1, courseId: courseId, assessmentID: assessmentId };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
@@ -139,7 +140,7 @@ export class AssessmentComponent {
   }
   
   fetchCourses() {
-    const apiUrl = '/api/webCourseMaster/GetCourseDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
     const requestBody = { mode: 1 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
@@ -161,7 +162,7 @@ export class AssessmentComponent {
   }
 
   fetchQuestionsType(): void {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 3 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
@@ -178,7 +179,7 @@ export class AssessmentComponent {
   }
 
   fetchDurationOptions() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 2 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
@@ -194,6 +195,22 @@ export class AssessmentComponent {
     );
   }
 
+  validateNumberInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^0-9]/g, '');
+    if (input.id === 'chapterDuration') {
+      this.durationValue = input.value;
+    } else if (input.id === 'questionsCount') {
+      this.questionsCount = input.value ? Number(input.value) : null;
+    } else if (input.id === 'totalMarks') {
+      this.totalMarks = input.value ? Number(input.value) : null;
+    } else if (input.id === 'passingMarks') {
+      this.passingMarks = input.value ? Number(input.value) : null;
+    } else if (input.id === 'noOfAttempts') {
+      this.noOfAttempts = input.value ? Number(input.value) : null;
+    }
+  }
+  
   SaveandUpdateAssessmentDetails(): void {
     const employeeCode = sessionStorage.getItem('employeeCode');
   
@@ -238,11 +255,11 @@ export class AssessmentComponent {
       this.noOfAttemptsInput.nativeElement.focus(); // Set focus to number of attempts field
       return;
     }
-    const apiUrl = '/api/webCourseMaster/SaveandUpdateAssessmentDetails';
+    const apiUrl = '/api/api/webCourseMaster/SaveandUpdateAssessmentDetails';
     const requestBody = {
       mode: this.currentMode,
       assessmentID: this.selectedAssessmentID,
-      courseId: this.selectedCourseId, // Will be either course ID or 0 if 'general' is selected
+      courseId: this.selectedCourseId,
       assessmentName: this.assessmentName,
       questionPaperSetName: this.selectedQuestionPaper,
       duration: this.durationValue,
@@ -271,7 +288,7 @@ export class AssessmentComponent {
   
   editAssessment(assessmentID: number): void {
     this.modalHeaderText = 'Update Assessment Details';
-    const apiUrl = '/api/webCourseMaster/GetAssessmentDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetAssessmentDetailsforWEB';
     const requestBody = {
       mode: 2,
       assessmentID: assessmentID
@@ -315,7 +332,7 @@ export class AssessmentComponent {
   deleteAssessment(assessmentID: number,assessmentName:any) {
     const confirmDelete = window.confirm(`Are you sure you want to delete the Assessment: ${assessmentName}?`);
     if (confirmDelete == true) {
-      const apiUrl = '/api/webCourseMaster/GetAssessmentDetailsforWEB';
+      const apiUrl = '/api/api/webCourseMaster/GetAssessmentDetailsforWEB';
       const requestBody = {
         mode: 3,
         assessmentID: assessmentID

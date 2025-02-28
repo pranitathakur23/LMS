@@ -22,13 +22,15 @@
         <th>Course Name</th>
         <th>Assessment Name</th>
         <th>Duration</th>
-        <th>Action</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>Mapping</th>
       </tr>
     </thead>
     <tbody>
          <!-- Check if assessment data is available, otherwise display "No data available" -->
          <tr *ngIf="assessment.length === 0">
-          <td colspan="4" class="text-center">No data available</td> <!-- Adjust colspan to match number of columns -->
+          <td colspan="5" class="text-center">No data available</td> <!-- Adjust colspan to match number of columns -->
         </tr>
       <tr *ngFor="let item of assessment">
         <td>{{ item.SrNo }}</td>
@@ -38,14 +40,15 @@
             <td>
               <button class="edit-btn" (click)="editAssessment(item.assessmentID)" style="background: green; border: none;color: white;">
                 <i class="fa fa-edit" style="font-size: 18px;"></i>
-              </button> &nbsp;
-              <button class="delete-btn" (click)="deleteAssessment(item.assessmentID,item.name)" style="background: rgb(224, 33, 33); border: none;color: white;">
-                <i class="fa fa-trash" style="font-size: 18px;"></i>
-              </button>&nbsp;
-              <button class="btn btn-info btn-sm mr-2" [disabled]="item.CourseID == 0"  (click)="SaveAssessmentAllocation(item.CourseID, item.assessmentID)" style="background-color: #0dcaf0; border-color: #0dcaf0;  padding: 6px 12px;">
-                <i class="fas fa-exchange-alt"></i>
-              </button>
+              </button> 
+              
             </td>
+            <td><button class="delete-btn" (click)="deleteAssessment(item.assessmentID,item.name)" style="background: rgb(224, 33, 33); border: none;color: white;">
+              <i class="fa fa-trash" style="font-size: 18px;"></i>
+            </button></td>
+            <td><button class="btn btn-info btn-sm mr-2" [disabled]="item.CourseID == 0"  (click)="SaveAssessmentAllocation(item.CourseID, item.assessmentID)" style="background-color: #0dcaf0; border-color: #0dcaf0;  padding: 6px 12px;">
+              <i class="fas fa-exchange-alt"></i>
+            </button></td>
       </tr>
     </tbody>
   </table>
@@ -102,27 +105,27 @@
             </div>
             <div class="col-md-4">
               <label for="chapterDuration" style="font-weight: bold;">Duration</label>
-              <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="durationValue" name="chapterDuration" placeholder="Enter Duration" required #durationInput />
+              <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="durationValue" name="chapterDuration" placeholder="Enter Duration" required (input)="validateNumberInput($event)"  #durationInput />
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <label for="questionsCount" style="font-weight: bold;">Number Of Questions</label>
-              <input class="form-control" type="text" id="questionsCount" [(ngModel)]="questionsCount" name="questionsCount" placeholder="Enter no of Questions" required #questionsCountInput />
+              <input class="form-control" type="text" id="questionsCount" [(ngModel)]="questionsCount" name="questionsCount" placeholder="Enter no of Questions" required (input)="validateNumberInput($event)" #questionsCountInput />
             </div>
             <div class="col-md-6">
               <label for="totalMarks" style="font-weight: bold;">Total Marks</label>
-              <input class="form-control" type="text" id="totalMarks" [(ngModel)]="totalMarks" name="totalMarks" placeholder="Enter total Marks" required #totalMarksInput />
+              <input class="form-control" type="text" id="totalMarks" [(ngModel)]="totalMarks" name="totalMarks" placeholder="Enter total Marks" required (input)="validateNumberInput($event)" #totalMarksInput />
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <label for="passingMarks" style="font-weight: bold;">Passing Marks</label>
-              <input class="form-control" type="text" id="passingMarks" [(ngModel)]="passingMarks" name="passingMarks" placeholder="Enter Passing Marks" required #passingMarksInput />
+              <input class="form-control" type="text" id="passingMarks" [(ngModel)]="passingMarks" name="passingMarks" placeholder="Enter Passing Marks" required (input)="validateNumberInput($event)" #passingMarksInput />
             </div>
             <div class="col-md-6">
               <label for="passingMarks" style="font-weight: bold;">Number Of Attempts</label>
-              <input class="form-control" type="text" id="noOfAttempts" [(ngModel)]="noOfAttempts" name="noOfAttempts" placeholder="Enter No of Attempts" required #noOfAttemptsInput />
+              <input class="form-control" type="text" id="noOfAttempts" [(ngModel)]="noOfAttempts" name="noOfAttempts" placeholder="Enter No of Attempts" required (input)="validateNumberInput($event)" #noOfAttemptsInput />
             </div>
           </div>
           <div class="row mt-3">

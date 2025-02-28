@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-question-bank',
@@ -20,8 +21,10 @@ export class QuestionBankComponent {
   modalHeaderText: string = 'Create New Question';
   selectedQuestionCategory: string | null = null;
   currentMode: number = 1;
+  isLoading: boolean = false;
 
-  constructor(private http: HttpClient, private location: Location) { }
+
+  constructor(private http: HttpClient, private location: Location, private router: Router) { }
 
   ngOnInit() {
     this.fetchQuestionsList();
@@ -41,7 +44,7 @@ export class QuestionBankComponent {
   }
 
   fetchQuestionsList() {
-    const apiUrl = '/api/webCourseMaster/GetQuestionsDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetQuestionsDetailsforWEB';
     const requestBody = { mode: 1 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -62,7 +65,7 @@ export class QuestionBankComponent {
 
   editQuestions(question: any): void {
     this.modalHeaderText = 'Update Questions';
-    const apiUrl = '/api/webCourseMaster/GetQuestionsDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetQuestionsDetailsforWEB';
     const requestBody = {
       mode: 2, categoryName: question.questionTitle
     };
@@ -82,11 +85,15 @@ export class QuestionBankComponent {
       }
     );
   }
+  questionpage()
+  {
+     this.router.navigate(['/layout/Questions/questions']); 
+    }
 
   deleteQuestions(question: any) {
     const confirmDelete = confirm(`Are you sure you want to delete the question "${question.questionTitle}"?`);
     if (confirmDelete) {
-      const apiUrl = '/api/webCourseMaster/GetQuestionsDetailsforWEB';
+      const apiUrl = '/api/api/webCourseMaster/GetQuestionsDetailsforWEB';
       const requestBody = { mode: 3, categoryName: question.questionTitle };
 
       this.http.post<any>(apiUrl, requestBody).subscribe(
@@ -124,21 +131,26 @@ export class QuestionBankComponent {
       return;
     }
 
-    const apiUrl = '/api/webCourseMaster/SaveQuestionPaperExcelsheet';
+    const apiUrl = '/api/api/webCourseMaster/SaveQuestionPaperExcelsheet';
     const formData: FormData = new FormData();
     formData.append('questionPaperTitle', this.selectedQuestionCategory.toString());
     formData.append('employeeCode', employeeCode);
     formData.append('contentLink', fileUploadQuestion, fileUploadQuestion.name);
+    this.isLoading = true;
     this.http.post<any>(apiUrl, formData).subscribe(
       response => {
         if (response.message == 'success') {
+          alert('Questions saved successfully.');
+          this.isLoading = false;
           this.fetchQuestionsList();
           this.closeModal();
         } else {
+          this.isLoading = false;
           console.error(response.message);
         }
       },
       error => {
+        this.isLoading = false;
         console.error('Error saving/updating Question details:', error);
       }
     );

@@ -1,88 +1,74 @@
-<div class="container" style="    margin-top: 7%;">
+<div class="container" style="margin-top: 7%;">
   <div class="row">
     <div class="col-md-12">
-      <!-- Add User Button -->
+      <!-- Add User & Report Builder Buttons -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <button class="btn btn-warning" (click)="goBack()" style="color: white;">
           <i class="fas fa-arrow-left"></i>
         </button>
-        <h3 style="font-weight: bold; margin-left: -72%;">User Details</h3>
-        <button class="btn btn-success" (click)="openModal(false)">
-          <i class="fas fa-plus-circle"></i> Add User
-        </button>
+        <h3 style="font-weight: bold; margin-left: -60%;">User Details</h3>
+        <div class="btn-group">
+          <!-- Add User Button -->
+          <button class="btn btn-success" style="border-radius: 7px;" (click)="openModal(false)">
+            <i class="fas fa-plus-circle"></i> Add User
+          </button>&nbsp;
+          <!-- Report Builder Dropdown -->
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" style="background-color: #0a48b3;" type="button"
+              (click)="toggleDropdown($event)">
+              <i class="fas fa-columns"></i> Report Builder
+            </button>
+            <div class="dropdown-menu" [class.show]="isDropdownOpen">
+              <label *ngFor="let column of tableColumns" class="dropdown-item">
+                <input type="checkbox" [(ngModel)]="column.isVisible" (change)="toggleColumnVisibility()" />
+                {{ column.label }}
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
-
       <!-- Loading Spinner (only show when loading) -->
-     <!-- Loading Spinner (only show when loading) -->
-<div *ngIf="isLoading" class="spinner-overlay">
-  <div class="spinner"></div>
-</div>
+      <div *ngIf="isLoading" class="spinner-overlay">
+        <div class="spinner"></div>
+      </div>
       <!-- Search Box and Show Entries -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <!-- Show entries -->
         <div>
           <label for="entriesPerPage">Show entries</label>
-          <select id="entriesPerPage" class="form-control" [(ngModel)]="entriesPerPage" (ngModelChange)="changeEntriesPerPage()">
+          <select id="entriesPerPage" class="form-control" [(ngModel)]="entriesPerPage"
+            (ngModelChange)="changeEntriesPerPage()">
             <option *ngFor="let option of entriesOptions" [value]="option">{{ option }}</option>
           </select>
         </div>
-
         <!-- Search box -->
         <div>
-          <input 
-            type="text" 
-            class="form-control" 
-            placeholder="Search users..." 
-            [(ngModel)]="searchText" 
-            (ngModelChange)="searchUsers()"
-          />
+          <input type="text" class="form-control" placeholder="Search users..." [(ngModel)]="searchText"
+            (ngModelChange)="searchUsers()" />
         </div>
       </div>
-
       <!-- User List Table -->
-      <div class="table-container" *ngIf="!isLoading">
+      <div class="table-container">
         <table class="table table-hover table-striped custom-table">
           <thead>
             <tr>
-              <th (click)="sortData('employeeCode')">Employee Code</th>
-              <th (click)="sortData('firstName')">First Name</th>
-              <th (click)="sortData('email')">Email</th>
-              <th (click)="sortData('mobile')">Mobile</th>
-              <th (click)="sortData('role')">Role</th>
-              <th (click)="sortData('status')">Status</th>
-              <th (click)="sortData('bankPartner')">Bank Partner</th>
-              <th (click)="sortData('department')">Department</th>
-              <th (click)="sortData('designation')">Designation</th>
-              <th (click)="sortData('state')">State</th>
-              <th (click)="sortData('area')">Area</th>
-              <th (click)="sortData('branch')">Branch</th>
-              <th (click)="sortData('dateOfJoining')">Date of Joining</th>
-              <th (click)="sortData('dateOfLeaving')">Date of Leaving</th>
-             <th>Action</th>
+              <th *ngFor="let column of tableColumns" [hidden]="!column.isVisible" (click)="sortData(column.key)">
+                {{ column.label }}
+              </th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="filteredUsers.length === 0">
-              <td colspan="7" class="text-center">No data available</td> <!-- Adjust colspan to match the number of columns -->
+              <td colspan="7" class="text-center">No data available</td>
             </tr>
             <tr *ngFor="let user of filteredUsers | paginate: { itemsPerPage: entriesPerPage, currentPage: p }">
-              <td>{{ user.employeeCode }}</td>
-              <td>{{ user.firstName }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.mobile }}</td>
-              <td>{{ user.role }}</td>
-              <td>{{ user.status }}</td>
-              <td>{{ user.bankPartner }}</td>
-              <td>{{ user.department }}</td>
-              <td>{{ user.designation }}</td>
-              <td>{{ user.state }}</td>
-              <td>{{ user.area }}</td>
-              <td>{{ user.branch }}</td>
-              <td>{{ user.dateOfJoining }}</td>
-              <td>{{ user.dateOfLeaving }}</td>
+              <td *ngFor="let column of tableColumns" [hidden]="!column.isVisible">
+                {{ user[column.key] }}
+              </td>
               <td>
-                <button class="edit-btn" style="background: green; border: none;color: white;"
-                (click)="editUser(user)">
+                <button class="edit-btn" style="background: green; border: none; color: white;"
+                  (click)="editUser(user)">
                   <i class="fa fa-edit" style="font-size: 18px;"></i>
                 </button> &nbsp;
                 <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;"
@@ -93,13 +79,8 @@
             </tr>
           </tbody>
         </table>
-
-        <!-- Pagination Controls and Showing X to Y of Z entries -->
         <div class="d-flex justify-content-between align-items-center">
-          <!-- Pagination controls -->
           <pagination-controls (pageChange)="p = $event"></pagination-controls>
-          
-          <!-- Showing X to Y of Z entries -->
           <div class="text-right">
             <span>Showing {{ rangeInfo.start }} to {{ rangeInfo.end }} of {{ rangeInfo.total }} entries</span>
           </div>
@@ -108,100 +89,102 @@
     </div>
   </div>
 </div>
-
-
-  <!-- Modal for Add/Edit User -->
-  <div *ngIf="isModalOpen" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" (click)="closeModal()">&times;</span>
-      <h3>{{ isEditMode ? 'Edit User' : 'Add New User' }}</h3>
-      <hr />
-      <form>
-        <div class="row">
-          <div class="col-md-4 form-group">
-            <label for="employeeCode" style="font-weight: bold;">Employee Code</label>
-            <input type="text" id="employeeCode" class="form-control" [(ngModel)]="newUser.employeeCode" name="employeeCode" placeholder="Enter Employee Code" required #employeeCodeSelect>
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="firstName" style="font-weight: bold;">First Name</label>
-            <input type="text" id="firstName" class="form-control" [(ngModel)]="newUser.firstName" name="firstName" placeholder="Enter First Name" required #firstNameSelect>
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="email" style="font-weight: bold;">Email</label>
-            <input type="email" id="email" class="form-control" [(ngModel)]="newUser.email" name="email" placeholder="Enter Email" required #emailSelect>
-          </div>
+<!-- Modal for Add/Edit User -->
+<div *ngIf="isModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" (click)="closeModal()">&times;</span>
+    <h3>{{ isEditMode ? 'Edit User' : 'Add New User' }}</h3>
+    <hr />
+    <form>
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <label for="employeeCode" style="font-weight: bold;">Employee Code</label>
+          <input type="text" id="employeeCode" class="form-control" [(ngModel)]="newUser.employeeCode"
+            name="employeeCode" placeholder="Enter Employee Code" required #employeeCodeSelect>
         </div>
-        <div class="row">
-          <div class="col-md-4 form-group">
-            <label for="mobile" style="font-weight: bold;">Mobile</label>
-            <input type="text" id="mobile" class="form-control" [(ngModel)]="newUser.mobile" name="mobile" placeholder="Enter Mobile Number" required #mobileNoSelect>
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="status" style="font-weight: bold;">Employment Status</label>
-            <input 
-              type="text" 
-              id="status" 
-              class="form-control" 
-              [(ngModel)]="newUser.status" 
-              name="status" 
-              placeholder="Enter Employment Status" 
-              required #employeeStatusSelet
-            />
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="bankPartner" style="font-weight: bold;">Bank Partner</label>
-            <input type="text" id="bankPartner" class="form-control" [(ngModel)]="newUser.bankPartner" name="bankPartner" placeholder="Enter Bank Partner" required #bankPartnerSelect>
-          </div>
+        <div class="col-md-4 form-group">
+          <label for="firstName" style="font-weight: bold;">First Name</label>
+          <input type="text" id="firstName" class="form-control" [(ngModel)]="newUser.firstName" name="firstName"
+            placeholder="Enter First Name" required #firstNameSelect>
         </div>
-        <div class="row">
-          <div class="col-md-4 form-group">
-            <label for="department" style="font-weight: bold;">Department</label>
-            <input type="text" id="department" class="form-control" [(ngModel)]="newUser.department" name="department" placeholder="Enter Department" required #departmentSelect>
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="designation" style="font-weight: bold;">Designation</label>
-            <input type="text" id="designation" class="form-control" [(ngModel)]="newUser.designation" name="designation" placeholder="Enter Designation" required #designationSelect>
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="state" style="font-weight: bold;">State</label>
-            <input type="text" id="state" class="form-control" [(ngModel)]="newUser.state" name="state" placeholder="Enter State" required #stateSelect>
-          </div>
+        <div class="col-md-4 form-group">
+          <label for="email" style="font-weight: bold;">Email</label>
+          <input type="email" id="email" class="form-control" [(ngModel)]="newUser.email" name="email"
+            placeholder="Enter Email" required #emailSelect>
         </div>
-        <div class="row">
-          <div class="col-md-4 form-group">
-            <label for="area" style="font-weight: bold;">Area</label>
-            <input type="text" id="area" class="form-control" [(ngModel)]="newUser.area" name="area" placeholder="Enter Area" required #areaSelect>
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="branch" style="font-weight: bold;">Branch</label>
-            <input type="text" id="branch" class="form-control" [(ngModel)]="newUser.branch" name="branch" placeholder="Enter Branch" required #branchSelect>
-          </div>
-        <!-- Is Active checkbox placed in the same row as other fields -->
-  <div class="col-md-4 form-group d-flex align-items-center" style="margin-top: 6%;">
-    <label for="isActive" style="font-weight: bold; margin-right: 10px;">Is Active</label>
-    <input type="checkbox" id="isActive" [(ngModel)]="newUser.isActive" name="isActive" />
+      </div>
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <label for="mobile" style="font-weight: bold;">Mobile</label>
+          <input type="text" id="mobile" class="form-control" [(ngModel)]="newUser.mobile" name="mobile"
+            placeholder="Enter Mobile Number" required #mobileNoSelect maxlength="10"
+            (keypress)="allowOnlyNumbers($event)">
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="status" style="font-weight: bold;">Employment Status</label>
+          <input type="text" id="status" class="form-control" [(ngModel)]="newUser.status" name="status"
+            placeholder="Enter Employment Status" required #employeeStatusSelet />
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="bankPartner" style="font-weight: bold;">Bank Partner</label>
+          <input type="text" id="bankPartner" class="form-control" [(ngModel)]="newUser.bankPartner" name="bankPartner"
+            placeholder="Enter Bank Partner" required #bankPartnerSelect>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <label for="department" style="font-weight: bold;">Department</label>
+          <input type="text" id="department" class="form-control" [(ngModel)]="newUser.department" name="department"
+            placeholder="Enter Department" required #departmentSelect>
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="designation" style="font-weight: bold;">Designation</label>
+          <input type="text" id="designation" class="form-control" [(ngModel)]="newUser.designation" name="designation"
+            placeholder="Enter Designation" required #designationSelect>
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="state" style="font-weight: bold;">State</label>
+          <input type="text" id="state" class="form-control" [(ngModel)]="newUser.state" name="state"
+            placeholder="Enter State" required #stateSelect>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <label for="area" style="font-weight: bold;">Area</label>
+          <input type="text" id="area" class="form-control" [(ngModel)]="newUser.area" name="area"
+            placeholder="Enter Area" required #areaSelect>
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="branch" style="font-weight: bold;">Branch</label>
+          <input type="text" id="branch" class="form-control" [(ngModel)]="newUser.branch" name="branch"
+            placeholder="Enter Branch" required #branchSelect>
+        </div>
+        <div class="col-md-4 form-group d-flex align-items-center" style="margin-top: 6%;">
+          <label for="isActive" style="font-weight: bold; margin-right: 10px;">Is Active</label>
+          <input type="checkbox" id="isActive" [(ngModel)]="newUser.isActive" name="isActive" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <label for="role" style="font-weight: bold;">Role</label>
+          <select id="role" class="form-control" [(ngModel)]="newUser.role" name="role" required #roleSelect>
+            <option value="" disabled selected>Select Role</option>
+            <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+          </select>
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="dateOfLeaving" style="font-weight: bold;">Date of Leaving</label>
+          <input type="date" id="dateOfLeaving" class="form-control" [(ngModel)]="newUser.dateOfLeaving"
+            name="dateOfLeaving" #dateOfLeavingSelect>
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="dateOfJoining" style="font-weight: bold;">Date of Joining</label>
+          <input type="date" id="dateOfJoining" class="form-control" [(ngModel)]="newUser.dateOfJoining"
+            name="dateOfJoining" #dateOfJoiningSelect>
+        </div>
+      </div>
+      <button type="submit" (click)="SaveandUpdateUserDetails()" class="btn btn-success">{{ isEditMode ? 'Update' :
+        'Save' }}</button>
+    </form>
   </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 form-group">
-                <label for="role" style="font-weight: bold;">Role</label>
-                <select id="role" class="form-control" [(ngModel)]="newUser.role" name="role" required #roleSelect>
-                  <option value="" disabled selected>Select Role</option>
-                  <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
-                </select>
-              </div>
-          <div class="col-md-4 form-group">
-            <label for="dateOfLeaving" style="font-weight: bold;">Date of Leaving</label>
-            <input type="date" id="dateOfLeaving" class="form-control" [(ngModel)]="newUser.dateOfLeaving" name="dateOfLeaving" #dateOfLeavingSelect>
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="dateOfJoining" style="font-weight: bold;">Date of Joining</label>
-            <input type="date" id="dateOfJoining" class="form-control" [(ngModel)]="newUser.dateOfJoining" name="dateOfJoining" #dateOfJoiningSelect>
-          </div>
-        </div>
-        <!-- Submit Button -->
-        <button type="submit" (click)="SaveandUpdateUserDetails()" class="btn btn-success">{{ isEditMode ? 'Update' : 'Save' }}</button>
-      </form>
-    </div>
-  </div>
-  
+</div>

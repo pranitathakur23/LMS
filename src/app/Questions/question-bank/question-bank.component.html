@@ -12,12 +12,15 @@
       <i class="fas fa-file-excel"></i> Download Template
     </button>&nbsp;
     <button class="btn btn-success me-2" style="background-color: #0a48b3" (click)="openModal()">
-      <i class="fas fa-plus-circle"></i> Add Questions
+      <i class="fas fa-plus-circle"></i> Add Question Paper
     </button>
   </div>
 </div>
 
-
+      <!-- Loading Spinner (only show when loading) -->
+      <div *ngIf="isLoading" class="spinner-overlay">
+        <div class="spinner"></div>
+      </div>
           <!-- User List Table -->
      <!-- User List Table -->
 <div class="table-container">
@@ -43,6 +46,9 @@
               </button> &nbsp;
               <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;" (click)="deleteQuestions(question)">
                 <i class="fa fa-trash" style="font-size: 18px;"></i>
+              </button>&nbsp;
+              <button class="edit-btn" style="background: green; border: none; color: white;" (click)="questionpage()">
+                <i class="fa fa-edit" style="font-size: 18px;"></i>
               </button>
             </td>
           </tr>

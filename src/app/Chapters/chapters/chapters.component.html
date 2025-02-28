@@ -1,23 +1,22 @@
-<div class="container" style="    margin-top: 7%;"  >
+<div class="container" style="margin-top: 7%;">
   <div class="row">
     <div class="col-md-12">
-      <!-- Add User Button -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <button class="btn btn-warning" (click)="goBack()" style="color: white;">
-          <i class="fas fa-arrow-left" ></i> 
+          <i class="fas fa-arrow-left"></i>
         </button>
         <h3 style="font-weight: bold;    margin-left: -61%;"> Chapters Details</h3>
         <button class="btn btn-success" (click)="openModal()">
           <i class="fas fa-plus-circle"></i> Create Chapters
         </button>
       </div>
-
-      <!-- User List Table -->
       <div class="table-container">
         <table class="table table-hover table-striped custom-table">
           <thead>
             <tr>
+
                <th>SR. No</th>
+               <th>Course Name</th>
           <th>Chapter Name</th>
           <th>Action</th>
           
@@ -31,6 +30,7 @@
   
               <tr *ngFor="let chapter of chapters; let i = index">
           <td>{{ i + 1 }}</td>
+          <td>{{ chapter.coursename}}</td>
           <td>{{ chapter.name}}</td>
           <td>
             <button class="edit-btn" style="background: green; border: none;color: white;"
@@ -44,79 +44,85 @@
           </td>
       
         </tr>
+
           </tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
-    <!-- Main Course Modal -->
-    <div *ngIf="isModalOpen" class="modal">
-      <div class=" modal-content">
-        <button class="close-btn" (click)="closeModal()">&times;</button>
-        <h3 class="modal-header">{{ modalHeaderText }}</h3>
-        <form>
-          <div class="row">
-            <div class="col-md-6">
-              <label for="Courses" style="font-weight: bold;">Courses</label>
-              <select class="form-control" id="Courses" [(ngModel)]="selectedCourseId" name="Courses" required #courseSelect>
-                <option [value]="null" disabled selected>Select Course</option>
-                <option *ngFor="let course of courses" [value]="course.courseId">{{ course.name }}</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="chapterName" style="font-weight: bold;">Chapter Name</label>
-              <input class="form-control" type="text" id="chapterName" [(ngModel)]="chapterName"
-                placeholder="Enter Chapter Name" name="chapterName" required #chapterNameInput/>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label for="durationTime" style="font-weight: bold;">Course Duration In</label>
-              <select class="form-control" id="durationTime" [(ngModel)]="durationInId" name="durationTime" required
-                #durationTimeSelect>
-                <option [value]="null" disabled selected>Select Course Duration</option>
-                <option *ngFor="let time of durationTimes" [value]="time.DurationID">
-                  {{ time.DurationName }}
-                </option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="duration" style="font-weight: bold;">Course Duration</label>
-              <input class="form-control" type="text" id="duration" [(ngModel)]="duration" name="duration"
-                placeholder="Enter Course Duration Time " required #durationInput />
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-md-6">
-              <label for="contentType" style="font-weight: bold;">Content Type</label>
-              <select class="form-control" id="contentType" [(ngModel)]="contentType" name="contentType" (change)="updateFileAcceptType(contentType)" required #contentTypeSelect>
-                <option [value]="null" disabled selected>Select Content Type</option>
-                <option *ngFor="let type of contentTypes" [value]="type.ContentID">
-                  {{ type.ContentName }}
-                </option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="fileUploadChapter" style="font-weight: bold;">File Upload</label>
-              <div class="custom-file">
-                <input type="file" class="form-control" id="fileUploadChapter" [accept]="fileAcceptType" />
-              </div>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-md-6">
-              <label for="chapterThumbnail" style="font-weight: bold;">Thumbnail</label>
-              <input type="file" class="form-control" id="chapterThumbnail" accept="image/*" />
-              
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-md-12">
-              <button class="btnSubmit" (click)="SaveandUpdateChapterDetails()">Submit</button>
-            </div>
-          </div>
-        </form>
+<!-- Main Course Modal -->
+<div *ngIf="isModalOpen" class="modal">
+  <div class=" modal-content">
+    <button class="close-btn" (click)="closeModal()">&times;</button>
+    <h3 class="modal-header">{{ modalHeaderText }}</h3>
+    <form>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="Courses" style="font-weight: bold;">Courses</label>
+          <select class="form-control" id="Courses" [(ngModel)]="selectedCourseId" name="Courses" required
+            #courseSelect>
+            <option [value]="null" disabled selected>Select Course</option>
+            <option *ngFor="let course of courses" [value]="course.courseId">{{ course.name }}</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="chapterName" style="font-weight: bold;">Chapter Name</label>
+          <input class="form-control" type="text" id="chapterName" [(ngModel)]="chapterName"
+            placeholder="Enter Chapter Name" name="chapterName" required #chapterNameInput />
+        </div>
       </div>
-    </div>
-
+      <div class="row">
+        <div class="col-md-6">
+          <label for="durationTime" style="font-weight: bold;">Course Duration In</label>
+          <select class="form-control" id="durationTime" [(ngModel)]="durationInId" name="durationTime" required
+            #durationTimeSelect>
+            <option [value]="null" disabled selected>Select Course Duration</option>
+            <option *ngFor="let time of durationTimes" [value]="time.DurationID">
+              {{ time.DurationName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="duration" style="font-weight: bold;">Course Duration</label>
+          <input class="form-control" type="text" id="duration" [(ngModel)]="duration" name="duration"
+            placeholder="Enter Course Duration Time " required #durationInput (input)="validateNumberInput($event)" />
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="contentType" style="font-weight: bold;">Content Type</label>
+          <select class="form-control" id="contentType" [(ngModel)]="contentType" name="contentType"
+            (change)="updateFileAcceptType(contentType)" required #contentTypeSelect>
+            <option [value]="null" disabled selected>Select Content Type</option>
+            <option *ngFor="let type of contentTypes" [value]="type.ContentID">
+              {{ type.ContentName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="fileUploadChapter" style="font-weight: bold;">File Upload</label>
+          <div class="custom-file">
+            <input type="file" class="form-control" id="fileUploadChapter" [accept]="fileAcceptType" />
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="chapterThumbnail" style="font-weight: bold;">Thumbnail</label>
+          <input type="file" class="form-control" id="chapterThumbnail" accept="image/*" />
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <button class="btnSubmit" (click)="SaveandUpdateChapterDetails()" [disabled]="isLoading">
+            {{ isLoading ? 'Saving...' : 'Submit' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div *ngIf="isLoading" class="loading-overlay">
+  <img src="../../assets/Images/icon-loading.gif" alt="Loading..." class="loading-gif" />      
+</div>

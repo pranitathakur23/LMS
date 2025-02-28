@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, HostListener } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Location } from '@angular/common';
@@ -8,7 +8,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-user-creation',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule,NgxPaginationModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, NgxPaginationModule],
   templateUrl: './user-creation.component.html',
   styleUrls: ['./user-creation.component.css']
 })
@@ -33,15 +33,33 @@ export class UserCreationComponent implements OnInit {
   isModalOpen = false;
   isEditMode = false;
   roles: any[] = [];
-  CurrentID: number = 0; 
+  CurrentID: number = 0;
   isLoading: boolean = true;  // Add loading state
   searchText: string = '';
   p: number = 1; // Pagination current page
   entriesPerPage: number = 10; // Number of items per page
-  entriesOptions: number[] = [10, 25, 50,100]; // Options for the user to select
+  entriesOptions: number[] = [10, 25, 50, 100]; // Options for the user to select
   sortKey: string = '';
   sortAsc: boolean = true;
   filteredUsers: any[] = [];
+  isDropdownOpen = false;
+
+  tableColumns = [
+    { key: 'employeeCode', label: 'Employee Code', isVisible: true },
+    { key: 'firstName', label: 'First Name', isVisible: true },
+    { key: 'email', label: 'Email', isVisible: true },
+    { key: 'mobile', label: 'Mobile', isVisible: true },
+    { key: 'role', label: 'Role', isVisible: true },
+    { key: 'status', label: 'Status', isVisible: true },
+    { key: 'bankPartner', label: 'Bank Partner', isVisible: false },
+    { key: 'department', label: 'Department', isVisible: false },
+    { key: 'designation', label: 'Designation', isVisible: false },
+    { key: 'state', label: 'State', isVisible: false },
+    { key: 'area', label: 'Area', isVisible: false },
+    { key: 'branch', label: 'Branch', isVisible: false },
+    { key: 'dateOfJoining', label: 'Date of Joining', isVisible: false },
+    { key: 'dateOfLeaving', label: 'Date of Leaving', isVisible: false }
+  ];
 
   newUser = {
     employeeCode: '',
@@ -66,16 +84,16 @@ export class UserCreationComponent implements OnInit {
   ngOnInit() {
     this.fetchUsers();
     this.fetchRoles();
-    
   }
+
   goBack(): void {
-    this.location.back();  // This will navigate back to the previous page
+    this.location.back();
   }
+
   fetchUsers() {
-    this.isLoading = true; // Ensure loading state is true when data is being fetched
-    const url = '/api/webCourseMaster/GetUsersDetailsforWEB';
+    this.isLoading = true;
+    const url = '/api/api/webCourseMaster/GetUsersDetailsforWEB';
     const body = { mode: 1 };
-  
     this.http.post<any>(url, body).subscribe(
       (response) => {
         if (response.status === true) {
@@ -97,18 +115,43 @@ export class UserCreationComponent implements OnInit {
           }));
           this.filteredUsers = [...this.users];
         } else {
-          console.error('Failed to fetch users');
+          console.error('Failed to fetch users', response.message);
         }
       },
       (error) => {
         console.error('Error fetching users:', error);
       },
       () => {
-        this.isLoading = false; // Hide the loading spinner once data is fetched
+        this.isLoading = false;
       }
     );
   }
-  
+
+  toggleDropdown(event: MouseEvent) {
+    event.stopPropagation();
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  toggleColumnVisibility() {
+    this.filteredUsers = this.users.map(user => {
+      let newUser: { [key: string]: any } = {};
+      this.tableColumns.forEach(column => {
+        if (column.isVisible==true) {
+          newUser[column.key] = user[column.key];
+        }
+      });
+      return newUser;
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeDropdown(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const clickedInsideDropdown = target.closest('.dropdown-menu') !== null;
+    if (!clickedInsideDropdown && !target.closest('.dropdown-toggle')) {
+      this.isDropdownOpen = false;
+    }
+  }
 
   sortData(key: string) {
     this.sortAsc = this.sortKey === key ? !this.sortAsc : true;
@@ -136,7 +179,7 @@ export class UserCreationComponent implements OnInit {
   changeEntriesPerPage() {
     this.p = 1; // Reset to the first page whenever entries per page is changed
   }
- 
+
   // Calculate the range and total records
   get rangeInfo() {
     const start = (this.p - 1) * this.entriesPerPage + 1;
@@ -144,10 +187,11 @@ export class UserCreationComponent implements OnInit {
     const total = this.filteredUsers.length;
     return { start, end, total };
   }
+
   deleteUser(user: any) {
     const isConfirmed = window.confirm('Are you sure you want to delete this user?');
     if (isConfirmed) {
-      const url = '/api/webCourseMaster/GetUsersDetailsforWEB';
+      const url = '/api/api/webCourseMaster/GetUsersDetailsforWEB';
       const body = {
         mode: 3,
         EMPLOYEECODE: user.employeeCode
@@ -155,7 +199,7 @@ export class UserCreationComponent implements OnInit {
       this.http.post<any>(url, body).subscribe(
         (response) => {
           if (response.status == true) {
-            this.users = this.users.filter((u) => u.employeeCode !== user.employeeCode);
+            this.fetchUsers();
             console.log('User deleted successfully');
           } else {
             console.error('Failed to delete user');
@@ -171,7 +215,7 @@ export class UserCreationComponent implements OnInit {
   }
 
   fetchRoles() {
-    const apiUrl = '/api/webCourseMaster/GetDepartmentInfo';
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
     const requestBody = { mode: 6 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -187,7 +231,6 @@ export class UserCreationComponent implements OnInit {
       }
     );
   }
-
 
   openModal(isEditMode: boolean, user?: any) {
     this.isModalOpen = true;
@@ -221,14 +264,14 @@ export class UserCreationComponent implements OnInit {
   }
 
   fetchUserDetails(employeeCode: string) {
-    const apiUrl = '/api/webCourseMaster/GetUsersDetailsforWEB';
+    const apiUrl = '/api/api/webCourseMaster/GetUsersDetailsforWEB';
     const requestBody = {
       mode: 2,
       EMPLOYEECODE: employeeCode
     };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
-        if (response.status== true) {
+        if (response.status == true) {
           const userData = response.data[0];
           console.log('API Response:', response);
           this.CurrentID = userData.ID;
@@ -263,6 +306,12 @@ export class UserCreationComponent implements OnInit {
     this.openModal(true, user);
     this.fetchUserDetails(user.employeeCode);
   }
+  allowOnlyNumbers(event: KeyboardEvent): void {
+    const charCode = event.key.charCodeAt(0);
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
+  }
 
   SaveandUpdateUserDetails(): void {
     const employeeCode = sessionStorage.getItem('employeeCode');
@@ -285,6 +334,13 @@ export class UserCreationComponent implements OnInit {
 
     if (!this.newUser.email) {
       alert('Please enter Email.');
+      this.emailSelect.nativeElement.focus();
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!this.newUser.email.endsWith('.com') || !emailRegex.test(this.newUser.email)) {
+      alert('Enter valid Email.');
       this.emailSelect.nativeElement.focus();
       return;
     }
@@ -355,7 +411,7 @@ export class UserCreationComponent implements OnInit {
       return;
     }
 
-    const apiUrl = '/api/webCourseMaster/SaveUserData';
+    const apiUrl = '/api/api/webCourseMaster/SaveUserData';
     const requestBody = {
       id: this.CurrentID,
       employeeCode: this.newUser.employeeCode,
@@ -381,12 +437,11 @@ export class UserCreationComponent implements OnInit {
           this.fetchUsers();
           this.closeModal();
         } else {
-          alert('Failed to save/update user details.');
+          console.error('Failed to save/update user details.', response.message);
         }
       },
       error => {
         console.error('Error saving/updating user details:', error);
-        alert('An error occurred while saving/updating user details.');
       }
     );
   }
