@@ -75,7 +75,8 @@ export class ChaptersComponent {
         if (response.status === true) {
           this.chapters = response.data.map((chapter: any) => ({
             chapterId: chapter.chapterId,
-            name: chapter.chapterName
+            name: chapter.chapterName,
+            coursename: chapter.courseName
           }));
         } else {
           this.chapters = [];
