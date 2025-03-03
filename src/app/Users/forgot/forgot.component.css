@@ -1,0 +1,149 @@
+/* Overall container styling */
+.container {
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  /* Row with spacing between columns */
+  .row {
+    display: flex;
+    gap: 20px; /* Adds gap between image and login card */
+    border-radius: 25px;
+    background: linear-gradient(to right, #f9f9f9, #ffffff);
+    animation: fadeIn 1s ease-out;
+  }
+  
+  /* Left Image Column */
+  img {
+    border-radius: 15px;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  img:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Login Card Styling */
+  .bg-light {
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    animation: slideInRight 1s ease-out;
+  }
+  
+  /* Typography */
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+  }
+  
+  h4 {
+    font-size: 1.5rem;
+    color: #6c757d;
+  }
+  
+  /* Form Styling */
+  .form-control {
+    height: 50px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+  
+  .form-control:focus {
+    border-color: #0a48b3;
+    box-shadow: 0 0 8px rgba(10, 72, 179, 0.5);
+  }
+  
+  /* Button Styling */
+  .login-btn {
+    background-color: #0a48b3 !important;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 6px 15px rgba(10, 72, 179, 0.4);
+  }
+  
+  .login-btn:hover {
+    background-color: #083a8a !important;
+    transform: translateY(-3px);
+  }
+  /* Forgot Password Styling */
+  .forgot-password {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px; /* Adjusted space between password field and link */
+  }
+  
+  .forgot-password a {
+    font-size: 14px;
+    color: #0a48b3;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .forgot-password a:hover {
+    color: #083a8a;
+    text-decoration: underline;
+  }
+  
+  /* Ensure form-group allows space for the link */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .login-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(10, 72, 179, 0.2);
+  }
+  
+  /* Animation Effects */
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .otp-container {
+    text-align: center;
+}
+
+.otp-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.otp-field {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.otp-field:focus {
+    border-color: #0a48b3;
+    box-shadow: 0 0 8px rgba(10, 72, 179, 0.5);
+}

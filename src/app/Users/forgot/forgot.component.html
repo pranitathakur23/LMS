@@ -1,0 +1,38 @@
+<div class="container mt-5">
+  <div class="row align-items-center shadow-lg rounded" style="overflow: hidden; gap: 20px;padding: 5%;">
+      <!-- Left Column for Image -->
+      <div class="col-md-5 d-flex justify-content-center p-0">
+          <img src="../../assets/Images/login.svg" alt="Learning Portal" class="img-fluid rounded" style="height: 100%; object-fit: cover; width: 100%;">
+      </div>
+
+      <!-- Right Column for Login Card -->
+      <div class="col-md-6 p-5 bg-light animated-card">
+          <div class="text-center mb-4">
+              <h1 class="text-primary display-4">SkillMate</h1>
+              <h4 class="text-muted">Forgot Password</h4>
+          </div>
+          <form>
+              <!-- Employee ID Field (Hide when OTP is shown) -->
+              <div class="form-group mb-4" *ngIf="!showOtp">
+                  <label for="username" class="form-label">Employee ID</label>
+                  <input #employeeCodeInput type="text" class="form-control shadow-sm" id="username" name="username" placeholder="Enter Your Employee Id" required>
+              </div>
+              
+              <!-- Send OTP Button (Hide when OTP is shown) -->
+              <button *ngIf="!showOtp" type="button" class="btn btn-primary w-100 login-btn mt-1" (click)="showOtpFields()">Send OTP</button>
+              
+              <!-- OTP Input Fields -->
+              <div *ngIf="showOtp" class="otp-container mt-4">
+                  <label class="form-label">Enter OTP</label>
+                  <div class="otp-inputs d-flex justify-content-between">
+                      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[0]">
+                      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[1]">
+                      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[2]">
+                      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[3]">
+                  </div>
+                  <button type="submit" class="btn btn-primary w-100 login-btn mt-4">Verify OTP</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>

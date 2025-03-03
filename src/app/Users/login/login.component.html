@@ -16,7 +16,7 @@
         <div class="form-group mb-4">
           <label for="username" class="form-label">Employee ID</label>
           <input #employeeCodeInput type="text" class="form-control shadow-sm" id="username" name="username" 
-                 placeholder="Enter Your EmployeeId" [(ngModel)]="employeeCode" required>
+                 placeholder="Enter Your Employee Id" [(ngModel)]="employeeCode" required>
         </div>
 
         <!-- Password Field -->
@@ -28,9 +28,8 @@
 
         <!-- Forgot Password Link -->
         <div class="forgot-password">
-          <a href="#" class="text-primary">Forgot password?</a>
+          <a routerLink="/forgot" class="text-primary">Forgot password?</a>
         </div>
-
         <!-- Login Button -->
         <button type="submit" class="btn btn-primary w-100 login-btn mt-1">Log in</button>
       </form>
