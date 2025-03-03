@@ -18,4 +18,8 @@ export class SidebarComponent {
     navigateTo(): void {
       this.router.navigate(['layout/Dashboard/Dashboard']);
     }
+    navigateToReports(): void {
+      this.router.navigate(['layout/Reports/reports']);
+    }
+    
 }
