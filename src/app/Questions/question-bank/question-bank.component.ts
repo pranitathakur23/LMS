@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-question-bank',
@@ -22,7 +23,8 @@ export class QuestionBankComponent {
   currentMode: number = 1;
   isLoading: boolean = false;
 
-  constructor(private http: HttpClient, private location: Location) { }
+
+  constructor(private http: HttpClient, private location: Location, private router: Router) { }
 
   ngOnInit() {
     this.fetchQuestionsList();
@@ -83,6 +85,10 @@ export class QuestionBankComponent {
       }
     );
   }
+  questionpage()
+  {
+     this.router.navigate(['/layout/Questions/questions']); 
+    }
 
   deleteQuestions(question: any) {
     const confirmDelete = confirm(`Are you sure you want to delete the question "${question.questionTitle}"?`);
