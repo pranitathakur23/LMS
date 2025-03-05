@@ -4,34 +4,44 @@
       <div class="col-md-5 d-flex justify-content-center p-0">
           <img src="../../assets/Images/login.svg" alt="Learning Portal" class="img-fluid rounded" style="height: 100%; object-fit: cover; width: 100%;">
       </div>
-
       <!-- Right Column for Login Card -->
       <div class="col-md-6 p-5 bg-light animated-card">
-          <div class="text-center mb-4">
-              <h1 class="text-primary display-4">SkillMate</h1>
-              <h4 class="text-muted">Forgot Password</h4>
+        <div class="text-center mb-4">
+          <!-- Back Arrow -->
+          <div class="d-flex align-items-center" style="margin-left: 21%;">
+            <i class="bi bi-arrow-left-circle fs-3 text-primary me-2" role="button" (click)="navigateToLogin()"></i>
+            <h1 class="text-primary display-4 m-0">SkillMate</h1>
           </div>
+          <h4 class="text-muted mt-3">Forgot Password</h4>
+        </div>
           <form>
               <!-- Employee ID Field (Hide when OTP is shown) -->
               <div class="form-group mb-4" *ngIf="!showOtp">
                   <label for="username" class="form-label">Employee ID</label>
-                  <input #employeeCodeInput type="text" class="form-control shadow-sm" id="username" name="username" placeholder="Enter Your Employee Id" required>
-              </div>
+                  <input 
+                  type="text" 
+                  class="form-control shadow-sm" 
+                  id="username" 
+                  name="employeeCode"  
+                  placeholder="Enter Your Employee Id" 
+                  [(ngModel)]="employeeCode" 
+                  required 
+                  #employeeCodeInput>  
+                          </div>
               
-              <!-- Send OTP Button (Hide when OTP is shown) -->
-              <button *ngIf="!showOtp" type="button" class="btn btn-primary w-100 login-btn mt-1" (click)="showOtpFields()">Send OTP</button>
+              <button *ngIf="!showOtp" type="button" class="btn btn-primary w-100 login-btn mt-1" (click)="sendOtp()">Send OTP</button>
               
-              <!-- OTP Input Fields -->
-              <div *ngIf="showOtp" class="otp-container mt-4">
-                  <label class="form-label">Enter OTP</label>
-                  <div class="otp-inputs d-flex justify-content-between">
-                      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[0]">
-                      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[1]">
-                      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[2]">
-                      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[3]">
-                  </div>
-                  <button type="submit" class="btn btn-primary w-100 login-btn mt-4">Verify OTP</button>
-              </div>
+             
+<div *ngIf="showOtp" class="otp-container mt-4">
+    <label class="form-label">Enter OTP</label>
+    <div class="otp-inputs d-flex justify-content-between">
+      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[0]" name="otp0">
+      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[1]" name="otp1">
+      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[2]" name="otp2">
+      <input type="text" class="otp-field" maxlength="1" [(ngModel)]="otp[3]" name="otp3">
+    </div>
+    <button type="button" class="btn btn-primary w-100 login-btn mt-4" (click)="verifyOtp()">Verify OTP</button>
+  </div>
           </form>
       </div>
   </div>
