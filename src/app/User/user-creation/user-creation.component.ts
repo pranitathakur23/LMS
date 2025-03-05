@@ -440,7 +440,6 @@ export class UserCreationComponent implements OnInit {
       IsActive: this.newUser.isActive,
       password: this.newUser.decryptedPassword
     };
-    debugger
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status == true) {
