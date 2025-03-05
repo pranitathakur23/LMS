@@ -68,15 +68,8 @@ export class LoginComponent {
   }
 
   onForgot(event: Event): void {
-    // Prevent form from submitting
-   
-
-    const x = this.employeeCode;
-    if (x === '') {
-      alert('Enter Employee Code');
-      this.employeeCodeInput.nativeElement.focus();
-      return; // Stop further execution
-    }
+    
+    this.router.navigate(['/forgot']); // Navigate to Forgot Password page
 
     
   }
