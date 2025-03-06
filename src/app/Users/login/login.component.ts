@@ -47,17 +47,16 @@ export class LoginComponent {
 
     this.http.post(apiUrl, loginData).subscribe({
       next: (response: any) => {
-
-        console.log(JSON.stringify(response.data[0]))
-        if (response.status==true) {
-          sessionStorage.setItem('employeeCode', this.employeeCode); // Store only EmployeeCode    
-          sessionStorage.setItem('EmployeeName', response.data[0].EmployeeName); // Store EmployeeName
-
-          // Assuming response contains the necessary user info
-          localStorage.setItem('user', JSON.stringify(response.data[0])); // Store user info in localStorage
-           this.router.navigate(['/layout/Dashboard/Dashboard']);  // Navigate to Dashboard
+        console.log('API Response:', response); // Log entire response
+    
+        if (response.status == true) {
+    const userData = response.data[0];
+          sessionStorage.setItem('EmployeeName', userData.EmployeeName);
+          sessionStorage.setItem('EmployeeCode', userData.EmployeeCode);
+          sessionStorage.setItem('Email', userData.Email);
+          this.router.navigate(['/layout/Dashboard/Dashboard']);
         } else {
-          alert(response.message);
+          alert(response.message || 'Invalid Employee Code or Password');
         }
       },
       error: (error) => {
