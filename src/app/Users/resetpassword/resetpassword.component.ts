@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './resetpassword.component.css'
 })
 export class ResetpasswordComponent {
-  employeeCode: string = '';
+  employeeCode: string = ''; 
   newPassword: string = '';
   confirmPassword: string = '';
   showNewPasswordTooltip: boolean = false;
