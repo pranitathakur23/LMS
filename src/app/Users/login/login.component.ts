@@ -52,7 +52,7 @@ export class LoginComponent {
         if (response.status == true) {
     const userData = response.data[0];
           sessionStorage.setItem('EmployeeName', userData.EmployeeName);
-          sessionStorage.setItem('EmployeeCode', userData.EmployeeCode);
+          sessionStorage.setItem('employeeCode', userData.EmployeeCode);
           sessionStorage.setItem('Email', userData.Email);
           this.router.navigate(['/layout/Dashboard/Dashboard']);
         } else {

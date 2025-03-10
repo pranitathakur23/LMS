@@ -347,10 +347,10 @@ export class UserCreationComponent implements OnInit {
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!this.newUser.email.endsWith('.com') || !emailRegex.test(this.newUser.email)) {
-      alert('Enter valid Email.');
-      this.emailSelect.nativeElement.focus();
-      return;
+    if (!(this.newUser.email.endsWith('.com') || this.newUser.email.endsWith('.in')) || !emailRegex.test(this.newUser.email)) {
+    alert('Enter valid Email.');
+    this.emailSelect.nativeElement.focus();
+    return;
     }
 
     if (!this.newUser.mobile) {
