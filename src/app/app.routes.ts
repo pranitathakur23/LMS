@@ -11,10 +11,12 @@ import { CourseMappingComponent } from './Mapping/course-mapping/course-mapping.
 import { QuestionsComponent } from './Questions/questions/questions.component';
 import { ForgotComponent } from './Users/forgot/forgot.component';
 import { ReportsComponent } from './Reports/reports/reports.component';
+import { ResetpasswordComponent } from './Users/resetpassword/resetpassword.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'forgot', component: ForgotComponent },
+  { path: 'resetpassword', component: ResetpasswordComponent },
   {
     path: 'layout',
     component: LayoutComponent,

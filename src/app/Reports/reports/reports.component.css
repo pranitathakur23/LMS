@@ -37,7 +37,7 @@
   }
   
   .view-btn {
-    background: #007bff;
+    background: #0a48b3;
     color: white;
     padding: 8px 15px;
     border: none;
@@ -76,7 +76,7 @@
   }
   
   thead {
-    background: #007bff;
+    background: #0a48b3;
     color: white;
     position: sticky;
     top: 0;
