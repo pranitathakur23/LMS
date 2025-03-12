@@ -28,6 +28,7 @@ export class UserCreationComponent implements OnInit {
   @ViewChild('dateOfLeavingSelect') dateOfLeavingSelect!: ElementRef;
   @ViewChild('dateOfJoiningSelect') dateOfJoiningSelect!: ElementRef;
   @ViewChild('roleSelect') roleSelect!: ElementRef;
+  @ViewChild('passwordSelect') passwordSelect!: ElementRef;
 
   users: any[] = [];
   isModalOpen = false;
@@ -58,7 +59,9 @@ export class UserCreationComponent implements OnInit {
     { key: 'area', label: 'Area', isVisible: false },
     { key: 'branch', label: 'Branch', isVisible: false },
     { key: 'dateOfJoining', label: 'Date of Joining', isVisible: false },
-    { key: 'dateOfLeaving', label: 'Date of Leaving', isVisible: false }
+    { key: 'dateOfLeaving', label: 'Date of Leaving', isVisible: false },
+    { key: 'password', label: 'Password', isVisible: false },
+
   ];
 
   newUser = {
@@ -76,7 +79,8 @@ export class UserCreationComponent implements OnInit {
     branch: '',
     dateOfJoining: '',
     dateOfLeaving: '',
-    isActive: false
+    isActive: false,
+    decryptedPassword: ''
   };
 
   constructor(private http: HttpClient, private location: Location) { }
@@ -111,7 +115,8 @@ export class UserCreationComponent implements OnInit {
             area: user.Area || '',
             branch: user.Branches || '',
             dateOfJoining: user.joiningDate || '',
-            dateOfLeaving: user.leavingDate || ''
+            dateOfLeaving: user.leavingDate || '',
+            decryptedPassword: user.decryptedPassword || '',
           }));
           this.filteredUsers = [...this.users];
         } else {
@@ -254,7 +259,8 @@ export class UserCreationComponent implements OnInit {
         branch: '',
         dateOfJoining: '',
         dateOfLeaving: '',
-        isActive: false
+        isActive: false,
+        decryptedPassword: ''
       };
     }
   }
@@ -290,7 +296,9 @@ export class UserCreationComponent implements OnInit {
             branch: userData.Branches || '',
             dateOfJoining: userData.joiningDate || '',
             dateOfLeaving: userData.leavingDate || '',
-            isActive: userData.IsActive || false
+            isActive: userData.IsActive || false,
+            decryptedPassword: userData.decryptedPassword || '',
+
           };
         } else {
           console.error('Error fetching user details:', response.message);
@@ -339,10 +347,10 @@ export class UserCreationComponent implements OnInit {
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!this.newUser.email.endsWith('.com') || !emailRegex.test(this.newUser.email)) {
-      alert('Enter valid Email.');
-      this.emailSelect.nativeElement.focus();
-      return;
+    if (!(this.newUser.email.endsWith('.com') || this.newUser.email.endsWith('.in')) || !emailRegex.test(this.newUser.email)) {
+    alert('Enter valid Email.');
+    this.emailSelect.nativeElement.focus();
+    return;
     }
 
     if (!this.newUser.mobile) {
@@ -405,9 +413,9 @@ export class UserCreationComponent implements OnInit {
       return;
     }
 
-    if (!this.newUser.dateOfJoining) {
-      alert('Please select dateOfJoining.');
-      this.dateOfJoiningSelect.nativeElement.focus();
+    if (!this.newUser.decryptedPassword) {
+      alert('Please enter Password.');
+      this.passwordSelect.nativeElement.focus();
       return;
     }
 
@@ -429,7 +437,8 @@ export class UserCreationComponent implements OnInit {
       DateofLeaving: this.newUser.dateOfLeaving,
       RoleCode: this.newUser.role,
       CreatedBy: employeeCode,
-      IsActive: this.newUser.isActive
+      IsActive: this.newUser.isActive,
+      password: this.newUser.decryptedPassword
     };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {

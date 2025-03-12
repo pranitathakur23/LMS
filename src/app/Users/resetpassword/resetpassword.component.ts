@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './resetpassword.component.css'
 })
 export class ResetpasswordComponent {
-  employeeCode: string = '';
+  employeeCode: string = ''; 
   newPassword: string = '';
   confirmPassword: string = '';
   showNewPasswordTooltip: boolean = false;
@@ -31,7 +31,7 @@ export class ResetpasswordComponent {
     specialChar: false
   };
 
-  constructor(private http: HttpClient,private router: Router) { const storedEmployeeCode = sessionStorage.getItem('EmployeeCode');
+  constructor(private http: HttpClient,private router: Router) { const storedEmployeeCode = sessionStorage.getItem('employeeCode');
     if (storedEmployeeCode) {
       this.employeeCode = storedEmployeeCode;
     } 

@@ -183,6 +183,13 @@
             name="dateOfJoining" #dateOfJoiningSelect>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <label for="password" style="font-weight: bold;">Password</label>
+          <input type="text" id="password" class="form-control" [(ngModel)]="newUser.decryptedPassword"
+            name="password" placeholder="Enter Password" #passwordSelect>
+        </div>
+      </div>
       <button type="submit" (click)="SaveandUpdateUserDetails()" class="btn btn-success">{{ isEditMode ? 'Update' :
         'Save' }}</button>
     </form>

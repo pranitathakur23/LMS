@@ -1,161 +1,79 @@
 <div class="reports-container">
-    <h2 class="page-heading">Reports</h2>
-  
-    <div class="filters-container">
-      <div class="filter-item">
-        <label>From Date</label>
-        <input type="date" class="animated-input">
-      </div>
-  
-      <div class="filter-item">
-        <label>To Date</label>
-        <input type="date" class="animated-input">
-      </div>
-  
-      <div class="filter-item">
-        <label>Department</label>
-        <select class="animated-input">
-          <option value="">Select Department</option>
-          <option value="HR">HR</option>
-          <option value="IT">IT</option>
-          <option value="Finance">Finance</option>
-        </select>
-      </div>
-  
-      <div class="filter-item">
-        <label>Employee Group</label>
-        <select class="animated-input">
-          <option value="">Select Employee Group</option>
-          <option value="Admin">Admin</option>
-          <option value="Staff">Staff</option>
-          <option value="Manager">Manager</option>
-        </select>
-      </div>
-  
-      <button class="view-btn mt-4">View</button>
-      <button class="view-btnd mt-4">Download</button>
+  <h2 class="page-heading">Reports</h2>
+  <div class="filters-container">
+    <div class="filter-item">
+      <label>From Date</label>
+      <input type="date" class="animated-input" [(ngModel)]="fromDate" required #fromDateSelect>
     </div>
+    <div class="filter-item">
+      <label>To Date</label>
+      <input type="date" class="animated-input" [(ngModel)]="toDate" required #toDateSelect>
+    </div>
+    <div class="filter-item">
+      <label>Department</label>
+      <select class="animated-input" [(ngModel)]="department" required #departmentSelect>
+        <option value="">Select Department</option>
+        <option *ngFor="let dept of departments" [value]="dept.DepartmentName">
+          {{ dept.DepartmentName }}
+        </option>
+      </select>
+    </div>
+    <div class="filter-item">
+      <label>Employee Group</label>
+      <select class="animated-input" [(ngModel)]="designation" required #designationSelect>
+        <option value="">Select Employee Group</option>
+        <option *ngFor="let role of designations" [value]="role.Designation">
+          {{ role.Designation }}
+        </option>
+      </select>
+    </div>
+    <button class="view-btn mt-4" (click)="GetReportDetails()">View</button>
+    <button class="view-btnd mt-4" (click)="downloadExcel()">Download</button>
   </div>
-
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Course Name</th>
-          <th>Employee ID</th>
-          <th>Employee Name</th>
-          <th>Area</th>
-          <th>Region</th>
-          <th>State</th>
-          <th>Course Start</th>
-          <th>Course Expiry</th>
-          <th>Course Completed Date</th>
-          <th>Course Status</th>
-          <th>Course Progress</th>
-          <th>Test Status</th>
-          <th>Test Date</th>
-          <th>Test Timestamp</th>
-          <th>Total Marks</th>
-          <th>Obtained Marks</th>
-          <th>Pass Marks</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Angular Basics</td>
-          <td>EMP001</td>
-          <td>John Doe</td>
-          <td>Mumbai</td>
-          <td>West</td>
-          <td>Maharashtra</td>
-          <td>01-01-2024</td>
-          <td>30-06-2024</td>
-          <td>15-03-2024</td>
-          <td>Completed</td>
-          <td>100%</td>
-          <td>Passed</td>
-          <td>15-03-2024</td>
-          <td>10:00 AM</td>
-          <td>100</td>
-          <td>90</td>
-          <td>40</td>
-        </tr>
-        <tr>
-          <td>React Advanced</td>
-          <td>EMP002</td>
-          <td>Jane Smith</td>
-          <td>Delhi</td>
-          <td>North</td>
-          <td>Delhi</td>
-          <td>05-02-2024</td>
-          <td>05-07-2024</td>
-          <td>20-04-2024</td>
-          <td>Completed</td>
-          <td>95%</td>
-          <td>Passed</td>
-          <td>20-04-2024</td>
-          <td>11:30 AM</td>
-          <td>100</td>
-          <td>85</td>
-          <td>40</td>
-        </tr>
-        <tr>
-          <td>Python Fundamentals</td>
-          <td>EMP003</td>
-          <td>Robert Brown</td>
-          <td>Bangalore</td>
-          <td>South</td>
-          <td>Karnataka</td>
-          <td>10-01-2024</td>
-          <td>10-06-2024</td>
-          <td>05-05-2024</td>
-          <td>Ongoing</td>
-          <td>80%</td>
-          <td>Pending</td>
-          <td>-</td>
-          <td>-</td>
-          <td>100</td>
-          <td>--</td>
-          <td>40</td>
-        </tr>
-        <tr>
-          <td>Java Spring Boot</td>
-          <td>EMP004</td>
-          <td>Alice Johnson</td>
-          <td>Chennai</td>
-          <td>South</td>
-          <td>Tamil Nadu</td>
-          <td>20-02-2024</td>
-          <td>20-07-2024</td>
-          <td>Pending</td>
-          <td>Ongoing</td>
-          <td>60%</td>
-          <td>Pending</td>
-          <td>-</td>
-          <td>-</td>
-          <td>100</td>
-          <td>--</td>
-          <td>40</td>
-        </tr>
-        <tr>
-          <td>Data Science</td>
-          <td>EMP005</td>
-          <td>Chris Evans</td>
-          <td>Kolkata</td>
-          <td>East</td>
-          <td>West Bengal</td>
-          <td>15-01-2024</td>
-          <td>15-06-2024</td>
-          <td>05-05-2024</td>
-          <td>Completed</td>
-          <td>100%</td>
-          <td>Passed</td>
-          <td>05-05-2024</td>
-          <td>01:00 PM</td>
-          <td>100</td>
-          <td>95</td>
-          <td>40</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+</div>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Course Name</th>
+        <th>Employee ID</th>
+        <th>Employee Name</th>
+        <th>Area</th>
+        <th>Region</th>
+        <th>State</th>
+        <th>Course Start</th>
+        <th>Course Expiry</th>
+        <th>Course Completed Date</th>
+        <th>Course Status</th>
+        <th>Course Progress</th>
+        <th>Test Status</th>
+        <th>Test Date</th>
+        <th>Test Timestamp</th>
+        <th>Total Marks</th>
+        <th>Obtained Marks</th>
+        <th>Pass Marks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of reportData">
+        <td>{{ item.courseName }}</td>
+        <td>{{ item.employeeCode }}</td>
+        <td>{{ item.employeeName }}</td>
+        <td>{{ item.area }}</td>
+        <td>{{ item.region }}</td>
+        <td>{{ item.state }}</td>
+        <td>{{ item.courseStart }}</td>
+        <td>{{ item.courseExpiry }}</td>
+        <td>{{ item.courseCompletedDate }}</td>
+        <td>{{ item.courseStatus }}</td>
+        <td>{{ item.courseProgress }}</td>
+        <td>{{ item.testStatus }}</td>
+        <td>{{ item.testDate }}</td>
+        <td>{{ item.testTimeStamp }}</td>
+        <td>{{ item.totalMarks }}</td>
+        <td>{{ item.obtainedMarks }}</td>
+        <td>{{ item.passingMarks }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
