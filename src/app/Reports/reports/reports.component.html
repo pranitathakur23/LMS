@@ -20,7 +20,7 @@
     </div>
     <div class="filter-item">
       <label>Employee Group</label>
-      <select class="animated-input-1" [(ngModel)]="designation" required #designationSelect>
+      <select class="animated-input" [(ngModel)]="designation" required #designationSelect>
         <option value="">Select Employee Group</option>
         <option *ngFor="let role of designations" [value]="role.Designation">
           {{ role.Designation }}
