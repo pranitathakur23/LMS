@@ -29,7 +29,17 @@
     border-radius: 4px;
     transition: all 0.3s ease-in-out;
   }
-  
+  .table th{
+    text-align: center;
+    background: #0a48b3  !important;
+    color: #fff;
+  }
+  .ngx-pagination .current {
+    padding: .1875rem .625rem;
+    background:  #0a48b3  !important;
+    color: #fefefe;
+    cursor: default;
+}
   .animated-input:focus {
     border-color: #007bff;
     transform: scale(1.05);
@@ -63,7 +73,6 @@
     margin-top: 20px;
     max-height: 397px; /* Scrollable table */
     overflow-y: auto;
-    overflow-x: hidden;
     border-radius: 8px;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -75,18 +84,8 @@
     border-collapse: collapse;
   }
   
-  thead {
-    background: #0a48b3;
-    color: white;
-    position: sticky;
-    top: 0;
-  }
   
-  th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
+  
   
   tr:hover {
     background:  #dfe0e1;

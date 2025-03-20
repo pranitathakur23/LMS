@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, HttpClientModule,FormsModule],
+  imports: [CommonModule, HttpClientModule,FormsModule,NgxPaginationModule],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css'
 })
@@ -25,7 +27,13 @@ export class ReportsComponent {
   departments: any[] = [];
   designations: any[] = []; 
   reportData: any[] = [];
-
+  Math = Math;
+  filteredGroupData: any[] = []; // Data to display after filtering
+  searchTerm: string = ''; // Search input binding
+  itemsPerPage: number = 10; // Default to 10, or use undefined if you want to trigger the placeholder
+  itemsPerPageOptions: number[] = [10, 25, 50, 100]; // Options for items per page
+  currentPage: number = 1; // Current page number
+  sortOrder: boolean = true; // True for ascending, False for descending
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
@@ -114,6 +122,7 @@ export class ReportsComponent {
       response => {
         if (response.status == true) {
           this.reportData = response.data;
+          this.filteredGroupData = [...this.reportData];
         } else {
           console.error('Failed:', response.message);
         }
@@ -122,6 +131,50 @@ export class ReportsComponent {
         console.error('Error:', error);
       }
     );
+  }
+  filterData(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+    console.log('Search Term:', term);
+  
+    this.filteredGroupData = this.reportData.filter((item) =>
+      (item.courseName?.toLowerCase() || '').includes(term) ||
+      (item.employeeCode?.toLowerCase() || '').includes(term) ||
+      (item.employeeName?.toLowerCase() || '').includes(term) ||
+      (item.area?.toLowerCase() || '').includes(term) ||
+      (item.region?.toLowerCase() || '').includes(term) ||
+      (item.states?.toLowerCase() || '').includes(term) || // Corrected from `state` to `states`
+      (item.courseStart?.toLowerCase() || '').includes(term) ||
+      (item.courseExpiry?.toLowerCase() || '').includes(term) ||
+      (item.courseCompletedDate?.toLowerCase() || '').includes(term) ||
+      (item.courseStatus?.toLowerCase() || '').includes(term) ||
+      (item.courseProgress?.toLowerCase() || '').includes(term) ||
+      (item.testStatus?.toLowerCase() || '').includes(term) ||
+      (item.testDate?.toLowerCase() || '').includes(term) ||
+      (item.testTimeStamp?.toLowerCase() || '').includes(term) ||
+      (String(item.totalMarks || '').toLowerCase().includes(term)) || // Convert numbers to string
+      (String(item.obtainedMarks || '').toLowerCase().includes(term)) ||
+      (String(item.passingMarks || '').toLowerCase().includes(term))
+    );
+  
+    console.log('Filtered Group Data:', this.filteredGroupData);
+  }
+  
+  onPageChange(page: number): void {
+    console.log("Page changed to:", page);
+    this.currentPage = page;
+  }
+  sortData(column: string): void {
+    this.sortOrder = !this.sortOrder;
+    const direction = this.sortOrder ? 1 : -1;
+    this.filteredGroupData.sort((a, b) => {
+  
+     
+      return 0;
+    });
+  }
+
+  onItemsPerPageChange(): void {
+    this.currentPage = 1;
   }
 
   downloadExcel(): void {
