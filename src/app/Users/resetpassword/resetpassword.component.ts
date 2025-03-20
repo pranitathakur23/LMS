@@ -31,7 +31,9 @@ export class ResetpasswordComponent {
     specialChar: false
   };
 
-  constructor(private http: HttpClient,private router: Router) { const storedEmployeeCode = sessionStorage.getItem('employeeCode');
+  constructor(private http: HttpClient,private router: Router) 
+  { 
+    const storedEmployeeCode = sessionStorage.getItem('employeeCode');
     if (storedEmployeeCode) {
       this.employeeCode = storedEmployeeCode;
     } 
@@ -103,13 +105,13 @@ export class ResetpasswordComponent {
       return;
     }
   
+    const empCode = sessionStorage.getItem('empCode');
     // Step 5: Send the password reset request
     const apiUrl = "/api/api/users/ChangePassword";
     const requestBody = {
-      EmployeeCode: this.employeeCode, // Pass EmployeeCode from sessionStorage
+      EmployeeCode: empCode, // Pass EmployeeCode from sessionStorage
       Password: this.newPassword
     };
-  
     this.http.post<{ status: boolean; message: string }>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status) {

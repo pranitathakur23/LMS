@@ -20,25 +20,14 @@ export class ForgotComponent {
   @ViewChild('employeeCodeInput') employeeCodeInput!: ElementRef;
   constructor(private http: HttpClient,private router: Router,    @Inject(PLATFORM_ID) private platformId: object // Inject PLATFORM_ID
 ) {}
-ngOnInit() {
-  setTimeout(() => {
-    const storedEmail = sessionStorage.getItem('Email');
-    console.log('Retrieved Email on Init:', storedEmail); // Debugging log
 
-    if (storedEmail) {
-      this.maskedEmail = this.maskEmail(storedEmail);
-    }
-  }, 500); // Slight delay to ensure data is stored
+ngOnInit() {
 }
 
   sendOtp(): any {
-    if (!this.employeeCode) { 
-            alert('Please enter Employee ID');
-      if (this.employeeCodeInput) {
-        setTimeout(() => {
-          this.employeeCodeInput.nativeElement.focus();
-        });
-      }
+    if (!this.employeeCode) {
+      alert('Please enter Employee ID');
+      this.employeeCodeInput.nativeElement.focus();
       return;
     }
     const apiUrl = '/api/api/users/ForgotPassword';
@@ -47,8 +36,7 @@ ngOnInit() {
       (response) => {        
         if (response.status === true) {
           this.showOtp = true;
-          // Retrieve email from sessionStorage
-          const userEmail = sessionStorage.getItem('Email') || '';
+          const userEmail = response.data;
           this.maskedEmail = this.maskEmail(userEmail);
         } else {
           this.responseMessage = response.message;
@@ -72,6 +60,8 @@ ngOnInit() {
     this.http.post<{ status: boolean; message: string }>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status == true) {
+          sessionStorage.removeItem('empCode');
+          sessionStorage.setItem('empCode', this.employeeCode);
           this.router.navigate(['/resetpassword']); 
         }
         else {
