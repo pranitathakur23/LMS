@@ -14,47 +14,104 @@ import { FormsModule } from '@angular/forms'; // <-- Import FormsModule for ngMo
 export class LoginComponent {
   employeeCode: string = '';
   password: string = '';
-  @ViewChild('employeeCodeInput') employeeCodeInput!: ElementRef;
-  @ViewChild('passwordInput') passwordInput!: ElementRef;
+  private captchaCode: string = '';
+
+  
 
   constructor(private http: HttpClient, private router: Router) { }
+  ngOnInit(): void {
+    this.createCaptcha();
+  }
+  createCaptcha(): void {
+    // Clear the contents of the captcha div first
+    document.getElementById('captcha')!.innerHTML = '';
+
+    const charsArray = '23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ@@#$';
+    const lengthOtp = 5; // Ensuring CAPTCHA length is 5
+    const captcha = [];
+
+    while (captcha.length < lengthOtp) {
+      const index = Math.floor(Math.random() * charsArray.length); // Get the next character from the array
+      if (captcha.indexOf(charsArray[index]) === -1) {
+        captcha.push(charsArray[index]);
+      }
+    }
+
+    const canv = document.createElement('canvas');
+    canv.id = 'captcha';
+    canv.width = 100;
+    canv.height = 50;
+    const ctx = canv.getContext('2d');
+    if (ctx) {
+      ctx.font = '25px Georgia';
+      ctx.strokeText(captcha.join(''), 0, 30);
+    }
+    this.captchaCode = captcha.join('');
+    document.getElementById('captcha')!.appendChild(canv);
+  }
+
+  validateCaptcha(): boolean {
+    const enteredCaptcha = (document.getElementById('cpatchaTextBox') as HTMLInputElement).value;
+    return enteredCaptcha === this.captchaCode;
+  }
+  @ViewChild('employeeCodeInput') employeeCodeInput!: ElementRef;
+  @ViewChild('passwordInput') passwordInput!: ElementRef;
+  @ViewChild('captchaCodeInput') captchaCodeInput!: ElementRef;
+
 
   // This method is triggered when the login button is clicked
   onLogin(event: Event): void {
-    // Prevent form from submitting
     event.preventDefault();
 
-    const x = this.employeeCode;
-    if (x === '') {
+    if (this.employeeCode === '') {
       alert('Enter Employee Code');
       this.employeeCodeInput.nativeElement.focus();
-      return; // Stop further execution
+      return;
     }
 
-    const y = this.password;
-    if (y === '') {
+    if (this.password === '') {
       alert('Enter Password');
       this.passwordInput.nativeElement.focus();
-      return; // Stop further execution
+      return;
+    }
+
+    const enteredCaptcha = (document.getElementById('cpatchaTextBox') as HTMLInputElement).value;
+    if (enteredCaptcha == '') {
+      alert('Please enter CAPTCHA');
+      this.captchaCodeInput.nativeElement.focus();
+      return;
+    }
+
+    if (!this.validateCaptcha()) {
+      alert('Invalid CAPTCHA. Please try again.');
+      (document.getElementById('cpatchaTextBox') as HTMLInputElement).value = "";
+      this.captchaCodeInput.nativeElement.focus();
+      this.createCaptcha();
+      return;
     }
 
     const loginData = {
       EmployeeCode: this.employeeCode,
       Password: this.password
     };
-    // Log the login data to the console
+
     const apiUrl = '/api/api/webusers/WebLogin';
 
     this.http.post(apiUrl, loginData).subscribe({
       next: (response: any) => {
         console.log('API Response:', response); // Log entire response
-    
         if (response.status == true) {
-    const userData = response.data[0];
-          sessionStorage.setItem('EmployeeName', userData.EmployeeName);
-          sessionStorage.setItem('employeeCode', userData.EmployeeCode);
-          sessionStorage.setItem('Email', userData.Email);
-          this.router.navigate(['/layout/Dashboard/Dashboard']);
+          const userData = response.data[0];
+          if (userData.Password === "VGVzdEAxMjM0") {
+            this.router.navigate(['/forgot']);
+
+          } else {
+            sessionStorage.setItem('EmployeeName', userData.EmployeeName);
+            sessionStorage.setItem('employeeCode', userData.EmployeeCode);
+            sessionStorage.setItem('Email', userData.Email);
+            console.log("Redirecting to Dashboard"); // Log before redirection
+            this.router.navigate(['/layout/Dashboard/Dashboard']);
+          }
         } else {
           alert(response.message || 'Invalid Employee Code or Password');
         }

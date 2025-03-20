@@ -1,5 +1,5 @@
-<div class="container mt-5">
-  <div class="row align-items-center shadow-lg rounded" style="overflow: hidden; gap: 20px;padding: 5%;">
+<div class="container" style="margin-top: -3%;">
+  <div class="row align-items-center shadow-lg rounded" style="overflow: hidden; gap: 20px; padding: 5%;">
     <div class="col-md-5 d-flex justify-content-center p-0">
       <img src="../../assets/Images/login.svg" alt="Learning Portal" class="img-fluid rounded" style="height: 100%; object-fit: cover; width: 100%;">
     </div>
@@ -20,8 +20,16 @@
           <input #passwordInput type="password" class="form-control shadow-sm" id="password" name="password" 
                  placeholder="Enter Your Password" [(ngModel)]="password" required>
         </div>
+        
+        <!-- CAPTCHA UI -->
+        <div style="background: url('../../assets/Images/bg4.jpg') center center no-repeat; margin: 43px; background-size: cover; border-block: ridge">
+          <span id="captcha" class="d-flex justify-content-center align-items-center"></span>
+        </div>
+        <input #captchaCodeInput type="text" class="input form-control"  
+               placeholder="Enter Captcha" id="cpatchaTextBox" autocomplete="off" required />
+
         <div class="forgot-password">
-          <a  (click)="onForgot($event)" class="text-primary" style="cursor: pointer;">Forgot password?</a>
+          <a (click)="onForgot($event)" class="text-primary" style="cursor: pointer;">Forgot password?</a>
         </div>
         <button type="submit" class="btn btn-primary w-100 login-btn mt-1">Log in</button>
       </form>
