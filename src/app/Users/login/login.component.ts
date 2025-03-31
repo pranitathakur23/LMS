@@ -102,7 +102,7 @@ export class LoginComponent {
         console.log('API Response:', response); // Log entire response
         if (response.status == true) {
           const userData = response.data[0];
-          if (userData.Password === "VGVzdEAxMjM0") {
+          if (userData.Password === "VGVzdEAxMjM=") {
             this.router.navigate(['/forgot']);
 
           } else {
