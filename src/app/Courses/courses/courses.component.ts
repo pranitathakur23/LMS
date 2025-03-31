@@ -63,9 +63,11 @@ export class CoursesComponent {
   }
 
   constructor(private http: HttpClient, private router: Router, private location: Location) { }
-
-  mapCourse(courseId: number) {
-    this.router.navigate(['/layout/Mapping/course-mapping'], { queryParams: { courseId: courseId } });
+  mapCourse(courseId: number, courseName: string) {
+    console.log('Navigating to course-mapping:', courseId, courseName); // Debugging log
+    this.router.navigate(['/layout/Mapping/course-mapping'], { 
+      queryParams: { courseId: courseId, courseName: encodeURIComponent(courseName) } 
+    });
   }
 
   ngOnInit() {

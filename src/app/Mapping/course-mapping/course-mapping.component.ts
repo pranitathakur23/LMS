@@ -41,6 +41,7 @@ export class CourseMappingComponent implements OnInit {
     branch: '',
     designation: '',
     date: '',
+    todate:''
   };
 
   allocateFormData = {
@@ -62,6 +63,7 @@ export class CourseMappingComponent implements OnInit {
   employees: Employee[] = [];
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
+  courseName: string = '';
 
   // Pagination and Data
   p: number = 1;  // Current page
@@ -79,11 +81,19 @@ export class CourseMappingComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      this.courseId = +params['courseId'];
+      console.log('Query Params:', params); // Debugging log
+      this.courseId = params['courseId'] ? +params['courseId'] : null;
+      this.courseName = params['courseName'] ? decodeURIComponent(params['courseName']) : 'Unknown Course';
+  
+      console.log('Course ID:', this.courseId);
+      console.log('Course Name:', this.courseName);
+  
       if (!this.courseId) {
-        console.error('CourseID not provided');
+        console.error('Course ID not provided');
       }
     });
+  
+  
     this.fetchBanks();
     this.fetchStates();
     this.fetchAreas();
@@ -222,10 +232,12 @@ export class CourseMappingComponent implements OnInit {
       Branches: this.formData.branch || 'AB',
       Designation: this.formData.designation || 'AB',
       doj: this.formData.date || '',
+      todate: this.formData.todate || '',
     };
     this.isLoading = true;
     this.http.post<any>('/api/api/webCourseMaster/GetAllUserData', params).subscribe(
       (response) => {
+        console.log('Map response', response);
         if (response.status && response.data && response.data.length > 0) {
           this.employees = response.data.map((employee: any) => ({
             ...employee,
