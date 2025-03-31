@@ -13,6 +13,6 @@
   flex: 1;
   padding: 20px;
   margin-left: 132px; /* Keeps space for sidebar */
-  margin-top: 5%;
+  margin-top: 2%;
   overflow: hidden; /* Prevents unwanted scrolling */
 }
