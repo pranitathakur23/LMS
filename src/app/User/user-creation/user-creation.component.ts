@@ -407,11 +407,11 @@ export class UserCreationComponent implements OnInit {
       return;
     }
 
-    if (!this.newUser.dateOfLeaving) {
-      alert('Please select dateOfLeaving.');
-      this.dateOfLeavingSelect.nativeElement.focus();
-      return;
-    }
+    // if (!this.newUser.dateOfLeaving) {
+    //   alert('Please select dateOfLeaving.');
+    //   this.dateOfLeavingSelect.nativeElement.focus();
+    //   return;
+    // }
 
     if (!this.newUser.decryptedPassword) {
       alert('Please enter Password.');
