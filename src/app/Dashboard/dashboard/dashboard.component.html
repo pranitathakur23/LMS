@@ -1,63 +1,113 @@
-<div class="dashboard">
-  <div class="main-card" style="    margin-top: 4%;">
-    <div class="card-header">
-      <i class="icon main-dashboard-icon">🏠</i> <!-- Home Icon -->
-      <span class="main-title">Dashboard</span>
+<!-- Greeting Section -->
+<div class="greeting-container p-4">
+  <h3 class="text-5xl sm:text-6xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600 flex items-center gap-4 mt-5">
+    {{ greetingMessage }}
+    <span class="wave animate-wave text-6xl">👋</span>
+  </h3>
+</div>
+
+<!-- Cards Section -->
+<div class="container" style="margin-top: -3%;">
+<div class="row text-center g-4">
+
+  <!-- Total Users -->
+  <div class="col-md-3">
+    <div class="dashboard-card card-users">
+      <div class="dashboard-icon bg-white bg-opacity-25">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="fw-semibold">Total Users</div>
+      <div class="fs-3 fw-bold">5,450</div>
     </div>
+  </div>
 
-    <div class="cards-container">
-      <!-- Manage Courses Card -->
-      <div class="card" [@fadeIn] (click)="navigateTo('Courses/courses')">
-        <div class="card-header">
-          <i class="icon courses-icon">🎓</i> <!-- Courses Icon -->
-          <span class="title">Manage Courses</span>
-        </div>
-        <div class="card-body">
-          <p class="description">Manage your courses and course details here.</p>
-        </div>
+  <!-- Active Courses -->
+  <div class="col-md-3">
+    <div class="dashboard-card card-active">
+      <div class="dashboard-icon bg-white bg-opacity-25">
+        <i class="fas fa-book-open"></i>
       </div>
-      <div class="card" [@fadeIn] (click)="chapterNavigate('Chapters/chapters')">
-        <div class="card-header">
-          <i class="icon chapter-icon">📚</i> <!-- Chapter Icon --><span class="title">Chapter Details</span>
-        </div>
-        <div class="card-body">
-          <p class="description">Create and manage chapters for your courses.</p>
-        </div>
-      </div>
-     
+      <div class="fw-semibold">Active Courses</div>
+      <div class="fs-3 fw-bold">25</div>
+    </div>
+  </div>
 
-      <!-- User Management Card -->
-      <div class="card" [@fadeIn] (click)=" userNavigate('User/user-creation')">
-        <div class="card-header">
-          <i class="icon user-management-icon">👤</i> <!-- User Management Icon -->
-          <span class="title">User Management</span>
-        </div>
-        <div class="card-body">
-          <p class="description">Add and manage user details and roles.</p>
-        </div>
+  <!-- Pending Enrollment -->
+  <div class="col-md-3">
+    <div class="dashboard-card card-pending">
+      <div class="dashboard-icon bg-white bg-opacity-25">
+        <i class="fas fa-hourglass-half"></i>
       </div>
-         <!-- User Management Card -->
-         <div class="card" [@fadeIn] (click)="assessmentNavigate('assessment/assessment')">
-          <div class="card-header">
-            <i class="icon assessment-icon">📝</i> <!-- Assessment Icon -->
-            <span class="title">User Assesmemnt</span>
-          </div>
-          <div class="card-body">
-            <p class="description">Create and manage assessments for users.</p>
-          </div>
-        </div>
-       <!-- Question Bank Card -->
-       <div class="card" [@fadeIn] (click)="questionpaperNavigate('Questions/question-bank')">
-        <div class="card-header">
-          <i class="icon questions-icon">📘</i> <!-- Question Bank Icon -->
-          <span class="title">Question Bank</span>
-        </div>
-        <div class="card-body">
-          <p class="description">Create and manage your question bank for assessments.</p>
-        </div>
-      </div>
-    
+      <div class="fw-semibold">Pending Enrollment</div>
+      <div class="fs-3 fw-bold">200</div>
+    </div>
+  </div>
 
+  <!-- Completed Courses -->
+  <div class="col-md-3">
+    <div class="dashboard-card card-completed">
+      <div class="dashboard-icon bg-white bg-opacity-25">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="fw-semibold">Completed Courses</div>
+      <div class="fs-3 fw-bold">3,500</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- Filter Section -->
+<div class="container mt-3 position-relative" style="z-index: 1;">
+  <div class="row g-4">
+      <!-- Bank Dropdown -->
+      <div class="col-md-2">
+        <label for="bankSelect" class="form-label fw-semibold">Filter</label>
+        <select id="bankSelect" class="form-select" [(ngModel)]="selectedFilter">
+          <option value="bank">Bank</option>
+          <option value="state">State</option>
+        </select>
+      </div>
+  
+      <!-- Search Button -->
+      <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-primary w-100 py-2" (click)="onSearch()">
+          <i class="fas fa-search me-2"></i>Search
+        </button>
+      </div>
+    </div>
+</div>
+
+<!-- Chart Section -->
+<!-- Conditional Charts -->
+<div class="container mt-4" id="bankCharts" *ngIf="selectedFilter === 'bank'">
+  <div class="row">
+    <div class="col-md-6">
+      <canvas id="completedChart"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas id="inProgressChart"></canvas>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <canvas id="notStartedChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4" id="stateCharts" *ngIf="selectedFilter === 'state'">
+  <div class="row">
+    <div class="col-md-6">
+      <canvas id="completedStateChart"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas id="inProgressStateChart"></canvas>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <canvas id="notStartedStateChart"></canvas>
+      </div>
     </div>
   </div>
 </div>

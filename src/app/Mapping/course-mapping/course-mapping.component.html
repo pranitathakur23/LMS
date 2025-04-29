@@ -1,16 +1,16 @@
 
-<div class="container" style="margin-top: 5%;">
- <!-- Go Back Button -->
- <button class="btn btn-warning" (click)="goBack()" style="    color: white;
-width: 4%;">
+<div class="container" style="margin-top: 4%;">
+<!-- Flex container for back button and heading -->
+<div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+    
+  <!-- Go Back Button -->
+  <button class="btn btn-warning" (click)="goBack()" 
+  style="color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
   <i class="fas fa-arrow-left"></i> 
 </button>
 
-<!-- Course Mapping Heading -->
-<h2 class="text-center" style="margin-left: -46%;
-margin-top: -2.5%;
-font-weight: bold;
-font-size: 24px;">
+<!-- Course Mapping Heading aligned to start -->
+<h2 style="margin: 0; font-weight: bold; font-size: 24px; word-break: break-word; max-width: 90%;">
   Course Mapping - {{ courseName }}
 </h2>
 </div>
@@ -161,7 +161,7 @@ font-size: 24px;">
                     <td>{{ employee.Area }}</td>
                     <td>{{ employee.Branches }}</td>
                     <td>{{ employee.Designation }}</td>
-                    <td>{{ employee.Dateofjoining | date: 'yyyy-MM-dd' }}</td>
+                    <td>{{ employee.Dateofjoining  }}</td>
                   </tr>
                 </tbody>
             </table>
