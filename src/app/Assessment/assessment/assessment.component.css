@@ -144,95 +144,23 @@ body {
 
 
 
-  /* Adjust column width and spacing */
-.table th:nth-child(1), .table td:nth-child(1) {
-    min-width: 150px; /* Employee Code */
+  .table-wrapper {
+    max-height: 500px; /* Set your desired height */
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
   }
   
-  .table th:nth-child(2), .table td:nth-child(2) {
-    min-width: 200px; /* First Name */
-  }
-  
-  .table th:nth-child(3), .table td:nth-child(3) {
-    min-width: 220px; /* Email */
-  }
-  
-  .table th:nth-child(4), .table td:nth-child(4) {
-    min-width: 180px; /* Mobile */
-  }
-  
-  .table th:nth-child(5), .table td:nth-child(5) {
-    min-width: 180px; /* Employment Status */
-  }
-  
-  .table th:nth-child(6), .table td:nth-child(6) {
-    min-width: 180px; /* Bank Partner */
-  }
-  
-  .table th:nth-child(7), .table td:nth-child(7) {
-    min-width: 180px; /* Department */
-  }
-  
-  .table th:nth-child(8), .table td:nth-child(8) {
-    min-width: 180px; /* Designation */
-  }
-  
-  .table th:nth-child(9), .table td:nth-child(9) {
-    min-width: 150px; /* State */
-  }
-  
-  .table th:nth-child(10), .table td:nth-child(10) {
-    min-width: 150px; /* Area */
-  }
-  
-  .table th:nth-child(11), .table td:nth-child(11) {
-    min-width: 150px; /* Branch */
-  }
-  
-  .table th:nth-child(12), .table td:nth-child(12) {
-    min-width: 200px; /* Date of Joining */
-  }
-  
-  .table th:nth-child(13), .table td:nth-child(13) {
-    min-width: 200px; /* Date of Leaving */
-  }
-  
-  .table th:nth-child(14), .table td:nth-child(14) {
-    min-width: 120px; /* Actions */
-  }
-  /* General Table Styling */
-.table {
-    border-radius: 10px;
-    overflow: hidden;
-    width: 100%; /* Ensure the table takes full width */
-    table-layout: auto; /* Let browser auto-calculate column width */
-}
-
-.table th, .table td {
-    text-align: center;
-    padding: 12px 20px; /* Increased padding for better spacing */
-    white-space: nowrap; /* Prevent text overflow */
-}
-
-table th {
-    background-color: #0a48b3 !important;
-
+  /* Optional: sticky table header */
+  .table-wrapper thead th {
+    position: sticky;
+    top: 0;
+    background-color: #126bc3;
     color: white;
-}
-
-/* Alternate row styling */
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: #f9f9f9;
-}
-
-.table-hover tbody tr:hover {
-    background-color: #e2e6ea;
-}
-
-.table-responsive {
-    max-height: none; /* Remove height limitation */
-    overflow: visible; /* Allow for table expansion */
-}
+    z-index: 1;
+  }
+  
 
 /* Actions Column Styling */
 .actions-column {

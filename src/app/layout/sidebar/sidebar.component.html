@@ -1,20 +1,33 @@
-<!-- sidebar.component.html -->
-<div class="sidebar">
+<!-- Toggle icon shown when sidebar is closed -->
+<div class="sidebar-toggle-icon" *ngIf="!isOpen" (click)="toggleSidebar()">
+  <i class="fa fa-bars" style="color: rgb(24, 24, 139);"></i>
+</div>
 
-  <ul class="sidebar-links" style="cursor: pointer;margin-left: -12%;">
-    <a (click)="navigateTo()" routerLinkActive="active">
+<!-- Sidebar shown when open -->
+<div class="sidebar"
+     [class.collapsed]="!isOpen"
+     *ngIf="isOpen"
+     >
+  <ul class="sidebar-links">
+    <li class="sidebar-item" (click)="navigateTo()">
       <i class="fa fa-home"></i> Dashboard
-    </a>
-  
-  </ul>
-  <ul class="sidebar-links" style="cursor: pointer;margin-left: -12%;">
-    <a (click)=" navigateToReports()" routerLinkActive="active">
+    </li>
+
+    <li class="sidebar-item dropdown-toggle" (click)="toggleMasterDropdown()">
+      <i class="fa fa-database"></i> Master
+      <i class="fa" [ngClass]="{'fa--down': !isMasterOpen, 'fa--up': isMasterOpen}" style="float: right;"></i>
+    </li>
+
+    <ul *ngIf="isMasterOpen" class="dropdown-links">
+      <li class="sidebar-item"  (click)="navigateToCourses('Courses/courses')"><i class="fa fa-graduation-cap"></i> Courses</li>
+      <li class="sidebar-item" (click)="chapterNavigate('Chapters/chapters')"><i class="fa fa-book"></i> Chapters</li>
+      <li class="sidebar-item" (click)=" userNavigate('User/user-creation')"><i class="fa fa-users-cog"></i> Manage Users</li>
+      <li class="sidebar-item" (click)="assessmentNavigate('assessment/assessment')"><i class="fa fa-pen-alt"></i> Assessment</li>
+      <li class="sidebar-item" (click)="questionpaperNavigate('Questions/question-bank')"><i class="fa fa-question-circle"></i> Question Bank</li>
+    </ul>
+
+    <li class="sidebar-item" (click)="navigateToReports()">
       <i class="fa fa-file-alt"></i> Reports
-    </a>
-  
+    </li>
   </ul>
-
-
-
-  
 </div>
