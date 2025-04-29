@@ -17,13 +17,16 @@ import { NgxPaginationModule } from 'ngx-pagination';
 export class ReportsComponent {
     @ViewChild('fromDateSelect') fromDateSelect!: ElementRef;
     @ViewChild('toDateSelect') toDateSelect!: ElementRef;
+    @ViewChild('bankSelect') bankSelect!: ElementRef;
     @ViewChild('departmentSelect') departmentSelect!: ElementRef;
     @ViewChild('designationSelect') designationSelect!: ElementRef;
 
   fromDate: string = '';
   toDate: string = '';
+  bank: string = '';
   department: string = '';
   designation: string = '';
+  banks: any[] = [];
   departments: any[] = [];
   designations: any[] = []; 
   reportData: any[] = [];
@@ -37,6 +40,7 @@ export class ReportsComponent {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    this.fetchBanks();
     this.fetchDepartments();
     this.fetchDesignation();
     const employeeCode = sessionStorage.getItem('employeeCode');
@@ -45,6 +49,23 @@ export class ReportsComponent {
     } else {
       console.log('EmployeeCode not found in sessionStorage');
     }
+  }
+
+  fetchBanks() {
+    const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
+    const requestBody = { mode: 6 };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      response => {
+        if (response.status == true) {
+          this.banks = response.data;
+        } else {
+          console.error(response.message);
+        }
+      },
+      error => {
+        console.error('Error fetching banks:', error);
+      }
+    );
   }
 
   fetchDepartments() {
@@ -99,6 +120,12 @@ export class ReportsComponent {
       return;
     }
 
+    if (!this.bank) {
+      alert('Please select Bank.');
+      this.bankSelect.nativeElement.focus();
+      return;
+    }
+
     if (!this.department) {
       alert('Please select Department.');
       this.departmentSelect.nativeElement.focus();
@@ -113,6 +140,7 @@ export class ReportsComponent {
 
     const apiUrl = '/api/api/webCourseMaster/GetReportDetails';
     const requestBody = {
+      bank: this.bank,
       department: this.department,
       employeeGroup: this.designation,
       fromDate: this.fromDate,
