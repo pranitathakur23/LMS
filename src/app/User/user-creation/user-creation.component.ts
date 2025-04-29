@@ -50,12 +50,10 @@ export class UserCreationComponent implements OnInit {
     { key: 'firstName', label: 'First Name', isVisible: true },
     { key: 'email', label: 'Email', isVisible: true },
     { key: 'mobile', label: 'Mobile', isVisible: true },
-    { key: 'role', label: 'Role', isVisible: true },
     { key: 'status', label: 'Status', isVisible: true },
     { key: 'bankPartner', label: 'Bank Partner', isVisible: false },
     { key: 'department', label: 'Department', isVisible: false },
-    { key: 'designation', label: 'Designation', isVisible: false },
-    { key: 'state', label: 'State', isVisible: false },
+    { key: 'designation', label: 'Designation', isVisible: false },    { key: 'state', label: 'State', isVisible: false },
     { key: 'area', label: 'Area', isVisible: false },
     { key: 'branch', label: 'Branch', isVisible: false },
     { key: 'dateOfJoining', label: 'Date of Joining', isVisible: false },
@@ -101,12 +99,13 @@ export class UserCreationComponent implements OnInit {
     this.http.post<any>(url, body).subscribe(
       (response) => {
         if (response.status === true) {
+          console.log('User Response',response)
           this.users = response.data.map((user: any) => ({
             employeeCode: user.EmployeeCode || '',
             firstName: user.EmployeeName || '',
             email: user.Email || '',
             mobile: user.MobileNo || '',
-            role: user.RoleCode ? '' : '',
+            role: user.Designation ? '' : '',
             status: user.Employmentstatus || '',
             bankPartner: user.BankPartners || '',
             department: user.Department || '',

@@ -1,142 +1,77 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@keyframes wave-animation {
+  0% { transform: rotate(0.0deg); }
+  10% { transform: rotate(14.0deg); }
+  20% { transform: rotate(-8.0deg); }
+  30% { transform: rotate(14.0deg); }
+  40% { transform: rotate(-4.0deg); }
+  50% { transform: rotate(10.0deg); }
+  60% { transform: rotate(0.0deg); }
+  100% { transform: rotate(0.0deg); }
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f4f8;
+.animate-wave {
+  display: inline-block;
+  animation: wave-animation 2s infinite;
+  transform-origin: 70% 70%;
 }
-
-.dashboard {
-  display: flex
-;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px;
-    margin-left: 3%;
-}
-
-.main-card {
-  background-color: #0a48b3 !important; /* Main card background color */
-  color: white;
-  padding: 20px 15px;
-  border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  animation: popAnimation 0.8s ease-out; /* Added pop animation */
-     width: 100%; /* Adjusted width for better proportion */
-  margin-top: 0; /* Touches the header above */
+.dashboard-card {
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid #fff;
 }
 
-.main-card:hover {
-  transform: scale(1.02); /* Slight zoom effect on hover */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+.dashboard-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
+}
+/* Unique card backgrounds */
+.card-users {
+  background: linear-gradient(135deg, #293b8b, #764ba2);
 }
 
-.card-header {
+.card-active {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+}
+
+.card-pending {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+}
+
+.card-completed {
+  background: linear-gradient(135deg, #fc6076, #ff9a44);
+}
+.dashboard-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  padding: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-box {
+  font-size: 2.8rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.75rem;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 15px;
 }
 
-.icon {
-  font-size: 36px;
-  margin-right: 12px;
+.animate-wave {
+  animation: wave 2s infinite;
 }
 
-.main-dashboard-icon {
-  color: #ffffff; /* White home icon for better contrast */
+@keyframes wave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  50% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
 }
 
-.main-title {
-  font-size: 26px;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Three columns layout */
-  gap: 10px; /* Reduced gap for compact appearance */
-}
-
-.card {
-  background-color: #ffffff;
-  padding: 18px 15px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: fadeIn 0.8s ease-out;
-  cursor: pointer;
-}
-
-.card:hover {
-  transform: translateY(-8px); /* Elevated hover effect */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.icon.courses-icon {
-  color: #f39c12; /* Bright orange for Manage Courses */
-}
-
-.icon.user-management-icon {
-  color: #3498db; /* Light blue for User Management */
-}
-
-.icon.questions-icon {
-  color: #2ecc71; /* Bright green for Question Bank */
-}
-
-.title {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.card-body {
-  margin-top: 8px;
-}
-
-.description {
-  font-size: 14px;
-  color: #555;
-  line-height: 1.4;
-}
-
-@keyframes popAnimation {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.1);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
