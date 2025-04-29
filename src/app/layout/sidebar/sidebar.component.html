@@ -1,20 +1,16 @@
 <!-- sidebar.component.html -->
 <div class="sidebar">
 
-  <ul class="sidebar-links" style="cursor: pointer;margin-left: -12%;">
+  <ul class="sidebar-links" style="cursor: pointer;margin-left: -12%;" *ngIf="showDashboard">
     <a (click)="navigateTo()" routerLinkActive="active">
       <i class="fa fa-home"></i> Dashboard
     </a>
   
   </ul>
-  <ul class="sidebar-links" style="cursor: pointer;margin-left: -12%;">
+
+  <ul class="sidebar-links" style="cursor: pointer;margin-left: -12%;" *ngIf="showReports" >
     <a (click)=" navigateToReports()" routerLinkActive="active">
       <i class="fa fa-file-alt"></i> Reports
     </a>
-  
   </ul>
-
-
-
-  
-</div>
+</div> 
