@@ -113,9 +113,10 @@ export class LoginComponent {
             sessionStorage.setItem('EmployeeName', userData.EmployeeName);
             sessionStorage.setItem('employeeCode', userData.EmployeeCode);
             sessionStorage.setItem('Email', userData.Email);
+            sessionStorage.setItem('PageRole', userData.PageRole);
             console.log("Redirecting to Dashboard"); // Log before redirection
             this.router.navigate(['/layout/Dashboard/Dashboard']);
-          }
+          } 
         } else {
           alert(response.message || 'Invalid Employee Code or Password');
         }
