@@ -10,6 +10,15 @@
       <input type="date" class="animated-input" [(ngModel)]="toDate" required #toDateSelect>
     </div>
     <div class="filter-item">
+      <label>Bank</label>
+      <select class="animated-input" [(ngModel)]="bank" required #bankSelect>
+        <option value="">Select Bank</option>
+        <option *ngFor="let bank of banks" [value]="bank.BankName">
+          {{ bank.BankName}}
+        </option>
+      </select>
+    </div>
+    <div class="filter-item">
       <label>Department</label>
       <select class="animated-input" [(ngModel)]="department" required #departmentSelect>
         <option value="">Select Department</option>
@@ -53,9 +62,11 @@
 ">
             <tr>
               <th (click)="sortData('courseName')">Course Name</th>
+              <th (click)="sortData('assessmentName')">Assessment Name</th>
               <th (click)="sortData('employeeCode')">Employee ID</th>
               <th (click)="sortData('employeeName')">Employee Name</th>
               <th (click)="sortData('area')">Area</th>
+              <th (click)="sortData('bank')">Bank</th>
               <th (click)="sortData('region')">Region</th>
               <th (click)="sortData('states')">State</th>
               <th (click)="sortData('courseStart')">Course Start</th>

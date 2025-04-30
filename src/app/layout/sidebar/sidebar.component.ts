@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./sidebar.component.css'],
   imports: [CommonModule]
 })
+
 export class SidebarComponent {
   @Input() isOpen = true; // Only one declaration
   @Output() sidebarToggle = new EventEmitter<boolean>();
@@ -33,6 +34,7 @@ export class SidebarComponent {
   toggleMasterDropdown(): void {
     this.isMasterOpen = !this.isMasterOpen;
   }
+
 
   navigateTo(path?: string): void {
     if (path) {
@@ -61,5 +63,6 @@ export class SidebarComponent {
   userNavigate(path: string): void {
     this.router.navigate(['layout/User/user-creation']);
   }
+
 
 }
