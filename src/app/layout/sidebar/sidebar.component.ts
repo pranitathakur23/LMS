@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-sidebar',
@@ -17,9 +20,44 @@ export class SidebarComponent {
   isMasterOpen = false;
   hoveringSidebar = false;
   hoverTimeout: any = null;
+  pageRoles: string[] = [];
+  showDashboard = false;
+  showReports = false;
+  Master= false;
+  Courses= false;
+  Chapters= false;
+  Manage_Users= false;
+  Assessment= false;
+  Question_Bank= false;
+  Progress_Tracker= false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object 
+  ) {}
 
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      const roleString = sessionStorage.getItem('PageRole');
+      if (roleString) {
+        this.pageRoles = roleString.split(',').map(role => role.trim());     
+        this.showDashboard = this.pageRoles.includes('1');
+        this.showReports = this.pageRoles.includes('2');
+
+        this.Master = this.pageRoles.includes('3');
+        this.Courses = this.pageRoles.includes('4'); 
+        this.Chapters = this.pageRoles.includes('5');
+        this.Manage_Users = this.pageRoles.includes('6');
+        this.Assessment = this.pageRoles.includes('7');
+        this.Question_Bank = this.pageRoles.includes('8');
+        this.Progress_Tracker = this.pageRoles.includes('9');
+
+
+        this.cdr.detectChanges();
+      } 
+    }
+  }
   toggleSidebar(): void {
     this.isOpen = !this.isOpen;
     this.sidebarToggle.emit(this.isOpen);
@@ -50,7 +88,9 @@ export class SidebarComponent {
   navigateToCourses(path: string): void {
     this.router.navigate(['layout/Courses/courses']);
   }
-
+  navigateToprogress(): void {
+    this.router.navigate(['layout/ProgressTracker/progress-tracker']);
+  }
   assessmentNavigate(path: string): void {
     this.router.navigate(['layout/Assessment/assessment']);
   }
