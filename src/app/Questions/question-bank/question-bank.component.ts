@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
 
 @Component({
   selector: 'app-question-bank',
@@ -23,6 +24,12 @@ export class QuestionBankComponent {
   currentMode: number = 1;
   isLoading: boolean = false;
 
+  labels = AppLabels;
+  Header = AppHeader;
+  Link = AppLink;
+  Button = AppButton;
+  PlaceHolder = AppPlaceHolder;
+  table=Apptable;
 
   constructor(private http: HttpClient, private location: Location, private router: Router) { }
 

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Location } from '@angular/common';
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
 
 @Component({
   selector: 'app-assessment',
@@ -46,6 +47,13 @@ export class AssessmentComponent {
 
   assessment: any[] = [];
   durationTimes: any[] = [];
+
+  labels = AppLabels;
+  Header = AppHeader;
+  Link = AppLink;
+  Button = AppButton;
+  PlaceHolder = AppPlaceHolder;
+  table=Apptable;
 
   constructor(private http: HttpClient,private location: Location) { }
 

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http'; 
 import { Router } from '@angular/router'; 
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
 
 interface Department {
   DepartmentID: number;
@@ -55,6 +56,15 @@ export class CoursesComponent {
   questionPapers = ['MCQ', 'Descriptive', 'Practical'];
   thumbnailPreview: string | null = null;
   courses: any;
+
+  labels = AppLabels;
+  Header = AppHeader;
+  Link = AppLink;
+  Button = AppButton;
+  PlaceHolder = AppPlaceHolder;
+  table = Apptable;
+
+
   handleFileUpload(event: any) {
     const file = event.target.files[0];
     if (file) {

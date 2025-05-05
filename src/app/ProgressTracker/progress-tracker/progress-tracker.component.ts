@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
+
 @Component({
   selector: 'app-progress-tracker',
   standalone: true,
@@ -17,6 +19,14 @@ export class ProgressTrackerComponent {
   selectedEmployee: string | undefined;
   selectedDate: string | undefined;
 
+  labels = AppLabels;
+  Header = AppHeader;
+  Link = AppLink;
+  Button = AppButton;
+  PlaceHolder = AppPlaceHolder;
+  table=Apptable;
+
+ 
   banks = ['Bank A', 'Bank B'];
   states = ['Maharashtra', 'Gujarat'];
   areas = ['Area 1', 'Area 2'];

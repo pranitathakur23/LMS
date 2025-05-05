@@ -4,6 +4,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder} from '../../app.constants';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -14,6 +16,11 @@ import { CommonModule } from '@angular/common';
   export class DashboardComponent implements OnInit, AfterViewInit {
     greetingMessage: string = '';
     selectedFilter: string = 'bank';  // Default to "bank"
+    labels = AppLabels;
+    Header = AppHeader;
+    Link = AppLink;
+    Button = AppButton;
+    PlaceHolder = AppPlaceHolder;
     
     bankLabels: string[] = [
       "Axis", "Andhra Pradesh", "DCB", "Assam", "ESFB", "Bihar", "FSFB", "Chhattisgarh",
