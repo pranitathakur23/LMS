@@ -8,6 +8,7 @@
   </button>
   <h3 style="font-weight: bold;margin-left: -49%;">{{Header.QuestionHeader}}</h3>
   <div>
+
     <button class="btn btn-primary" (click)="downloadExcel()" style="background-color: #198754">
       <i class="fas fa-file-excel"></i> {{Button.TemplateButton}}
     </button>&nbsp;
@@ -47,6 +48,13 @@
               <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;" (click)="deleteQuestions(question)">
                 <i class="fa fa-trash" style="font-size: 18px;"></i>
               </button>&nbsp;
+              <button class="add-btn"
+              style="background: #0a48b3; border: none; color: white;"
+              (click)="addQuestion(question.questionTitle)">
+        <i class="fa fa-plus" style="font-size: 18px;"></i>
+      </button>
+              
+              
               <!-- <button class="edit-btn" style="background: green; border: none; color: white;" (click)="questionpage()">
                 <i class="fa fa-edit" style="font-size: 18px;"></i>
               </button> -->

@@ -1,0 +1,151 @@
+<div class="container" style="    margin-top: 7%;">
+    <div class="row">
+      <div class="col-md-12">
+  <!-- Add User Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <button class="btn btn-warning" (click)="goBack()" style="color: white;">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    <h3 style="font-weight: bold;margin-left: -49%;">Question Details</h3>
+    <div>
+     
+      <button class="btn btn-success me-2" style="background-color: #0a48b3" (click)="openModal()">
+        <i class="fas fa-plus-circle"></i> Add Question Paper
+      </button>
+    </div>
+  </div>
+  
+        <!-- Loading Spinner (only show when loading) -->
+        <div *ngIf="isLoading" class="spinner-overlay">
+          <div class="spinner"></div>
+        </div>
+            <!-- User List Table -->
+       <!-- User List Table -->
+       <div class="table-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd;">
+        <table class="table table-hover table-striped custom-table">
+          <thead>
+            <tr>
+              <th>SR. No</th>
+              <th>Question Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="questions.length === 0">
+              <td colspan="3" class="text-center">No data available</td>
+            </tr>
+            <tr *ngFor="let question of questions; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ question.QuestionName }}</td> <!-- ✅ BOUND TO API PROPERTY -->
+              <td>
+                <button class="edit-btn" style="background: green; border: none; color: white;"
+                 >
+                  <i class="fa fa-edit" style="font-size: 18px;"></i>
+                </button> &nbsp;
+                <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;" (click)="deleteQuestions(question)">
+                  <i class="fa fa-trash" style="font-size: 18px;"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+  
+      <!-- Main Course Modal -->
+   <!-- Main Course Modal -->
+<!-- Main Course Modal -->
+<div *ngIf="isModalOpen" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+      <h3 class="modal-header">{{ modalHeaderText }}</h3>
+      <form>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="questionName" style="font-weight: bold;">Question Name</label>
+            <input class="form-control" type="text" id="questionName" name="questionName" placeholder="Enter the question here" required />
+          </div>
+          <div class="col-md-6">
+            <label for="category" style="font-weight: bold;">Category</label>
+            <input class="form-control" type="text" id="category" name="category" placeholder="Enter question category (e.g., Cyber Security)" required />
+          </div>
+        </div>
+  
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <label for="responseType" style="font-weight: bold;">Response Type</label>
+            <input class="form-control" type="text" id="responseType" name="responseType" placeholder="e.g., multiple_choice, single_choice" required />
+          </div>
+          <div class="col-md-6">
+            <label for="ansCount" style="font-weight: bold;">Answer Count</label>
+            <input class="form-control" type="number" id="ansCount" name="ansCount" placeholder="Enter total number of answer options" required />
+          </div>
+        </div>
+  
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <label for="ansCorrect" style="font-weight: bold;">Correct Answer</label>
+            <input class="form-control" type="text" id="ansCorrect" name="ansCorrect" placeholder="Enter correct option (e.g., ans_b)" required />
+          </div>
+          <div class="col-md-6">
+            <label for="ansA" style="font-weight: bold;">Answer A</label>
+            <input class="form-control" type="text" id="ansA" name="ansA" placeholder="Enter option A" />
+          </div>
+        </div>
+  
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <label for="ansB" style="font-weight: bold;">Answer B</label>
+            <input class="form-control" type="text" id="ansB" name="ansB" placeholder="Enter option B" />
+          </div>
+          <div class="col-md-6">
+            <label for="ansC" style="font-weight: bold;">Answer C</label>
+            <input class="form-control" type="text" id="ansC" name="ansC" placeholder="Enter option C" />
+          </div>
+        </div>
+  
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <label for="ansD" style="font-weight: bold;">Answer D</label>
+            <input class="form-control" type="text" id="ansD" name="ansD" placeholder="Enter option D" />
+          </div>
+          <div class="col-md-6">
+            <label for="ansE" style="font-weight: bold;">Answer E</label>
+            <input class="form-control" type="text" id="ansE" name="ansE" placeholder="Enter option E (optional)" />
+          </div>
+        </div>
+  
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <label for="ansF" style="font-weight: bold;">Answer F</label>
+            <input class="form-control" type="text" id="ansF" name="ansF" placeholder="Enter option F (optional)" />
+          </div>
+          <div class="col-md-6">
+            <label for="questionTags" style="font-weight: bold;">Question Tags</label>
+            <input class="form-control" type="text" id="questionTags" name="questionTags" placeholder="Enter tags (e.g., security, access control)" />
+          </div>
+        </div>
+  
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <label for="difficulty" style="font-weight: bold;">Difficulty</label>
+            <input class="form-control" type="text" id="difficulty" name="difficulty" placeholder="Enter difficulty level (e.g., Easy, Medium, Hard)" />
+          </div>
+          <div class="col-md-6">
+            <label for="explanation" style="font-weight: bold;">Explanation</label>
+            <textarea class="form-control" id="explanation" name="explanation" rows="3"
+              placeholder="Provide explanation for the correct answer..."></textarea>
+          </div>
+        </div>
+  
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <button class="btnSubmit">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+    </div>
+  </div>
