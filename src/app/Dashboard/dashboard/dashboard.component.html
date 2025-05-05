@@ -62,7 +62,7 @@
   <div class="row g-4">
       <!-- Bank Dropdown -->
       <div class="col-md-2">
-        <label for="bankSelect" class="form-label fw-semibold">Filter</label>
+        <label for="bankSelect" class="form-label fw-semibold">{{labels.txt_Filter}}</label>
         <select id="bankSelect" class="form-select" [(ngModel)]="selectedFilter">
           <option value="bank">Bank</option>
           <option value="state">State</option>
@@ -72,7 +72,7 @@
       <!-- Search Button -->
       <div class="col-md-2 d-flex align-items-end">
         <button class="btn btn-primary w-100 py-2" (click)="onSearch()">
-          <i class="fas fa-search me-2"></i>Search
+          <i class="fas fa-search me-2"></i>{{Button.SearchButton}}
         </button>
       </div>
     </div>

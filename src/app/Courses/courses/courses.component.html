@@ -7,9 +7,9 @@
         <button class="btn btn-warning" (click)="goBack()" style="color: white;">
           <i class="fas fa-arrow-left"></i>
         </button>
-        <h3 class="mb-0" style="font-weight: bold;    margin-left: -65%;"> Course Details</h3>
+        <h3 class="mb-0" style="font-weight: bold;    margin-left: -65%;"> {{Header.CourseHeader}}</h3>
         <button class="btn btn-success" (click)="openModal()">
-          <i class="fas fa-plus-circle"></i> Create Course
+          <i class="fas fa-plus-circle"></i>{{Button.CourseButton}}
         </button>
       </div>
     </div>
@@ -18,11 +18,11 @@
       <table class="table table-hover table-striped custom-table">
         <thead>
           <tr>
-            <th >SR. No</th>
-            <th >Course Name</th>
-            <th >Edit</th>
-            <th >Mapping</th>
-            <th >Delete</th>
+            <th >{{table.tbl_SRNo}}</th>
+            <th >{{table.tbl_CourseName}}</th>
+            <th >{{table.tbl_Edit}}</th>
+            <th >{{table.tbl_Mapping}}</th>
+            <th >{{table.tbl_Delete}}</th>
           </tr>
         </thead>
         <tbody>

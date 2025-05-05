@@ -6,13 +6,13 @@
   <button class="btn btn-warning" (click)="goBack()" style="color: white;">
     <i class="fas fa-arrow-left"></i>
   </button>
-  <h3 style="font-weight: bold;margin-left: -49%;">Question Details</h3>
+  <h3 style="font-weight: bold;margin-left: -49%;">{{Header.QuestionHeader}}</h3>
   <div>
     <button class="btn btn-primary" (click)="downloadExcel()" style="background-color: #198754">
-      <i class="fas fa-file-excel"></i> Download Template
+      <i class="fas fa-file-excel"></i> {{Button.TemplateButton}}
     </button>&nbsp;
     <button class="btn btn-success me-2" style="background-color: #0a48b3" (click)="openModal()">
-      <i class="fas fa-plus-circle"></i> Add Question Paper
+      <i class="fas fa-plus-circle"></i> {{Button.QuestionButton}}
     </button>
   </div>
 </div>
@@ -27,15 +27,15 @@
   <table class="table table-hover table-striped custom-table">
     <thead>
       <tr>
-          <th>SR. No</th>
-            <th>Question Paper Name</th>
-            <th>Action</th> <!-- Changed the header to "Action" -->
+          <th>{{table.tbl_SRNo}}</th>
+            <th>{{table.tbl_Question}}</th>
+            <th>{{table.tbl_Action}}</th> <!-- Changed the header to "Action" -->
       </tr>
     </thead>
     <tbody>
        <!-- Check if courses are available, else display no data message -->
   <tr *ngIf="questions.length === 0">
-    <td colspan="3" class="text-center">No data available</td> <!-- Adjust colspan to match the number of columns -->
+    <td colspan="3" class="text-center">{{labels.txt_Nodata}}</td> <!-- Adjust colspan to match the number of columns -->
   </tr>
       <tr *ngFor="let question of questions; let i = index">
             <td>{{ i + 1 }}</td>
@@ -66,14 +66,14 @@
           <div class="row">
             <div class="col-md-6">
               <label for="questionTitle" style="font-weight: bold;">
-                Question Title
+                {{labels.txt_QuestionTitle}}
               </label>
               <input class="form-control" type="text" id="questionTitle" [(ngModel)]="selectedQuestionCategory"
                 placeholder="Enter Course Title" name="questionTitle" required #questionTitleSelect />
             </div>
             <div class="col-md-6">
               <label for="uploadExcel" style="font-weight: bold;">
-                Question Upload Excel
+               {{labels.txt_QuesExcel}}
               </label>
               <input class="form-control" type="file" id="uploadExcel" placeholder="select Excel file"
                 name="uploadExcel" required />
@@ -82,7 +82,7 @@
           <div class="row mt-3">
             <div class="col-md-12">
               <button class="btnSubmit" (click)="SaveandUpdateQuestionDetails()">
-                Submit
+                {{Button.submitButton}}
               </button>
             </div>
           </div>

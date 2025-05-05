@@ -6,17 +6,17 @@
         <button class="btn btn-warning" (click)="goBack()" style="color: white;">
           <i class="fas fa-arrow-left"></i>
         </button>
-        <h3 style="font-weight: bold; margin-left: -60%;">User Details</h3>
+        <h3 style="font-weight: bold; margin-left: -60%;">{{Header.UserHeader}}</h3>
         <div class="btn-group">
           <!-- Add User Button -->
           <button class="btn btn-success" style="border-radius: 7px;" (click)="openModal(false)">
-            <i class="fas fa-plus-circle"></i> Add User
+            <i class="fas fa-plus-circle"></i> {{Button.AddUserButton}}
           </button>&nbsp;
           <!-- Report Builder Dropdown -->
           <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" style="background-color: #0a48b3;" type="button"
               (click)="toggleDropdown($event)">
-              <i class="fas fa-columns"></i> Report Builder
+              <i class="fas fa-columns"></i> {{Button.ReportButton}}
             </button>
             <div class="dropdown-menu" [class.show]="isDropdownOpen">
               <label *ngFor="let column of tableColumns" class="dropdown-item">
@@ -55,12 +55,12 @@
               <th *ngFor="let column of tableColumns" [hidden]="!column.isVisible" (click)="sortData(column.key)">
                 {{ column.label }}
               </th>
-              <th>Action</th>
+              <th>{{table.tbl_Action}}</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="filteredUsers.length === 0">
-              <td colspan="7" class="text-center">No data available</td>
+              <td colspan="7" class="text-center">{{labels.txt_Nodata}}</td>
             </tr>
             <tr *ngFor="let user of filteredUsers | paginate: { itemsPerPage: entriesPerPage, currentPage: p }">
               <td *ngFor="let column of tableColumns" [hidden]="!column.isVisible">
@@ -98,96 +98,96 @@
     <form>
       <div class="row">
         <div class="col-md-4 form-group">
-          <label for="employeeCode" style="font-weight: bold;">Employee Code</label>
+          <label for="employeeCode" style="font-weight: bold;">{{labels.txt_Employee}}</label>
           <input type="text" id="employeeCode" class="form-control" [(ngModel)]="newUser.employeeCode"
-            name="employeeCode" placeholder="Enter Employee Code" required #employeeCodeSelect>
+            name="employeeCode" placeholder="{{PlaceHolder.ph_EmpID}}" required #employeeCodeSelect>
         </div>
         <div class="col-md-4 form-group">
-          <label for="firstName" style="font-weight: bold;">First Name</label>
+          <label for="firstName" style="font-weight: bold;">{{labels.txt_FirstName }} </label>
           <input type="text" id="firstName" class="form-control" [(ngModel)]="newUser.firstName" name="firstName"
-            placeholder="Enter First Name" required #firstNameSelect>
+            placeholder="{{PlaceHolder.ph_FirstName }}" required #firstNameSelect>
         </div>
         <div class="col-md-4 form-group">
-          <label for="email" style="font-weight: bold;">Email</label>
+          <label for="email" style="font-weight: bold;">{{labels.txt_Email }}</label>
           <input type="email" id="email" class="form-control" [(ngModel)]="newUser.email" name="email"
-            placeholder="Enter Email" required #emailSelect>
+            placeholder="{{PlaceHolder.ph_Email }}" required #emailSelect>
         </div>
       </div>
       <div class="row">
         <div class="col-md-4 form-group">
-          <label for="mobile" style="font-weight: bold;">Mobile</label>
+          <label for="mobile" style="font-weight: bold;">{{labels.txt_Mobile }} </label>
           <input type="text" id="mobile" class="form-control" [(ngModel)]="newUser.mobile" name="mobile"
-            placeholder="Enter Mobile Number" required #mobileNoSelect maxlength="10"
+            placeholder="{{PlaceHolder.ph_Mobile }}" required #mobileNoSelect maxlength="10"
             (keypress)="allowOnlyNumbers($event)">
         </div>
         <div class="col-md-4 form-group">
-          <label for="status" style="font-weight: bold;">Employment Status</label>
+          <label for="status" style="font-weight: bold;">{{labels.txt_EmpStatus }} </label>
           <input type="text" id="status" class="form-control" [(ngModel)]="newUser.status" name="status"
-            placeholder="Enter Employment Status" required #employeeStatusSelet />
+            placeholder="{{PlaceHolder.ph_EmpStatus }} " required #employeeStatusSelet />
         </div>
         <div class="col-md-4 form-group">
-          <label for="bankPartner" style="font-weight: bold;">Bank Partner</label>
+          <label for="bankPartner" style="font-weight: bold;">{{labels.txt_BankPartner }} </label>
           <input type="text" id="bankPartner" class="form-control" [(ngModel)]="newUser.bankPartner" name="bankPartner"
-            placeholder="Enter Bank Partner" required #bankPartnerSelect>
+            placeholder="{{PlaceHolder.ph_BankPartner }}" required #bankPartnerSelect>
         </div>
       </div>
       <div class="row">
         <div class="col-md-4 form-group">
-          <label for="department" style="font-weight: bold;">Department</label>
+          <label for="department" style="font-weight: bold;">{{labels.txt_Department }}</label>
           <input type="text" id="department" class="form-control" [(ngModel)]="newUser.department" name="department"
-            placeholder="Enter Department" required #departmentSelect>
+            placeholder="{{PlaceHolder.ph_Department }}" required #departmentSelect>
         </div>
         <div class="col-md-4 form-group">
-          <label for="designation" style="font-weight: bold;">Designation</label>
+          <label for="designation" style="font-weight: bold;">{{labels.txt_Designation }}</label>
           <input type="text" id="designation" class="form-control" [(ngModel)]="newUser.designation" name="designation"
-            placeholder="Enter Designation" required #designationSelect>
+            placeholder="{{PlaceHolder.ph_Designation }} " required #designationSelect>
         </div>
         <div class="col-md-4 form-group">
-          <label for="state" style="font-weight: bold;">State</label>
+          <label for="state" style="font-weight: bold;">{{labels.txt_State}}</label>
           <input type="text" id="state" class="form-control" [(ngModel)]="newUser.state" name="state"
-            placeholder="Enter State" required #stateSelect>
+            placeholder="{{PlaceHolder.ph_State}}" required #stateSelect>
         </div>
       </div>
       <div class="row">
         <div class="col-md-4 form-group">
-          <label for="area" style="font-weight: bold;">Area</label>
+          <label for="area" style="font-weight: bold;">{{labels.txt_Area}}</label>
           <input type="text" id="area" class="form-control" [(ngModel)]="newUser.area" name="area"
-            placeholder="Enter Area" required #areaSelect>
+            placeholder="{{PlaceHolder.ph_Area}}" required #areaSelect>
         </div>
         <div class="col-md-4 form-group">
-          <label for="branch" style="font-weight: bold;">Branch</label>
+          <label for="branch" style="font-weight: bold;">{{labels.txt_Branch}}</label>
           <input type="text" id="branch" class="form-control" [(ngModel)]="newUser.branch" name="branch"
-            placeholder="Enter Branch" required #branchSelect>
+            placeholder="{{PlaceHolder.ph_Branch}}" required #branchSelect>
         </div>
         <div class="col-md-4 form-group d-flex align-items-center" style="margin-top: 6%;">
-          <label for="isActive" style="font-weight: bold; margin-right: 10px;">Is Active</label>
+          <label for="isActive" style="font-weight: bold; margin-right: 10px;">{{labels.txt_IsActive}}</label>
           <input type="checkbox" id="isActive" [(ngModel)]="newUser.isActive" name="isActive" />
         </div>
       </div>
       <div class="row">
         <div class="col-md-4 form-group">
-          <label for="role" style="font-weight: bold;">Role</label>
+          <label for="role" style="font-weight: bold;">{{labels.txt_Role}}</label>
           <select id="role" class="form-control" [(ngModel)]="newUser.role" name="role" required #roleSelect>
             <option value="" disabled selected>Select Role</option>
             <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
           </select>
         </div>
         <div class="col-md-4 form-group">
-          <label for="dateOfLeaving" style="font-weight: bold;">Date of Leaving</label>
+          <label for="dateOfLeaving" style="font-weight: bold;">{{labels.txt_LeavingDate}}</label>
           <input type="date" id="dateOfLeaving" class="form-control" [(ngModel)]="newUser.dateOfLeaving"
             name="dateOfLeaving" #dateOfLeavingSelect>
         </div>
         <div class="col-md-4 form-group">
-          <label for="dateOfJoining" style="font-weight: bold;">Date of Joining</label>
+          <label for="dateOfJoining" style="font-weight: bold;">{{labels.txt_JoiningDate}}</label>
           <input type="date" id="dateOfJoining" class="form-control" [(ngModel)]="newUser.dateOfJoining"
             name="dateOfJoining" #dateOfJoiningSelect>
         </div>
       </div>
       <div class="row">
         <div class="col-md-4 form-group">
-          <label for="password" style="font-weight: bold;">Password</label>
+          <label for="password" style="font-weight: bold;">{{labels.txt_Password}}</label>
           <input type="text" id="password" class="form-control" [(ngModel)]="newUser.decryptedPassword"
-            name="password" placeholder="Enter Password" #passwordSelect>
+            name="password" placeholder="{{PlaceHolder.ph_password}}" #passwordSelect>
         </div>
       </div>
       <button type="submit" (click)="SaveandUpdateUserDetails()" class="btn btn-success">{{ isEditMode ? 'Update' :

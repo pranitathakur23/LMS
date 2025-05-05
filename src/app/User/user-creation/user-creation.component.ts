@@ -4,6 +4,7 @@ import { Component, ElementRef, OnInit, ViewChild, HostListener } from '@angular
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Location } from '@angular/common';
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
 
 @Component({
   selector: 'app-user-creation',
@@ -44,6 +45,12 @@ export class UserCreationComponent implements OnInit {
   sortAsc: boolean = true;
   filteredUsers: any[] = [];
   isDropdownOpen = false;
+  labels = AppLabels;
+  Header = AppHeader;
+  Link = AppLink;
+  Button = AppButton;
+  PlaceHolder = AppPlaceHolder;
+  table=Apptable;
 
   tableColumns = [
     { key: 'employeeCode', label: 'Employee Code', isVisible: true },

@@ -5,20 +5,20 @@
     </div>
     <div class="col-md-6 p-5 bg-light animated-card">
       <div class="text-center mb-4">
-        <h1 class="text-primary display-4">SkillMate</h1>
-        <h4 class="text-muted">Learning Portal Application</h4>
+        <h1 class="text-primary display-4">{{Header.Header}}</h1>
+        <h4 class="text-muted">{{Header.SubHeader}}</h4>
       </div>
       <form (ngSubmit)="onLogin($event)">
         <div class="form-group mb-4">
-          <label for="username" class="form-label">Employee ID</label>
+          <label for="username" class="form-label">{{labels.txt_Employee}}</label>
           <input #employeeCodeInput type="text" class="form-control shadow-sm" id="username" name="username" 
-                 placeholder="Enter Your Employee Id" [(ngModel)]="employeeCode" required>
+                 placeholder="{{PlaceHolder.ph_EmpID}}" [(ngModel)]="employeeCode" required>
         </div>
 
         <div class="form-group">
-          <label for="password" class="form-label">Password</label>
+          <label for="password" class="form-label">{{labels.txt_Password}}</label>
           <input #passwordInput type="password" class="form-control shadow-sm" id="password" name="password" 
-                 placeholder="Enter Your Password" [(ngModel)]="password" required>
+                 placeholder="{{PlaceHolder.ph_password}}" [(ngModel)]="password" required>
         </div>
         
         <!-- CAPTCHA UI -->
@@ -26,12 +26,12 @@
           <span id="captcha" class="d-flex justify-content-center align-items-center"></span>
         </div>
         <input #captchaCodeInput type="text" class="input form-control"  
-               placeholder="Enter Captcha" id="cpatchaTextBox" autocomplete="off" required />
+               placeholder="{{PlaceHolder.ph_Captcha}}" id="cpatchaTextBox" autocomplete="off" required />
 
         <div class="forgot-password">
-          <a (click)="onForgot($event)" class="text-primary" style="cursor: pointer;">Forgot password?</a>
+          <a (click)="onForgot($event)" class="text-primary" style="cursor: pointer;">{{Link.link_forget}}</a>
         </div>
-        <button type="submit" class="btn btn-primary w-100 login-btn mt-1">Log in</button>
+        <button type="submit" class="btn btn-primary w-100 login-btn mt-1">{{Button.LoginButton}}</button>
       </form>
     </div>
   </div>

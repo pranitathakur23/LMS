@@ -3,6 +3,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms'; // <-- Import FormsModule for ngModel
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder} from '../../app.constants';
+
 
 @Component({
   selector: 'app-login',
@@ -15,8 +17,11 @@ export class LoginComponent {
   employeeCode: string = '';
   password: string = '';
   private captchaCode: string = '';
-
-  
+  labels = AppLabels;
+  Header = AppHeader;
+  Link = AppLink;
+  Button = AppButton;
+  PlaceHolder = AppPlaceHolder;
 
   constructor(private http: HttpClient, private router: Router) { }
   ngOnInit(): void {

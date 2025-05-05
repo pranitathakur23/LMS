@@ -6,9 +6,9 @@
         <button class="btn btn-warning mb-2" (click)="goBack()" style="color: white;">
           <i class="fas fa-arrow-left"></i>
         </button>
-        <h3 class="mx-auto mb-2" style="font-weight: bold;">Assessment Details</h3>
+        <h3 class="mx-auto mb-2" style="font-weight: bold;">{{Header.AssessmentHeader}}</h3>
         <button class="btn btn-success mb-2" (click)="openModal()">
-          <i class="fas fa-plus-circle"></i> Add Assessment
+          <i class="fas fa-plus-circle"></i>{{Button.AssessmentButton}}
         </button>
       </div>
 
@@ -17,18 +17,18 @@
         <table class="table table-hover table-striped custom-table text-center align-middle">
           <thead class="table-dark">
             <tr>
-              <th style="min-width: 60px;">SR. No</th>
-              <th style="min-width: 120px;">Course Name</th>
-              <th style="min-width: 140px;">Assessment Name</th>
-              <th style="min-width: 100px;">Duration</th>
-              <th style="min-width: 60px;">Edit</th>
-              <th style="min-width: 70px;">Delete</th>
-              <th style="min-width: 90px;">Mapping</th>
+              <th style="min-width: 60px;">{{table.tbl_SRNo}}</th>
+              <th style="min-width: 120px;">{{table.tbl_CourseName}} </th>
+              <th style="min-width: 140px;">{{table.tbl_Assessment}}</th>
+              <th style="min-width: 100px;">{{table.tbl_Duration}}</th>
+              <th style="min-width: 60px;"> {{table.tbl_Edit}}</th>
+              <th style="min-width: 70px;"> {{table.tbl_Mapping}}</th>
+              <th style="min-width: 90px;">{{table.tbl_Delete}}</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="assessment.length === 0">
-              <td colspan="7" class="text-center">No data available</td>
+              <td colspan="7" class="text-center">{{labels.txt_Nodata}}</td>
             </tr>
             <tr *ngFor="let item of assessment">
               <td>{{ item.SrNo }}</td>
@@ -70,30 +70,30 @@
                 <div class="row">
                   <div class="col-md-6" style="display: flex; align-items: center;">
                     <input type="radio" id="courseRadio" name="type" value="course" (change)="setSelection('course')" [checked]="selectedType === 'course'" />
-                    <label for="courseRadio" [ngClass]="{ 'selected-radio': selectedType === 'course' }" style="margin-left: 10px; margin-top: 5px;">Course</label>
+                    <label for="courseRadio" [ngClass]="{ 'selected-radio': selectedType === 'course' }" style="margin-left: 10px; margin-top: 5px;">{{labels.txt_CourseName}}</label>
                   </div>
                   <div class="col-md-6" style="display: flex; align-items: center;">
                     <input type="radio" id="generalRadio" name="type" value="general" (change)="setSelection('general')" [checked]="selectedType === 'general'" />
-                    <label for="generalRadio" [ngClass]="{ 'selected-radio': selectedType === 'general' }" style="margin-left: 10px; margin-top: 5px;">General</label>
+                    <label for="generalRadio" [ngClass]="{ 'selected-radio': selectedType === 'general' }" style="margin-left: 10px; margin-top: 5px;">{{labels.txt_General}}</label>
                   </div>
                 </div>
           <!-- Course Form Fields -->
           <div class="row mt-2">
             <div class="col-md-6">
-              <label for="department" style="font-weight: bold;">Course</label>
+              <label for="department" style="font-weight: bold;">{{labels.txt_CourseName}}</label>
               <select class="form-control" id="department" [(ngModel)]="selectedCourseId" name="department" required #courseSelect [disabled]="isCourseDisabled">
                 <option [value]="null" disabled>Select Course</option>
                 <option *ngFor="let course of courses" [value]="course.courseId">{{ course.name }}</option>
               </select>
             </div>      
             <div class="col-md-6">
-              <label for="courseTitle" style="font-weight: bold;">Assessment Name</label>
-              <input class="form-control" type="text" id="courseTitle" [(ngModel)]="assessmentName" name="courseTitle" placeholder="Enter Assessment Name" required #assessmentNameInput />
+              <label for="courseTitle" style="font-weight: bold;">{{labels.txt_assessmentName}}</label>
+              <input class="form-control" type="text" id="courseTitle" [(ngModel)]="assessmentName" name="courseTitle" placeholder="{{PlaceHolder.ph_Assessment}}" required #assessmentNameInput />
             </div>
           </div>
           <div class="row mt-2">
             <div class="col-md-4">
-              <label for="questionPaper" style="font-weight: bold;">Question Paper</label>
+              <label for="questionPaper" style="font-weight: bold;">{{labels.txt_QuestionPaper}}</label>
               <select class="form-control" id="questionPaper" [(ngModel)]="selectedQuestionPaper" name="questionPaper" required #questionPaperSelect>
                 <option [value]="null" disabled selected>Select Question Papers</option>
                 <option *ngFor="let paper of questionPapers" [value]="paper">
@@ -109,33 +109,33 @@
               </select>
             </div>
             <div class="col-md-4">
-              <label for="chapterDuration" style="font-weight: bold;">Duration</label>
-              <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="durationValue" name="chapterDuration" placeholder="Enter Duration" required (input)="validateNumberInput($event)"  #durationInput />
+              <label for="chapterDuration" style="font-weight: bold;">{{labels.txt_Duration}}</label>
+              <input class="form-control" type="text" id="chapterDuration" [(ngModel)]="durationValue" name="chapterDuration" placeholder="{{PlaceHolder.ph_Duration}}" required (input)="validateNumberInput($event)"  #durationInput />
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <label for="questionsCount" style="font-weight: bold;">Number Of Questions</label>
-              <input class="form-control" type="text" id="questionsCount" [(ngModel)]="questionsCount" name="questionsCount" placeholder="Enter no of Questions" required (input)="validateNumberInput($event)" #questionsCountInput />
+              <label for="questionsCount" style="font-weight: bold;">{{labels.txt_QuestionsNo}}</label>
+              <input class="form-control" type="text" id="questionsCount" [(ngModel)]="questionsCount" name="questionsCount" placeholder="{{PlaceHolder.ph_QuestionsNo}}" required (input)="validateNumberInput($event)" #questionsCountInput />
             </div>
             <div class="col-md-6">
-              <label for="totalMarks" style="font-weight: bold;">Total Marks</label>
-              <input class="form-control" type="text" id="totalMarks" [(ngModel)]="totalMarks" name="totalMarks" placeholder="Enter total Marks" required (input)="validateNumberInput($event)" #totalMarksInput />
+              <label for="totalMarks" style="font-weight: bold;">{{labels.txt_TotalMarks}}</label>
+              <input class="form-control" type="text" id="totalMarks" [(ngModel)]="totalMarks" name="totalMarks" placeholder="{{PlaceHolder.ph_TotalMarks}}" required (input)="validateNumberInput($event)" #totalMarksInput />
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <label for="passingMarks" style="font-weight: bold;">Passing Marks</label>
-              <input class="form-control" type="text" id="passingMarks" [(ngModel)]="passingMarks" name="passingMarks" placeholder="Enter Passing Marks" required (input)="validateNumberInput($event)" #passingMarksInput />
+              <label for="passingMarks" style="font-weight: bold;">{{labels.txt_PassingMarks}}</label>
+              <input class="form-control" type="text" id="passingMarks" [(ngModel)]="passingMarks" name="passingMarks" placeholder="{{PlaceHolder.ph_PassingMarks}}" required (input)="validateNumberInput($event)" #passingMarksInput />
             </div>
             <div class="col-md-6">
-              <label for="passingMarks" style="font-weight: bold;">Number Of Attempts</label>
-              <input class="form-control" type="text" id="noOfAttempts" [(ngModel)]="noOfAttempts" name="noOfAttempts" placeholder="Enter No of Attempts" required (input)="validateNumberInput($event)" #noOfAttemptsInput />
+              <label for="passingMarks" style="font-weight: bold;">{{labels.txt_AttemptsNo}}</label>
+              <input class="form-control" type="text" id="noOfAttempts" [(ngModel)]="noOfAttempts" name="noOfAttempts" placeholder="{{PlaceHolder.ph_AttemptsNo}}" required (input)="validateNumberInput($event)" #noOfAttemptsInput />
             </div>
           </div>
           <div class="row mt-3">
             <div class="col-md-12">
-              <button class="submit-btn" (click)="SaveandUpdateAssessmentDetails()">Submit</button>
+              <button class="submit-btn" (click)="SaveandUpdateAssessmentDetails()">{{Button.submitButton}}</button>
             </div>
           </div>
         </form>
