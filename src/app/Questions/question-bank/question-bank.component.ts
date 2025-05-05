@@ -163,5 +163,9 @@ export class QuestionBankComponent {
     link.download = 'QuestionPaperTemplate.xlsx';
     link.click();
   }
-  
+  addQuestion(questionTitle: string): void {
+    this.router.navigate(['/layout/Questions/add-question'], {
+      state: { questionTitle: questionTitle }
+    });
+  }
 }
