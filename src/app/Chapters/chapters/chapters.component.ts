@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
 
 interface Duration {
   DurationID: number;
@@ -47,6 +48,13 @@ export class ChaptersComponent {
   selectedChapterID: number | null = null;
   fileAcceptType: string = '';
   isLoading = false;
+  
+labels = AppLabels;
+Header = AppHeader;
+Link = AppLink;
+Button = AppButton;
+PlaceHolder = AppPlaceHolder;
+table=Apptable;
 
   constructor(private http: HttpClient, private location: Location) { }
 
@@ -333,4 +341,22 @@ export class ChaptersComponent {
     }
   }
 
+  SaveChapterAllocation(ChapterId: number) {
+
+    console.log(ChapterId)
+    const apiUrl = '/api/api/webCourseMaster/SaveChapterAllocationForWEB';
+    const requestBody = { mode: 1, chapterId: ChapterId};
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      response => {
+        if (response.status === true) {
+          alert('Chapter allocated successfully');
+        } else {
+          console.error(response.message);
+        }
+      },
+      error => {
+        console.error('Error while Chapter Assessment:', error);
+      }
+     );
+  }
 }
