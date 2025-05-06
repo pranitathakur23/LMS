@@ -5,7 +5,10 @@
   display: flex;
   justify-content: space-evenly;
 }
-
+canvas {
+  width: 100% !important;
+  height: 300px !important;
+}
 /* Button Styling */
 button {
   width: 100%;

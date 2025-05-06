@@ -3,10 +3,12 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms'; // <-- Import FormsModule for ngModel
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder} from '../../app.constants';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [HttpClientModule, FormsModule],  // <-- Include FormsModule here
+  imports: [HttpClientModule, FormsModule,CommonModule],  // <-- Include FormsModule here
   templateUrl: './login.component.html',
   standalone: true,
   styleUrls: ['./login.component.css']
@@ -15,8 +17,12 @@ export class LoginComponent {
   employeeCode: string = '';
   password: string = '';
   private captchaCode: string = '';
-
-  
+  labels = AppLabels;
+  Header = AppHeader;
+  Link = AppLink;
+  Button = AppButton;
+  PlaceHolder = AppPlaceHolder;
+  showLoader: boolean = false; // <-- add this
 
   constructor(private http: HttpClient, private router: Router) { }
   ngOnInit(): void {
@@ -96,9 +102,12 @@ export class LoginComponent {
     };
 
     const apiUrl = '/api/api/webusers/WebLogin';
+    this.showLoader = true; 
 
     this.http.post(apiUrl, loginData).subscribe({
       next: (response: any) => {
+        this.showLoader = false; // <-- stop loader
+
         console.log('API Response:', response); // Log entire response
         if (response.status == true) {
           const userData = response.data[0];
@@ -109,9 +118,10 @@ export class LoginComponent {
             sessionStorage.setItem('EmployeeName', userData.EmployeeName);
             sessionStorage.setItem('employeeCode', userData.EmployeeCode);
             sessionStorage.setItem('Email', userData.Email);
+            sessionStorage.setItem('PageRole', userData.PageRole);
             console.log("Redirecting to Dashboard"); // Log before redirection
             this.router.navigate(['/layout/Dashboard/Dashboard']);
-          }
+          } 
         } else {
           alert(response.message || 'Invalid Employee Code or Password');
         }

@@ -1,0 +1,149 @@
+<div class="container-fluid mt-5">
+  <!-- Filter Card -->
+  <div class="card shadow mx-3 mt-3 p-4" style="border-radius: 1rem;">
+    <div class="row g-3 align-items-end">
+      <!-- Filter Dropdowns -->
+      <div class="col-md">
+        <label class="form-label fw-semibold">{{labels.txt_Bank}}</label>
+        <select class="form-select rounded-pill">
+          <option value="HDFC">HDFC</option>
+          <option value="SBI">SBI</option>
+          <option value="ICICI">ICICI</option>
+          <option value="Axis">Axis</option>
+        </select>
+      </div>
+      <div class="col-md">
+        <label class="form-label fw-semibold">{{labels.txt_State}}</label>
+        <select class="form-select rounded-pill">
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Gujarat">Gujarat</option>
+          <option value="Karnataka">Karnataka</option>
+        </select>
+      </div>
+      <div class="col-md">
+        <label class="form-label fw-semibold">{{labels.txt_area}}</label>
+        <select class="form-select rounded-pill">
+          <option value="Pune">Pune</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Surat">Surat</option>
+        </select>
+      </div>
+      <div class="col-md">
+        <label class="form-label fw-semibold">{{labels.txt_Branch}}</label>
+        <select class="form-select rounded-pill">
+          <option value="Pune Camp">Pune Camp</option>
+          <option value="Mumbai Central">Mumbai Central</option>
+          <option value="Navsari">Navsari</option>
+        </select>
+      </div>
+      <div class="col-md">
+        <label class="form-label fw-semibold">{{labels.txt_Designation}}</label>
+        <select class="form-select rounded-pill">
+          <option value="Manager">Manager</option>
+          <option value="Executive">Executive</option>
+          <option value="Officer">Officer</option>
+        </select>
+      </div>
+      <div class="col-md">
+        <label class="form-label fw-semibold">{{labels.txt_EmployeeName}}</label>
+        <select class="form-select rounded-pill">
+          <option value="Rajesh">Rajesh</option>
+          <option value="Sneha">Sneha</option>
+          <option value="Anjali">Anjali</option>
+        </select>
+      </div>
+     
+      <div class="col-md-auto">
+        <button class="btn btn-primary rounded-pill px-4" (click)="onSearch()">🔍 {{Button.SearchButton}}</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row mx-3 mt-4">
+     <!-- Status Cards -->
+     <div class="col-lg-6">
+      <div class="row g-4">
+       
+
+        
+
+        <!-- Completed -->
+        <div class="col-md-6">
+          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #4CAF50, #81C784); border-radius: 1rem;">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="fw-bold mb-1">{{labels.txt_Completed}}</h6>
+                <p class="mb-0 small">{{labels.txt_Coursesfinished}}</p>
+              </div>
+              <i class="bi bi-check-circle-fill fs-2"></i>
+            </div>
+            <h2 class="fw-bold mt-3">35</h2>
+          </div>
+        </div>
+        <!-- In Progress -->
+        <div class="col-md-6">
+          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #00C9FF, #92FE9D); border-radius: 1rem;">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="fw-bold mb-1">{{labels.txt_InProgress}}</h6>
+                <p class="mb-0 small">{{labels.txt_Coursesongoing}}</p>
+              </div>
+              <i class="bi bi-clock-history fs-2"></i>
+            </div>
+            <h2 class="fw-bold mt-3">28</h2>
+          </div>
+        </div>
+ <!-- Unassigned -->
+ <div class="col-md-6">
+  <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #FF6B6B, #FF8E53); border-radius: 1rem;">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h6 class="fw-bold mb-1">{{labels.txt_Unassigned}}</h6>
+        <p class="mb-0 small">{{labels.txt_Coursesassigned}}</p>
+      </div>
+      <i class="bi bi-slash-circle fs-2"></i>
+    </div>
+    <h2 class="fw-bold mt-3">12</h2>
+  </div>
+</div>
+        <!-- Not Started -->
+        <div class="col-md-6">
+          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #FFB75E, #ED8F03); border-radius: 1rem;">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="fw-bold mb-1">{{labels.txt_NotStarted}}</h6>
+                <p class="mb-0 small">{{labels.txt_Coursesassignednotbegun}}</p>
+              </div>
+              <i class="bi bi-pause-circle-fill fs-2"></i>
+            </div>
+            <h2 class="fw-bold mt-3">10</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Progress Tracker -->
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow p-4 progress-card" style="border-radius: 1rem; max-height: 450px; overflow-y: auto;">
+        <h5 class="fw-bold text-primary mb-4">📊 {{labels.txt_ProgressTracker}}</h5>
+        <div *ngFor="let course of courses" class="mb-4">
+          <div class="d-flex justify-content-between mb-1">
+            <span><i class="bi bi-book-fill text-info me-2"></i>{{ course.name }}</span>
+            <span class="fw-semibold">{{ course.progress }}%</span>
+          </div>
+          <div class="progress" style="height: 16px; border-radius: 10px; background-color: #e9ecef;">
+            <div class="progress-bar"
+              [ngStyle]="{
+                'width.%': course.progress,
+                'background': getGradient(course.progress)
+              }"
+              style="border-radius: 10px;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   
+  </div>
+</div>

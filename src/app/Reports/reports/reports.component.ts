@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
 
 
 @Component({
@@ -37,6 +38,13 @@ export class ReportsComponent {
   itemsPerPageOptions: number[] = [10, 25, 50, 100]; // Options for items per page
   currentPage: number = 1; // Current page number
   sortOrder: boolean = true; // True for ascending, False for descending
+  labels = AppLabels;
+  Header = AppHeader;
+  Link = AppLink;
+  Button = AppButton;
+  PlaceHolder = AppPlaceHolder;
+  table=Apptable;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {

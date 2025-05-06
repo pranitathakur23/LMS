@@ -12,6 +12,8 @@ import { QuestionsComponent } from './Questions/questions/questions.component';
 import { ForgotComponent } from './Users/forgot/forgot.component';
 import { ReportsComponent } from './Reports/reports/reports.component';
 import { ResetpasswordComponent } from './Users/resetpassword/resetpassword.component';
+import { ProgressTrackerComponent } from './ProgressTracker/progress-tracker/progress-tracker.component';
+import { AddQuestionComponent } from './question-bank/add-question/add-question.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -27,13 +29,13 @@ export const routes: Routes = [
       { path: 'Assessment/assessment', component: AssessmentComponent },
       { path: 'Chapters/chapters', component: ChaptersComponent },  // Modified this path
       { path: 'Questions/question-bank', component: QuestionBankComponent } , // Modified this path
+      { path: 'Questions/add-question', component: AddQuestionComponent } , // Modified this path
+
       { path: 'User/user-creation', component: UserCreationComponent } ,
       { path: 'Mapping/course-mapping', component: CourseMappingComponent } , // Modified this path
-      { path: 'Questions/questions', component: QuestionsComponent }  // Modified this path
-      // Modified this path
-
-      // Modified this path
-    ]
+      { path: 'Questions/questions', component: QuestionsComponent } , // Modified this path
+      { path: 'ProgressTracker/progress-tracker', component: ProgressTrackerComponent } , 
+    ]// Modified this path    ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

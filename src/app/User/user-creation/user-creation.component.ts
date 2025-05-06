@@ -4,6 +4,7 @@ import { Component, ElementRef, OnInit, ViewChild, HostListener } from '@angular
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Location } from '@angular/common';
+import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
 
 @Component({
   selector: 'app-user-creation',
@@ -44,18 +45,22 @@ export class UserCreationComponent implements OnInit {
   sortAsc: boolean = true;
   filteredUsers: any[] = [];
   isDropdownOpen = false;
+  labels = AppLabels;
+  Header = AppHeader;
+  Link = AppLink;
+  Button = AppButton;
+  PlaceHolder = AppPlaceHolder;
+  table=Apptable;
 
   tableColumns = [
     { key: 'employeeCode', label: 'Employee Code', isVisible: true },
     { key: 'firstName', label: 'First Name', isVisible: true },
     { key: 'email', label: 'Email', isVisible: true },
     { key: 'mobile', label: 'Mobile', isVisible: true },
-    { key: 'role', label: 'Role', isVisible: true },
     { key: 'status', label: 'Status', isVisible: true },
     { key: 'bankPartner', label: 'Bank Partner', isVisible: false },
     { key: 'department', label: 'Department', isVisible: false },
-    { key: 'designation', label: 'Designation', isVisible: false },
-    { key: 'state', label: 'State', isVisible: false },
+    { key: 'designation', label: 'Designation', isVisible: false },    { key: 'state', label: 'State', isVisible: false },
     { key: 'area', label: 'Area', isVisible: false },
     { key: 'branch', label: 'Branch', isVisible: false },
     { key: 'dateOfJoining', label: 'Date of Joining', isVisible: false },
@@ -101,12 +106,13 @@ export class UserCreationComponent implements OnInit {
     this.http.post<any>(url, body).subscribe(
       (response) => {
         if (response.status === true) {
+          console.log('User Response',response)
           this.users = response.data.map((user: any) => ({
             employeeCode: user.EmployeeCode || '',
             firstName: user.EmployeeName || '',
             email: user.Email || '',
             mobile: user.MobileNo || '',
-            role: user.RoleCode ? '' : '',
+            role: user.Designation ? '' : '',
             status: user.Employmentstatus || '',
             bankPartner: user.BankPartners || '',
             department: user.Department || '',
