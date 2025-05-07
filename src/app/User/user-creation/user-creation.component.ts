@@ -51,8 +51,8 @@ export class UserCreationComponent implements OnInit {
   Button = AppButton;
   PlaceHolder = AppPlaceHolder;
   table=Apptable;
-
-  tableColumns = [
+  selectedFiles: File[] = [];
+    tableColumns = [
     { key: 'employeeCode', label: 'Employee Code', isVisible: true },
     { key: 'firstName', label: 'First Name', isVisible: true },
     { key: 'email', label: 'Email', isVisible: true },
@@ -183,7 +183,32 @@ export class UserCreationComponent implements OnInit {
       );
     }
   }
-
+  onFileSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      const files = Array.from(target.files);
+  
+      // Append files without removing previous ones
+      files.forEach(file => {
+        if (!this.selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
+          this.selectedFiles.push(file);
+        }
+      });
+  
+      // Reset input so user can re-select same file again if needed
+      target.value = '';
+    }
+  }
+  uploadFile(file: File): void {
+    // Handle file upload logic here
+    console.log('Uploading file:', file.name);
+  
+    // Example: You can use FormData to send this to a backend API
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    // Send this formData using your service (if any)
+  }
   changeEntriesPerPage() {
     this.p = 1; // Reset to the first page whenever entries per page is changed
   }
