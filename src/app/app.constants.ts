@@ -117,8 +117,8 @@ export const AppLabels = {
     tbl_Duration :'Duration',
     tbl_Question:'Question Paper Name',
 
-    tbl_EmpID : 'Enter Employee Code',
-     tbl_EmpName :'Enter First Name',
+    tbl_EmpID : 'Employee Code',
+     tbl_EmpName :'First Name',
      tbl_Area :'Area',
      tbl_Bank :'Bank',
      tbl_Region :'Region',
