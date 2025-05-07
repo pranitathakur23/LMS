@@ -3,56 +3,50 @@
   <div class="card shadow mx-3 mt-3 p-4" style="border-radius: 1rem;">
     <div class="row g-3 align-items-end">
       <!-- Filter Dropdowns -->
+      <!---->
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_Bank}}</label>
-        <select class="form-select rounded-pill">
-          <option value="HDFC">HDFC</option>
-          <option value="SBI">SBI</option>
-          <option value="ICICI">ICICI</option>
-          <option value="Axis">Axis</option>
-        </select>
+        <ng-select [items]="banks" bindLabel="name" bindValue="name" [(ngModel)]="selectedBank" 
+        placeholder="Select a bank"
+        (change)="fetchstates()"
+        class="small-dropdown">
+        </ng-select>
       </div>
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_State}}</label>
-        <select class="form-select rounded-pill">
-          <option value="Maharashtra">Maharashtra</option>
-          <option value="Gujarat">Gujarat</option>
-          <option value="Karnataka">Karnataka</option>
-        </select>
+        <ng-select [items]="states" bindLabel="name" bindValue="name" [(ngModel)]="selectedState"
+          placeholder="Select a State" (change)="fetchareas()" class="small-dropdown">
+        </ng-select>
       </div>
+      
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_area}}</label>
-        <select class="form-select rounded-pill">
-          <option value="Pune">Pune</option>
-          <option value="Mumbai">Mumbai</option>
-          <option value="Surat">Surat</option>
-        </select>
+        <ng-select [items]="areas" bindLabel="name" bindValue="name" [(ngModel)]="selectedArea"
+          placeholder="Select an Area" (change)="fetchbranches()" class="small-dropdown">
+        </ng-select>
       </div>
+      
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_Branch}}</label>
-        <select class="form-select rounded-pill">
-          <option value="Pune Camp">Pune Camp</option>
-          <option value="Mumbai Central">Mumbai Central</option>
-          <option value="Navsari">Navsari</option>
-        </select>
+        <ng-select [items]="branches" bindLabel="name" bindValue="name" [(ngModel)]="selectedBranch"
+          placeholder="Select a Branch" (change)="fetchdesignations()" class="small-dropdown">
+        </ng-select>
       </div>
+      
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_Designation}}</label>
-        <select class="form-select rounded-pill">
-          <option value="Manager">Manager</option>
-          <option value="Executive">Executive</option>
-          <option value="Officer">Officer</option>
-        </select>
+        <ng-select [items]="designations" bindLabel="name" bindValue="name" [(ngModel)]="selectedDesignation"
+          placeholder="Select a Designation" (change)="fetchemployees()" class="small-dropdown">
+        </ng-select>
       </div>
+      
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_EmployeeName}}</label>
-        <select class="form-select rounded-pill">
-          <option value="Rajesh">Rajesh</option>
-          <option value="Sneha">Sneha</option>
-          <option value="Anjali">Anjali</option>
-        </select>
+        <ng-select [items]="employees" bindLabel="name" bindValue="name" [(ngModel)]="selectedEmployee"
+          placeholder="Select an Employee" class="small-dropdown">
+        </ng-select>
       </div>
-     
+    
       <div class="col-md-auto">
         <button class="btn btn-primary rounded-pill px-4" (click)="onSearch()">🔍 {{Button.SearchButton}}</button>
       </div>
@@ -60,7 +54,7 @@
   </div>
 
   <!-- Content Row -->
-  <div class="row mx-3 mt-4">
+  <div class="row mx-1 mt-4">
      <!-- Status Cards -->
      <div class="col-lg-6">
       <div class="row g-4">
@@ -78,7 +72,7 @@
               </div>
               <i class="bi bi-check-circle-fill fs-2"></i>
             </div>
-            <h2 class="fw-bold mt-3">35</h2>
+            <h2 class="fw-bold mt-3">{{Completed}}</h2>
           </div>
         </div>
         <!-- In Progress -->
@@ -91,7 +85,7 @@
               </div>
               <i class="bi bi-clock-history fs-2"></i>
             </div>
-            <h2 class="fw-bold mt-3">28</h2>
+            <h2 class="fw-bold mt-3">{{Inprogress}}</h2>
           </div>
         </div>
  <!-- Unassigned -->
@@ -104,7 +98,7 @@
       </div>
       <i class="bi bi-slash-circle fs-2"></i>
     </div>
-    <h2 class="fw-bold mt-3">12</h2>
+    <h2 class="fw-bold mt-3">{{Unassigned}}</h2>
   </div>
 </div>
         <!-- Not Started -->
@@ -117,7 +111,7 @@
               </div>
               <i class="bi bi-pause-circle-fill fs-2"></i>
             </div>
-            <h2 class="fw-bold mt-3">10</h2>
+            <h2 class="fw-bold mt-3">{{Notstared}}</h2>
           </div>
         </div>
       </div>
@@ -129,7 +123,7 @@
         <div *ngFor="let course of courses" class="mb-4">
           <div class="d-flex justify-content-between mb-1">
             <span><i class="bi bi-book-fill text-info me-2"></i>{{ course.name }}</span>
-            <span class="fw-semibold">{{ course.progress }}%</span>
+            <span class="fw-semibold">{{ course.progress }}</span>
           </div>
           <div class="progress" style="height: 16px; border-radius: 10px; background-color: #e9ecef;">
             <div class="progress-bar"
@@ -146,4 +140,12 @@
 
    
   </div>
+
+
+  <div *ngIf="isLoading" class="loader-overlay">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
 </div>
