@@ -28,6 +28,14 @@
       </select>
     </div>
     <div class="filter-item">
+      <label>{{labels.txt_CourseName}}</label>
+      <select class="form-control" id="Courses" [(ngModel)]="selectedCourseId" name="Courses" required
+        #courseSelect>
+        <option [value]="null" disabled selected>Select Course</option>
+        <option *ngFor="let course of courses" [value]="course.courseId">{{ course.name }}</option>
+      </select>
+    </div>
+    <div class="filter-item">
       <label>{{labels.txt_EmployeeGroup}}</label>
       <select class="animated-input" [(ngModel)]="designation" required #designationSelect>
         <option value="">Select Employee Group</option>
