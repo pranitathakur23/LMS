@@ -116,142 +116,156 @@ export class ProgressTrackerComponent {
       }
     );
   }
-
   fetchBankNames() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 1 ,Bank:'AB',State:'AB',Area:'AB',Branch:'AB',Designation:'AB'};
-    this.http.post<any>(apiUrl,requestBody).subscribe(
+    const requestBody = { mode: 1, Bank: 'AB', State: 'AB', Area: 'AB', Branch: 'AB', Designation: 'AB' };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
-        console.log(response)
-         if (response.status == true) {
-           this.banks = response.data.map((bank: any) => {
+        if (response.status) {
+          this.banks = response.data.map((bank: any) => {
             return {
-             name: bank.BankName
+              name: bank.BankName
             };
-           });
-         } else {
-           console.error('Error fetching course details:', response.message);
+          });
+          this.selectedBank = this.banks[0]?.name; // Set default value
+          this.fetchstates(); // Fetch states once banks are loaded
+        } else {
+          console.error('Error fetching bank details:', response.message);
         }
       },
       error => {
-        console.error('Error fetching courses:', error);
+        console.error('Error fetching banks:', error);
       }
     );
   }
-
+  
   fetchstates() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 2 ,Bank:this.selectedBank,State:'AB',Area:'AB',Branch:'AB',Designation:'AB'};
-    this.http.post<any>(apiUrl,requestBody).subscribe(
+    const requestBody = { mode: 2, Bank: this.selectedBank, State: 'AB', Area: 'AB', Branch: 'AB', Designation: 'AB' };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
-        console.log(response)
-         if (response.status == true) {
-           this.states = response.data.map((State: any) => {
+        if (response.status) {
+          this.states = response.data.map((State: any) => {
             return {
-             name: State.StateName
+              name: State.StateName
             };
-           });
-         } else {
-           console.error('Error fetching course details:', response.message);
+          });
+          this.selectedState = this.states[0]?.name; // Set default value
+          this.fetchareas(); // Fetch areas once states are loaded
+        } else {
+          console.error('Error fetching state details:', response.message);
         }
       },
       error => {
-        console.error('Error fetching courses:', error);
+        console.error('Error fetching states:', error);
       }
     );
   }
-
+  
   fetchareas() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 3 ,Bank:this.selectedBank,State:this.selectedState,Area:'AB',Branch:'AB',Designation:'AB'};
-    this.http.post<any>(apiUrl,requestBody).subscribe(
+    const requestBody = { mode: 3, Bank: this.selectedBank, State: this.selectedState, Area: 'AB', Branch: 'AB', Designation: 'AB' };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
-        console.log(response)
-         if (response.status == true) {
-           this.areas = response.data.map((Area: any) => {
+        if (response.status) {
+          this.areas = response.data.map((Area: any) => {
             return {
-             name: Area.AreaName
+              name: Area.AreaName
             };
-           });
-         } else {
-           console.error('Error fetching course details:', response.message);
+          });
+          this.selectedArea = this.areas[0]?.name; // Set default value
+          this.fetchbranches(); // Fetch branches once areas are loaded
+        } else {
+          console.error('Error fetching area details:', response.message);
         }
       },
       error => {
-        console.error('Error fetching courses:', error);
+        console.error('Error fetching areas:', error);
       }
     );
   }
-
+  
   fetchbranches() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 4 ,Bank:this.selectedBank,State:this.selectedState,Area:this.selectedArea
-      ,Branch:'AB',Designation:'AB'};
-    this.http.post<any>(apiUrl,requestBody).subscribe(
+    const requestBody = { mode: 4, Bank: this.selectedBank, State: this.selectedState, Area: this.selectedArea, Branch: 'AB', Designation: 'AB' };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
-        console.log(response)
-         if (response.status == true) {
-           this.branches = response.data.map((Branch: any) => {
+        if (response.status) {
+          this.branches = response.data.map((Branch: any) => {
             return {
-             name: Branch.BranchName
+              name: Branch.BranchName
             };
-           });
-         } else {
-           console.error('Error fetching course details:', response.message);
+          });
+          this.selectedBranch = this.branches[0]?.name; // Set default value
+          this.fetchdesignations(); // Fetch designations once branches are loaded
+        } else {
+          console.error('Error fetching branch details:', response.message);
         }
       },
       error => {
-        console.error('Error fetching courses:', error);
+        console.error('Error fetching branches:', error);
       }
     );
   }
-
+  
   fetchdesignations() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 6 ,Bank:this.selectedBank,State:this.selectedState,Area:this.selectedArea
-      ,Branch:this.selectedBranch,Designation:'AB'};
-    this.http.post<any>(apiUrl,requestBody).subscribe(
+    const requestBody = { mode: 6, Bank: this.selectedBank, State: this.selectedState, Area: this.selectedArea, Branch: this.selectedBranch, Designation: 'AB' };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
-        console.log(response)
-         if (response.status == true) {
-           this.designations = response.data.map((designation: any) => {
+        if (response.status) {
+          this.designations = response.data.map((designation: any) => {
             return {
-             name: designation.Designation
+              name: designation.Designation
             };
-           });
-         } else {
-           console.error('Error fetching course details:', response.message);
+          });
+          this.selectedDesignation = this.designations[0]?.name; // Set default value
+          this.fetchemployees(); // Fetch employees once designations are loaded
+        } else {
+          console.error('Error fetching designation details:', response.message);
         }
       },
       error => {
-        console.error('Error fetching courses:', error);
+        console.error('Error fetching designations:', error);
       }
     );
   }
-
+  
   fetchemployees() {
-   const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 5 ,Bank:this.selectedBank,State:this.selectedState,Area:this.selectedArea
-      ,Branch:this.selectedBranch,Designation:this.selectedDesignation};
-    this.http.post<any>(apiUrl,requestBody).subscribe(
+    const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
+    const requestBody = {
+      mode: 5,
+      Bank: this.selectedBank,
+      State: this.selectedState,
+      Area: this.selectedArea,
+      Branch: this.selectedBranch,
+      Designation: this.selectedDesignation
+    };
+  
+    this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
-        console.log(response)
-         if (response.status == true) {
-           this.employees = response.data.map((emp: any) => {
+        if (response.status) {
+          const employeeList = response.data.map((emp: any) => {
             return {
-             name: emp.Designation
+              name: emp.Designation
             };
-           });
-         } else {
-           console.error('Error fetching course details:', response.message);
+          });
+  
+          // Add "All" option at the top
+          this.employees = [{ name: 'All' }, ...employeeList];
+  
+          // Set default selected to "All"
+          this.selectedEmployee = 'All';
+        } else {
+          console.error('Error fetching employee details:', response.message);
         }
       },
       error => {
-        console.error('Error fetching courses:', error);
+        console.error('Error fetching employees:', error);
       }
     );
   }
-
+  
 
 onSearch() {
   this.isLoading = true;

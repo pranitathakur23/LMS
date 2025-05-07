@@ -11,58 +11,47 @@
       <!-- Filter Dropdowns -->
       <!---->
       <div class="col-md">
-
         <label class="form-label fw-semibold">{{labels.txt_Bank}}</label>
         <ng-select [items]="banks" bindLabel="name" bindValue="name" [(ngModel)]="selectedBank" 
-        placeholder="Select a bank"
-        (change)="fetchstates()"
-        class="small-dropdown">
+          (change)="fetchstates()" class="small-dropdown" [clearable]="false">
         </ng-select>
       </div>
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_State}}</label>
         <ng-select [items]="states" bindLabel="name" bindValue="name" [(ngModel)]="selectedState"
-          placeholder="Select a State" (change)="fetchareas()" class="small-dropdown">
+          (change)="fetchareas()" class="small-dropdown" [clearable]="false">
         </ng-select>
-
       </div>
       
       <div class="col-md">
-
         <label class="form-label fw-semibold">{{labels.txt_area}}</label>
         <ng-select [items]="areas" bindLabel="name" bindValue="name" [(ngModel)]="selectedArea"
-          placeholder="Select an Area" (change)="fetchbranches()" class="small-dropdown">
+          (change)="fetchbranches()" class="small-dropdown" [clearable]="false">
         </ng-select>
-
       </div>
       
       <div class="col-md">
-
         <label class="form-label fw-semibold">{{labels.txt_Branch}}</label>
         <ng-select [items]="branches" bindLabel="name" bindValue="name" [(ngModel)]="selectedBranch"
-          placeholder="Select a Branch" (change)="fetchdesignations()" class="small-dropdown">
+          (change)="fetchdesignations()" class="small-dropdown" [clearable]="false">
         </ng-select>
-
       </div>
       
       <div class="col-md">
-
         <label class="form-label fw-semibold">{{labels.txt_Designation}}</label>
         <ng-select [items]="designations" bindLabel="name" bindValue="name" [(ngModel)]="selectedDesignation"
-          placeholder="Select a Designation" (change)="fetchemployees()" class="small-dropdown">
+          (change)="fetchemployees()" class="small-dropdown" [clearable]="false">
         </ng-select>
-
       </div>
-      
+
       <div class="col-md">
 
         <label class="form-label fw-semibold">{{labels.txt_EmployeeName}}</label>
         <ng-select [items]="employees" bindLabel="name" bindValue="name" [(ngModel)]="selectedEmployee"
-          placeholder="Select an Employee" class="small-dropdown">
+           class="small-dropdown" [clearable]="false">
         </ng-select>
 
       </div>
-    
       <div class="col-md-auto">
         <button class="btn btn-primary rounded-pill px-4" (click)="onSearch()">🔍 Search</button>
       </div>
