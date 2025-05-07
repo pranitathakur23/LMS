@@ -15,6 +15,7 @@ import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} fro
 })
 export class QuestionBankComponent {
   @ViewChild('questionTitleSelect') questionTitleSelect!: ElementRef;
+  totalPages: number = 0;  // Dynamically calculate this based on the number of questions
 
   questions: any;
   isModalOpen = false;

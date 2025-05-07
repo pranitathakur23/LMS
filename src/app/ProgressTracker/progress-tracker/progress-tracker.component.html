@@ -1,10 +1,17 @@
 <div class="container-fluid mt-5">
+  <!-- Page Heading -->
+  <div class="row mx-3">
+    <div class="col">
+      <h2 class="fw-bold text-primary mb-4">📈 Progress Tracker</h2>
+    </div>
+  </div>
   <!-- Filter Card -->
-  <div class="card shadow mx-3 mt-3 p-4" style="border-radius: 1rem;">
+  <div class="card shadow mx-3  p-4" style="border-radius: 1rem;">
     <div class="row g-3 align-items-end">
       <!-- Filter Dropdowns -->
       <!---->
       <div class="col-md">
+
         <label class="form-label fw-semibold">{{labels.txt_Bank}}</label>
         <ng-select [items]="banks" bindLabel="name" bindValue="name" [(ngModel)]="selectedBank" 
         placeholder="Select a bank"
@@ -17,38 +24,47 @@
         <ng-select [items]="states" bindLabel="name" bindValue="name" [(ngModel)]="selectedState"
           placeholder="Select a State" (change)="fetchareas()" class="small-dropdown">
         </ng-select>
+
       </div>
       
       <div class="col-md">
+
         <label class="form-label fw-semibold">{{labels.txt_area}}</label>
         <ng-select [items]="areas" bindLabel="name" bindValue="name" [(ngModel)]="selectedArea"
           placeholder="Select an Area" (change)="fetchbranches()" class="small-dropdown">
         </ng-select>
+
       </div>
       
       <div class="col-md">
+
         <label class="form-label fw-semibold">{{labels.txt_Branch}}</label>
         <ng-select [items]="branches" bindLabel="name" bindValue="name" [(ngModel)]="selectedBranch"
           placeholder="Select a Branch" (change)="fetchdesignations()" class="small-dropdown">
         </ng-select>
+
       </div>
       
       <div class="col-md">
+
         <label class="form-label fw-semibold">{{labels.txt_Designation}}</label>
         <ng-select [items]="designations" bindLabel="name" bindValue="name" [(ngModel)]="selectedDesignation"
           placeholder="Select a Designation" (change)="fetchemployees()" class="small-dropdown">
         </ng-select>
+
       </div>
       
       <div class="col-md">
+
         <label class="form-label fw-semibold">{{labels.txt_EmployeeName}}</label>
         <ng-select [items]="employees" bindLabel="name" bindValue="name" [(ngModel)]="selectedEmployee"
           placeholder="Select an Employee" class="small-dropdown">
         </ng-select>
+
       </div>
     
       <div class="col-md-auto">
-        <button class="btn btn-primary rounded-pill px-4" (click)="onSearch()">🔍 {{Button.SearchButton}}</button>
+        <button class="btn btn-primary rounded-pill px-4" (click)="onSearch()">🔍 Search</button>
       </div>
     </div>
   </div>
@@ -67,8 +83,8 @@
           <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #4CAF50, #81C784); border-radius: 1rem;">
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <h6 class="fw-bold mb-1">{{labels.txt_Completed}}</h6>
-                <p class="mb-0 small">{{labels.txt_Coursesfinished}}</p>
+                <h6 class="fw-bold mb-1">Completed</h6>
+                <p class="mb-0 small">Courses finished successfully</p>
               </div>
               <i class="bi bi-check-circle-fill fs-2"></i>
             </div>
@@ -80,8 +96,8 @@
           <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #00C9FF, #92FE9D); border-radius: 1rem;">
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <h6 class="fw-bold mb-1">{{labels.txt_InProgress}}</h6>
-                <p class="mb-0 small">{{labels.txt_Coursesongoing}}</p>
+                <h6 class="fw-bold mb-1">In Progress</h6>
+                <p class="mb-0 small">Courses currently ongoing</p>
               </div>
               <i class="bi bi-clock-history fs-2"></i>
             </div>
@@ -93,8 +109,8 @@
   <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #FF6B6B, #FF8E53); border-radius: 1rem;">
     <div class="d-flex justify-content-between align-items-center">
       <div>
-        <h6 class="fw-bold mb-1">{{labels.txt_Unassigned}}</h6>
-        <p class="mb-0 small">{{labels.txt_Coursesassigned}}</p>
+        <h6 class="fw-bold mb-1">Unassigned</h6>
+        <p class="mb-0 small">Courses yet to be assigned</p>
       </div>
       <i class="bi bi-slash-circle fs-2"></i>
     </div>
@@ -106,8 +122,8 @@
           <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #FFB75E, #ED8F03); border-radius: 1rem;">
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <h6 class="fw-bold mb-1">{{labels.txt_NotStarted}}</h6>
-                <p class="mb-0 small">{{labels.txt_Coursesassignednotbegun}}</p>
+                <h6 class="fw-bold mb-1">Not Started</h6>
+                <p class="mb-0 small">Courses assigned but not begun</p>
               </div>
               <i class="bi bi-pause-circle-fill fs-2"></i>
             </div>
@@ -119,7 +135,7 @@
     <!-- Progress Tracker -->
     <div class="col-lg-6 mb-4">
       <div class="card shadow p-4 progress-card" style="border-radius: 1rem; max-height: 450px; overflow-y: auto;">
-        <h5 class="fw-bold text-primary mb-4">📊 {{labels.txt_ProgressTracker}}</h5>
+        <h5 class="fw-bold text-primary mb-4">📊 Course Progress Tracker</h5>
         <div *ngFor="let course of courses" class="mb-4">
           <div class="d-flex justify-content-between mb-1">
             <span><i class="bi bi-book-fill text-info me-2"></i>{{ course.name }}</span>
