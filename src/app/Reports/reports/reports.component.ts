@@ -16,6 +16,7 @@ import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} fro
   styleUrl: './reports.component.css'
 })
 export class ReportsComponent {
+    @ViewChild('courseSelect') courseSelect!: ElementRef;
     @ViewChild('fromDateSelect') fromDateSelect!: ElementRef;
     @ViewChild('toDateSelect') toDateSelect!: ElementRef;
     @ViewChild('bankSelect') bankSelect!: ElementRef;
@@ -44,12 +45,15 @@ export class ReportsComponent {
   Button = AppButton;
   PlaceHolder = AppPlaceHolder;
   table=Apptable;
+  courses: any[] = [];
+  selectedCourseId: number | null = null;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.fetchBanks();
     this.fetchDepartments();
+    this.fetchCourses();
     this.fetchDesignation();
     const employeeCode = sessionStorage.getItem('employeeCode');
     if (employeeCode) {
@@ -89,6 +93,27 @@ export class ReportsComponent {
       },
       error => {
         console.error('Error fetching departments:', error);
+      }
+    );
+  }
+
+  fetchCourses() {
+    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
+    const requestBody = { mode: 12 };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status === true) {
+          this.courses = response.data.map((course: any) => ({
+            name: course.courseName,
+            courseId: course.courseId
+          }));
+        } else {
+          alert('No courses found.');
+        }
+      },
+      (error) => {
+        console.error('Error fetching courses:', error);
+        alert('An error occurred while fetching courses.');
       }
     );
   }
@@ -140,6 +165,12 @@ export class ReportsComponent {
       return;
     }
 
+    if (!this.selectedCourseId) {
+      alert('Please select Course.');
+      this.courseSelect.nativeElement.focus();
+      return;
+    }
+
     if (!this.designation) {
       alert('Please select Employee Group.');
       this.designationSelect.nativeElement.focus();
@@ -150,6 +181,7 @@ export class ReportsComponent {
     const requestBody = {
       bank: this.bank,
       department: this.department,
+      courseID: this.selectedCourseId,
       employeeGroup: this.designation,
       fromDate: this.fromDate,
       toDate: this.toDate
