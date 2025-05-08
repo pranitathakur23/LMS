@@ -24,8 +24,11 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     PlaceHolder = AppPlaceHolder;
     dashboardData: any = {};
 
-    
-    constructor(private http: HttpClient) {} // ✅ Inject HttpClient
+    employeeName:string='';
+    constructor(private http: HttpClient) {
+      this.employeeName = sessionStorage.getItem('EmployeeName') || '';  // Default to 'Guest' if not found
+console.log('EMP', this.employeeName)
+    } // ✅ Inject HttpClient
 
     ngOnInit(): void {
       this.setGreeting();
@@ -41,14 +44,15 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   
     setGreeting(): void {
       const hour = new Date().getHours();
+      const name = this.employeeName || 'Guest';
       if (hour >= 5 && hour < 12) {
-        this.greetingMessage = 'Good Morning, Priti!';
+        this.greetingMessage = `Good Morning, ${name}!`;
       } else if (hour >= 12 && hour < 17) {
-        this.greetingMessage = 'Good Afternoon, Priti!';
+        this.greetingMessage = `Good Afternoon, ${name}!`;
       } else if (hour >= 17 && hour < 21) {
-        this.greetingMessage = 'Good Evening, Priti!';
+        this.greetingMessage = `Good Evening, ${name}!`;
       } else {
-        this.greetingMessage = 'Good Night, Priti!';
+        this.greetingMessage = `Good Night, ${name}!`;
       }
     }
   
