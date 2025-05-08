@@ -3,36 +3,34 @@
   <i class="fa fa-bars" style="color: rgb(24, 24, 139);"></i>
 </div>
 
-
 <!-- Sidebar shown when open -->
-<div class="sidebar"
-     [class.collapsed]="!isOpen"
-     *ngIf="isOpen"
-     >
+<div class="sidebar" [class.collapsed]="!isOpen" *ngIf="isOpen">
   <ul class="sidebar-links">
     <li class="sidebar-item" (click)="navigateTo()" *ngIf="showDashboard">
       <i class="fa fa-home"></i> Dashboard
     </li>
-
-    <li class="sidebar-item dropdown-toggle" (click)="toggleMasterDropdown()" *ngIf="Master">
-      <i class="fa fa-database"></i> Master
-      <i class="fa" [ngClass]="{'fa--down': !isMasterOpen, 'fa--up': isMasterOpen}" style="float: right;"></i>
-    </li>
-
-    <ul *ngIf="isMasterOpen" class="dropdown-links">
-      <li class="sidebar-item"  (click)="navigateToCourses('Courses/courses')"  *ngIf="Courses"><i class="fa fa-graduation-cap"></i> Courses</li>
-      <li class="sidebar-item" (click)="chapterNavigate('Chapters/chapters')"  *ngIf="Chapters"><i class="fa fa-book"></i> Chapters</li>
-      <li class="sidebar-item" (click)=" userNavigate('User/user-creation')" *ngIf="Manage_Users"><i class="fa fa-users-cog"></i> Manage Users</li>
-      <li class="sidebar-item" (click)="assessmentNavigate('assessment/assessment')" *ngIf="Assessment"><i class="fa fa-pen-alt"></i> Assessment</li>
-      <li class="sidebar-item" (click)="questionpaperNavigate('Questions/question-bank')" *ngIf="Question_Bank"><i class="fa fa-question-circle"></i> Question Bank</li>
-    </ul>
-
-    <li class="sidebar-item" (click)="navigateToReports()" *ngIf="showReports" >
-      <i class="fa fa-file-alt"></i> Reports
-    </li>
     <li class="sidebar-item" (click)="navigateToprogress()" *ngIf="Progress_Tracker">
       <i class="fas fa-chart-line"></i> Progress Tracker
     </li>
+    <li class="sidebar-item" (click)="navigateToCourses('Courses/courses')" *ngIf="Courses">
+      <i class="fa fa-graduation-cap"></i> Courses
+    </li>
+
+    <li class="sidebar-item" (click)="chapterNavigate('Chapters/chapters')" *ngIf="Chapters">
+      <i class="fa fa-book"></i> Chapters
+    </li>
+    <li class="sidebar-item" (click)="assessmentNavigate('assessment/assessment')" *ngIf="Assessment">
+      <i class="fa fa-pen-alt"></i> Manage Assessment
+    </li>
+    <li class="sidebar-item" (click)="questionpaperNavigate('Questions/question-bank')" *ngIf="Question_Bank">
+      <i class="fa fa-question-circle"></i> Question Bank
+    </li>
+    <li class="sidebar-item" (click)="userNavigate('User/user-creation')" *ngIf="Manage_Users">
+      <i class="fa fa-users-cog"></i> Manage Users
+    </li>
+    <li class="sidebar-item" (click)="navigateToReports()" *ngIf="showReports">
+      <i class="fa fa-file-alt"></i> Reports
+    </li>
+
   </ul>
 </div>
-
