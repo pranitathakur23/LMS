@@ -28,6 +28,14 @@
       </select>
     </div>
     <div class="filter-item">
+      <label>{{labels.txt_CourseName}}</label>
+      <select class="form-control" id="Courses" [(ngModel)]="selectedCourseId" name="Courses" required
+        #courseSelect>
+        <option [value]="null" disabled selected>Select Course</option>
+        <option *ngFor="let course of courses" [value]="course.courseId">{{ course.name }}</option>
+      </select>
+    </div>
+    <div class="filter-item">
       <label>{{labels.txt_EmployeeGroup}}</label>
       <select class="animated-input" [(ngModel)]="designation" required #designationSelect>
         <option value="">Select Employee Group</option>
@@ -85,9 +93,11 @@
           <tbody>
             <tr *ngFor="let item of filteredGroupData | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
               <td>{{ item.courseName }}</td>
+              <td>{{ item.assessmentName }}</td>
               <td>{{ item.employeeCode }}</td>
               <td>{{ item.employeeName }}</td>
               <td>{{ item.area }}</td>
+              <td>{{ item.bank }}</td>
               <td>{{ item.region }}</td>
               <td>{{ item.states }}</td>
               <td>{{ item.courseStart }}</td>

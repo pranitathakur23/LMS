@@ -95,9 +95,6 @@ export class UserCreationComponent implements OnInit {
     this.fetchRoles();
   }
 
-  goBack(): void {
-    this.location.back();
-  }
 
   fetchUsers() {
     this.isLoading = true;
