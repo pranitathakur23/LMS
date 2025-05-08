@@ -15,48 +15,50 @@
 <div class="row text-center g-4">
 
   <!-- Total Users -->
-  <div class="col-md-3">
-    <div class="dashboard-card card-users">
-      <div class="dashboard-icon bg-white bg-opacity-25">
-        <i class="fas fa-users"></i>
-      </div>
-      <div class="fw-semibold">Total Users</div>
-      <div class="fs-3 fw-bold">5,450</div>
+ <!-- Total Users -->
+<div class="col-md-3">
+  <div class="dashboard-card card-users">
+    <div class="dashboard-icon bg-white bg-opacity-25">
+      <i class="fas fa-users"></i>
     </div>
+    <div class="fw-semibold">Total Users</div>
+    <div class="fs-3 fw-bold">{{ dashboardData?.TotalUsers || 0 }}</div>
   </div>
+</div>
 
-  <!-- Active Courses -->
-  <div class="col-md-3">
-    <div class="dashboard-card card-active">
-      <div class="dashboard-icon bg-white bg-opacity-25">
-        <i class="fas fa-book-open"></i>
-      </div>
-      <div class="fw-semibold">Active Courses</div>
-      <div class="fs-3 fw-bold">25</div>
+<!-- Active Courses -->
+<div class="col-md-3">
+  <div class="dashboard-card card-active">
+    <div class="dashboard-icon bg-white bg-opacity-25">
+      <i class="fas fa-book-open"></i>
     </div>
+    <div class="fw-semibold">Active Courses</div>
+    <div class="fs-3 fw-bold">{{ dashboardData?.courses || 0 }}</div>
   </div>
+</div>
 
-  <!-- Pending Enrollment -->
-  <div class="col-md-3">
-    <div class="dashboard-card card-pending">
-      <div class="dashboard-icon bg-white bg-opacity-25">
-        <i class="fas fa-hourglass-half"></i>
-      </div>
-      <div class="fw-semibold">Pending Enrollment</div>
-      <div class="fs-3 fw-bold">200</div>
+<!-- Pending Enrollment -->
+<div class="col-md-3">
+  <div class="dashboard-card card-pending">
+    <div class="dashboard-icon bg-white bg-opacity-25">
+      <i class="fas fa-hourglass-half"></i>
     </div>
+    <div class="fw-semibold">Pending Enrollment</div>
+    <div class="fs-3 fw-bold">{{ dashboardData?.PendingEnrollment || 0 }}</div>
   </div>
+</div>
 
-  <!-- Completed Courses -->
-  <div class="col-md-3">
-    <div class="dashboard-card card-completed">
-      <div class="dashboard-icon bg-white bg-opacity-25">
-        <i class="fas fa-check-circle"></i>
-      </div>
-      <div class="fw-semibold">Completed Courses</div>
-      <div class="fs-3 fw-bold">3,500</div>
+<!-- Completed Courses -->
+<div class="col-md-3">
+  <div class="dashboard-card card-completed">
+    <div class="dashboard-icon bg-white bg-opacity-25">
+      <i class="fas fa-check-circle"></i>
     </div>
+    <div class="fw-semibold">Completed Courses</div>
+    <div class="fs-3 fw-bold">{{ dashboardData?.completedCourses || 0 }}</div>
   </div>
+</div>
+
 
 </div>
 </div>
