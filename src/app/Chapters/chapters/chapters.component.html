@@ -11,12 +11,12 @@
       <div class="table-container">
         <table class="table table-hover table-striped custom-table">
           <thead>
-            <tr >
+            <tr class="text-start">
 
-              <th style="text-start" >{{table.tbl_SRNo}}</th>
-              <th style="text-start">{{table.tbl_CourseName}}</th>
-               <th style="text-start">{{table.tbl_ChapterName}}</th>
-               <th style="text-align: center;">{{table.tbl_Edit}}</th>
+              <th class="text-start" >{{table.tbl_SRNo}}</th>
+              <th class="text-start">{{table.tbl_CourseName}}</th>
+               <th class="text-start">{{table.tbl_ChapterName}}</th>
+               <th class="text-align: center;">{{table.tbl_Edit}}</th>
                <th style="text-align: center;">{{table.tbl_Mapping}}</th>
                <th style="text-align: center;">{{table.tbl_Delete}}</th>
             </tr>
@@ -28,9 +28,9 @@
   </tr>
   
               <tr *ngFor="let chapter of chapters; let i = index">
-          <td style="text-start">{{ i + 1 }}</td>
-          <td style="text-start">{{ chapter.coursename}}</td>
-          <td style="text-start">{{ chapter.name}}</td>
+          <td class="text-start">{{ i + 1 }}</td>
+          <td class="text-start">{{ chapter.coursename}}</td>
+          <td class="text-start">{{ chapter.name}}</td>
           <td>
             <div style="text-align: center;">
               <button class="edit-btn" style="background: green; border: none; color: white;"
