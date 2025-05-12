@@ -30,7 +30,6 @@ body {
 }
 
 .table th, .table td {
-    text-align: center;
     padding: 12px 20px; /* Increased padding for better spacing */
     white-space: nowrap; /* Prevent text overflow */
 }
