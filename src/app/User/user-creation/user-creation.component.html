@@ -49,19 +49,19 @@
       <div class="table-container">
         <table class="table table-hover table-striped custom-table">
           <thead>
-            <tr>
-              <th *ngFor="let column of tableColumns" [hidden]="!column.isVisible" (click)="sortData(column.key)">
+            <tr class="text-start">
+              <th class="text-start" *ngFor="let column of tableColumns" [hidden]="!column.isVisible" (click)="sortData(column.key)">
                 {{ column.label }}
               </th>
-              <th>{{table.tbl_Action}}</th>
+              <th >{{table.tbl_Action}}</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngIf="filteredUsers.length === 0">
-              <td colspan="7" class="text-center">{{labels.txt_Nodata}}</td>
+            <tr class="text-start" *ngIf="filteredUsers.length === 0">
+              <td class="text-start" colspan="7" class="text-center">{{labels.txt_Nodata}}</td>
             </tr>
-            <tr *ngFor="let user of filteredUsers | paginate: { itemsPerPage: entriesPerPage, currentPage: p }">
-              <td *ngFor="let column of tableColumns" [hidden]="!column.isVisible">
+            <tr class="text-start" *ngFor="let user of filteredUsers | paginate: { itemsPerPage: entriesPerPage, currentPage: p }">
+              <td class="text-start" *ngFor="let column of tableColumns" [hidden]="!column.isVisible">
                 {{ user[column.key] }}
               </td>
               <td>

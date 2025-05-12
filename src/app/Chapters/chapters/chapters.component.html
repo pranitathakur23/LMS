@@ -11,14 +11,14 @@
       <div class="table-container">
         <table class="table table-hover table-striped custom-table">
           <thead>
-            <tr>
+            <tr >
 
-              <th >{{table.tbl_SRNo}}</th>
-              <th >{{table.tbl_CourseName}}</th>
-               <th>{{table.tbl_ChapterName}}</th>
-               <th >{{table.tbl_Edit}}</th>
-               <th >{{table.tbl_Mapping}}</th>
-               <th >{{table.tbl_Delete}}</th>
+              <th style="text-start" >{{table.tbl_SRNo}}</th>
+              <th style="text-start">{{table.tbl_CourseName}}</th>
+               <th style="text-start">{{table.tbl_ChapterName}}</th>
+               <th style="text-align: center;">{{table.tbl_Edit}}</th>
+               <th style="text-align: center;">{{table.tbl_Mapping}}</th>
+               <th style="text-align: center;">{{table.tbl_Delete}}</th>
             </tr>
           </thead>
           <tbody>
@@ -28,25 +28,30 @@
   </tr>
   
               <tr *ngFor="let chapter of chapters; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ chapter.coursename}}</td>
-          <td>{{ chapter.name}}</td>
+          <td style="text-start">{{ i + 1 }}</td>
+          <td style="text-start">{{ chapter.coursename}}</td>
+          <td style="text-start">{{ chapter.name}}</td>
           <td>
-            <button class="edit-btn" style="background: green; border: none;color: white;"
-            (click)="editChapter(chapter)">
-              <i class="fa fa-edit" style="font-size: 18px;"></i>
-            </button> &nbsp;
-          </td>
+            <div style="text-align: center;">
+              <button class="edit-btn" style="background: green; border: none; color: white;"
+                (click)="editChapter(chapter)">
+                <i class="fa fa-edit" style="font-size: 18px;"></i>
+              </button>
+            </div>
         <td>
-          <button class="btn btn-info btn-sm"  (click)="SaveChapterAllocation(chapter.chapterId)">
-            <i class="fas fa-exchange-alt"></i>
-          </button>
+          <div style="text-align: center;">
+            <button class="btn btn-info btn-sm" (click)="SaveChapterAllocation(chapter.chapterId)">
+              <i class="fas fa-exchange-alt"></i>
+            </button>
+          </div>
           </td>
           <td>
-            <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;"
-              (click)="deleteChapter(chapter)">
-              <i class="fa fa-trash" style="font-size: 18px;"></i>
-            </button>
+            <div style="text-align: center;">
+              <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;"
+                (click)="deleteChapter(chapter)">
+                <i class="fa fa-trash" style="font-size: 18px;"></i>
+              </button>
+            </div>
           </td>
         </tr>
 

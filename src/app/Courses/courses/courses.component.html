@@ -16,11 +16,11 @@
       <table class="table table-hover table-striped custom-table">
         <thead>
           <tr>
-            <th >{{table.tbl_SRNo}}</th>
-            <th >{{table.tbl_CourseName}}</th>
-            <th >{{table.tbl_Edit}}</th>
-            <th >{{table.tbl_Mapping}}</th>
-            <th >{{table.tbl_Delete}}</th>
+            <th class="text-start">{{table.tbl_SRNo}}</th>
+            <th class="text-start">{{table.tbl_CourseName}}</th>
+            <th class="text-start">{{table.tbl_Edit}}</th>
+            <th class="text-start">{{table.tbl_Mapping}}</th>
+            <th class="text-start">{{table.tbl_Delete}}</th>
           </tr>
         </thead>
         <tbody>
@@ -30,10 +30,10 @@
             <!-- Adjust colspan to match the number of columns -->
           </tr>
           <tr *ngFor="let course of courses; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ course.name }}</td>
-            <td>
-              <button class="btn btn-warning btn-sm mr-2" (click)="editCourse(course)" style=" background-color: #198754;
+            <td class="text-start">{{ i + 1 }}</td>
+            <td class="text-start">{{ course.name }}</td>
+            <td class="text-start">
+              <button class="btn btn-warning btn-sm mr-2" (click)="editCourse(course)" style="text-start; background-color: #198754;
             color: white;
             border-color: #198754;">
                 <i class="fas fa-edit"></i>
@@ -41,7 +41,7 @@
               
               
             </td>
-            <td>
+            <td class="text-start">
               <button class="btn btn-info btn-sm mr-2" 
                       (click)="mapCourse(course.courseId, course.name)"
                       style="background-color: #0dcaf0; border-color: #0dcaf0;">
@@ -49,7 +49,7 @@
               </button>
             </td>
             
-            <td><button class="btn btn-danger btn-sm mr-2" (click)="deleteCourse(course)" style=" background-color: #dc3545;
+            <td class="text-start"><button class="btn btn-danger btn-sm mr-2" (click)="deleteCourse(course)" style=" background-color: #dc3545;
               border-color: #dc35">
                               <i class="fas fa-trash-alt"></i>
                             </button></td>
