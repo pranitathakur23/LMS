@@ -107,8 +107,11 @@
                 <select id="entriesPerPage" class="form-control" [(ngModel)]="entriesPerPage" (ngModelChange)="changeEntriesPerPage()">
                     <option *ngFor="let option of entriesOptions" [value]="option">{{ option }}</option>
                 </select>
+
+
             </div>
-    
+            <span><strong>Total Selected:</strong> {{ getSelectedCount() }}</span>
+
             <!-- Search box -->
             <div>
                 <input 
