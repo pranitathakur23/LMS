@@ -25,26 +25,26 @@
 <div class="table-container">
   <table class="table table-hover table-striped custom-table">
     <thead>
-      <tr class="text-start">
-          <th class="text-start">{{table.tbl_SRNo}}</th>
+      <tr>
+          <th class="text-center">{{table.tbl_SRNo}}</th>
             <th class="text-start">{{table.tbl_Question}}</th>
-            <th class="text-start">Edit</th> <!-- Changed the header to "Action" -->
-            <th class="text-start">Delete</th>
-            <th class="text-start"> Questions</th>
+            <th>Edit</th> <!-- Changed the header to "Action" -->
+            <th>Delete</th>
+            <th> Questions</th>
       </tr>
     </thead>
     <tbody>
        <!-- Check if courses are available, else display no data message -->
   <tr *ngIf="questions.length === 0">
-    <td colspan="3" class="text-center">{{labels.txt_Nodata}}</td> <!-- Adjust colspan to match the number of columns -->
+    <td colspan="3">{{labels.txt_Nodata}}</td> <!-- Adjust colspan to match the number of columns -->
   </tr>
       <tr *ngFor="let question of questions; let i = index">
-            <td class="text-start">{{ i + 1 }}</td>
+            <td class="text-center">{{ i + 1 }}</td>
             <td class="text-start">{{ question.questionTitle}}</td>
-            <td class="text-start"> <button class="edit-btn" style="background: green; border: none; color: white;" (click)="editQuestions(question)">
+            <td> <button class="edit-btn" style="background: green; border: none; color: white;" (click)="editQuestions(question)">
               <i class="fa fa-edit" style="font-size: 18px;"></i>
             </button></td>
-            <td class="text-start"> <!-- Combined the Edit and Delete buttons into a single column -->
+            <td> <!-- Combined the Edit and Delete buttons into a single column -->
               <button class="delete-btn" style="background: rgb(224, 33, 33); border: none; color: white;" (click)="deleteQuestions(question)">
                 <i class="fa fa-trash" style="font-size: 18px;"></i>
               </button>
@@ -55,7 +55,7 @@
                 <i class="fa fa-edit" style="font-size: 18px;"></i>
               </button> -->
             </td>
-            <td class="text-start">
+            <td>
               <button class="add-btn"
               style="background: #0a48b3; border: none; color: white;"
               (click)="addQuestion(question.questionTitle)">
