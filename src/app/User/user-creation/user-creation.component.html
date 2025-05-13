@@ -98,7 +98,7 @@
         <div class="col-md-4 form-group">
           <label for="employeeCode" style="font-weight: bold;">{{labels.txt_Employee}}</label>
           <input type="text" id="employeeCode" class="form-control" [(ngModel)]="newUser.employeeCode"
-            name="employeeCode" placeholder="{{PlaceHolder.ph_EmpID}}" required #employeeCodeSelect>
+            name="employeeCode" placeholder="{{PlaceHolder.ph_EmpID}}" [readonly]="isReadOnly" required #employeeCodeSelect>
         </div>
         <div class="col-md-4 form-group">
           <label for="firstName" style="font-weight: bold;">{{labels.txt_FirstName }} </label>
@@ -187,7 +187,52 @@
           <input type="text" id="password" class="form-control" [(ngModel)]="newUser.decryptedPassword"
             name="password" placeholder="{{PlaceHolder.ph_password}}" #passwordSelect>
         </div>
-      </div>
+<div class="col-md-4 form-group">
+  <label for="contentType" class="fw-bold">{{labels.txt_CertificateType}}</label>
+  <select class="form-control" id="contentType" name="contentType"   [(ngModel)]="selectedCertificateType"
+          (change)="onCertTypeChange($event)" required #contentTypeSelect>
+    <option [value]="null" disabled selected>Select Certificate Type</option>
+    <option>IIBF</option>
+    <option>UIDAI</option>
+  </select>
+</div>
+<div class="col-md-4" *ngIf="CertSelected">
+  <label for="fileUploadChapter" class="fw-bold">{{labels.txt_Upload}}</label><br>
+  <button type="button" class="btn btn-primary btn-sm" (click)="fileInput.click()">
+    <i class="bi bi-upload me-1"></i>
+  </button>
+  <input type="file" #fileInput id="fileUploadChapter" style="display: none;" (change)="onCertFileUpload($event)">
+</div>
+<div class="col-md-12 mt-3" *ngIf="CertUploaded">
+  <label class="fw-bold mb-2">{{labels.txt_Certificate}}</label>
+      <table class="table table-bordered table-sm mb-0" style="font-size: 13px; table-layout: fixed; width: 100%;">
+        <thead class="thead-light">
+          <tr>
+            <th style="width: 60%;">{{table.tbl_UploadedCertificate}}</th>
+            <th style="width: 15%;"> {{table.tbl_Type}}</th>
+            <th style="width: 15%;">{{table.tbl_Download}}</th>
+            <th style="width: 15%;">{{table.tbl_Delete}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of uploadedCerts" >
+            <td style="word-break: break-word;">{{ item.Name }}</td>
+            <td>{{ item.Type }}</td>
+            <td>
+              <button class="btn btn-outline-success btn-sm" (click)="downloadFile(item)">
+                <i class="bi bi-download"></i>
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-outline-danger btn-sm" (click)="deleteFile(item)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+</div>
       <button type="submit" (click)="SaveandUpdateUserDetails()" class="btn btn-success">{{ isEditMode ? 'Update' :
         'Save' }}</button>
     </form>
