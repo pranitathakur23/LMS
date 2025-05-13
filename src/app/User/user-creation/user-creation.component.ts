@@ -51,8 +51,15 @@ export class UserCreationComponent implements OnInit {
   Button = AppButton;
   PlaceHolder = AppPlaceHolder;
   table=Apptable;
+  CertSelected: boolean = false;
+  CertUploaded: boolean = false;
+  selectedCertificateType:  string | null = null;
+  CertificateType:  string | null = null;
+  uploadedCerts: { File: File| null, Type: string | null,Name: string | null , ID: number | null,FilePath: string | null}[] = [];
+  isReadOnly: boolean = false; 
+  isEditCert : boolean = false;
   selectedFiles: File[] = [];
-    tableColumns = [
+  tableColumns = [
     { key: 'employeeCode', label: 'Employee Code', isVisible: true },
     { key: 'firstName', label: 'First Name', isVisible: true },
     { key: 'email', label: 'Email', isVisible: true },
@@ -66,7 +73,6 @@ export class UserCreationComponent implements OnInit {
     { key: 'dateOfJoining', label: 'Date of Joining', isVisible: false },
     { key: 'dateOfLeaving', label: 'Date of Leaving', isVisible: false },
     { key: 'password', label: 'Password', isVisible: false },
-
   ];
 
   newUser = {
@@ -85,7 +91,8 @@ export class UserCreationComponent implements OnInit {
     dateOfJoining: '',
     dateOfLeaving: '',
     isActive: false,
-    decryptedPassword: ''
+    decryptedPassword: '',
+    CertificateFiles: [] as { file: File| null; type: string }[]
   };
 
   constructor(private http: HttpClient, private location: Location) { }
@@ -120,6 +127,7 @@ export class UserCreationComponent implements OnInit {
             dateOfJoining: user.joiningDate || '',
             dateOfLeaving: user.leavingDate || '',
             decryptedPassword: user.decryptedPassword || '',
+            CertificateFile:user.FilePath
           }));
           this.filteredUsers = [...this.users];
         } else {
@@ -288,13 +296,19 @@ export class UserCreationComponent implements OnInit {
         dateOfJoining: '',
         dateOfLeaving: '',
         isActive: false,
-        decryptedPassword: ''
+        decryptedPassword: '',
+        CertificateFiles: [] as { file: File| null; type: string }[]
       };
     }
   }
 
   closeModal() {
     this.isModalOpen = false;
+    this.CertSelected = false;
+    this.CertUploaded = false;
+    this.selectedCertificateType = null;
+    this.uploadedCerts = []; 
+      this.isReadOnly=false;
   }
 
   fetchUserDetails(employeeCode: string) {
@@ -307,7 +321,7 @@ export class UserCreationComponent implements OnInit {
       (response) => {
         if (response.status == true) {
           const userData = response.data[0];
-          console.log('API Response:', response);
+           this.isReadOnly=true;
           this.CurrentID = userData.ID;
           this.newUser = {
             employeeCode: userData.EmployeeCode || '',
@@ -326,8 +340,9 @@ export class UserCreationComponent implements OnInit {
             dateOfLeaving: userData.leavingDate || '',
             isActive: userData.IsActive || false,
             decryptedPassword: userData.decryptedPassword || '',
-
+            CertificateFiles: userData.FilePath || ''
           };
+        this.FetchCertificate()
         } else {
           console.error('Error fetching user details:', response.message);
         }
@@ -350,13 +365,21 @@ export class UserCreationComponent implements OnInit {
   }
 
   SaveandUpdateUserDetails(): void {
+    const reader = new FileReader();
+    if (this.uploadedCerts.length > 0) {
+      const cert = this.uploadedCerts[0]; 
+    this.newUser.CertificateFiles = this.uploadedCerts.map(cert => ({
+      file: cert.File,
+      type: cert.Type ?? ''
+    }));
+    }
     const employeeCode = sessionStorage.getItem('employeeCode');
     if (!employeeCode) {
       alert('Employee not logged in');
       return;
     }
 
-    if (!this.newUser.employeeCode) {
+   if (!this.newUser.employeeCode) {
       alert('Please enter EmployeeCode.');
       this.employeeCodeSelect.nativeElement.focus();
       return;
@@ -373,7 +396,7 @@ export class UserCreationComponent implements OnInit {
       this.emailSelect.nativeElement.focus();
       return;
     }
-
+   
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!(this.newUser.email.endsWith('.com') || this.newUser.email.endsWith('.in')) || !emailRegex.test(this.newUser.email)) {
     alert('Enter valid Email.');
@@ -434,7 +457,11 @@ export class UserCreationComponent implements OnInit {
       this.roleSelect.nativeElement.focus();
       return;
     }
-
+    if (!this.newUser.dateOfJoining) {
+      alert('Please select Date of Joining.');
+      this.dateOfLeavingSelect.nativeElement.focus();
+      return;
+    }
     // if (!this.newUser.dateOfLeaving) {
     //   alert('Please select dateOfLeaving.');
     //   this.dateOfLeavingSelect.nativeElement.focus();
@@ -446,29 +473,41 @@ export class UserCreationComponent implements OnInit {
       this.passwordSelect.nativeElement.focus();
       return;
     }
-
+    if (this.uploadedCerts.length==0) {
+      alert('Please Upload Certificate.');
+      this.employeeCodeSelect.nativeElement.focus();
+      return;
+    }
     const apiUrl = '/api/api/webCourseMaster/SaveUserData';
-    const requestBody = {
-      id: this.CurrentID,
-      employeeCode: this.newUser.employeeCode,
-      EmployeeName: this.newUser.firstName,
-      email: this.newUser.email,
-      MobileNo: this.newUser.mobile,
-      Employmentstatus: this.newUser.status,
-      BankPartners: this.newUser.bankPartner,
-      Department: this.newUser.department,
-      Designation: this.newUser.designation,
-      States: this.newUser.state,
-      Area: this.newUser.area,
-      Branches: this.newUser.branch,
-      Dateofjoining: this.newUser.dateOfJoining,
-      DateofLeaving: this.newUser.dateOfLeaving,
-      RoleCode: this.newUser.role,
-      CreatedBy: employeeCode,
-      IsActive: this.newUser.isActive,
-      password: this.newUser.decryptedPassword
-    };
-    this.http.post<any>(apiUrl, requestBody).subscribe(
+    const formData = new FormData();
+
+formData.append('id', this.CurrentID.toString());
+formData.append('employeeCode', this.newUser.employeeCode);
+formData.append('EmployeeName', this.newUser.firstName);
+formData.append('email', this.newUser.email);
+formData.append('MobileNo', this.newUser.mobile);
+formData.append('Employmentstatus', this.newUser.status);
+formData.append('BankPartners', this.newUser.bankPartner);
+formData.append('Department', this.newUser.department);
+formData.append('Designation', this.newUser.designation);
+formData.append('States', this.newUser.state);
+formData.append('Area', this.newUser.area);
+formData.append('Branches', this.newUser.branch);
+formData.append('Dateofjoining', this.newUser.dateOfJoining);
+formData.append('DateofLeaving', this.newUser.dateOfLeaving);
+formData.append('RoleCode', this.newUser.role.toString());
+formData.append('CreatedBy', employeeCode);
+formData.append('IsActive', this.newUser.isActive.toString()); // Boolean must be string
+formData.append('password', this.newUser.decryptedPassword);
+this.newUser.CertificateFiles.forEach((cert, index) => {
+  formData.append(`CertificateFiles[${index}].File`, cert.file?? '');
+  formData.append(`CertificateFiles[${index}].Type`, cert.type ?? '');
+});
+this.http.post<any>(apiUrl, formData).subscribe(
+  res => console.log('Success', res),
+  err => console.error('Error', err)
+);
+    this.http.post<any>(apiUrl, formData).subscribe(
       response => {
         if (response.status == true) {
           this.fetchUsers();
@@ -479,6 +518,133 @@ export class UserCreationComponent implements OnInit {
       },
       error => {
         console.error('Error saving/updating user details:', error);
+      }
+    );
+  }
+
+  
+onCertTypeChange(event: any) {
+  const value = event.target.value;
+  this.CertSelected = (value !== 'null' && value !== '');
+}
+
+onCertFileUpload(event: any): void {
+  const file: File = event.target.files[0];
+  if (file) {
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Only PDF, JPG, or JPEG files are allowed.');
+      return;
+    }
+    this.uploadedCerts.push({
+      File: file,
+      Type: this.selectedCertificateType ?? '',
+        Name: file.name,
+        ID:0,
+        FilePath:null
+    });
+    this.CertUploaded = true;
+  }
+}
+
+downloadFile(item: { File: File| null; Type: string | null ;Name: string | null; ID: number | null;FilePath: string | null}) {
+   if (!item.File && !item.Name) {
+    console.warn('No file available for download.');
+    return;
+  }
+   if (item.File) {
+    const url = URL.createObjectURL(item.File);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = item.File.name;
+    a.click();
+    URL.revokeObjectURL(url);
+  } else if (item.Name) { 
+    const fullUrl = item.FilePath ?? '';
+    const a = document.createElement('a');
+    a.href = fullUrl;
+    a.download = item.Name;
+    a.target = '_blank';
+    a.click();
+  }
+}
+
+deleteFile(item: { File: File | null; Type: string | null; Name: string | null ; ID: number | null;FilePath: string | null}) {
+  if (!item.File && !item.Name) {
+    console.warn('No file available for deletion.');
+    return;
+  }
+  const fileName = item.File?.name || item.Name;
+  const confirmed = confirm(`Are you sure you want to delete "${fileName}"?`);
+  if (!confirmed) return;
+  if (item.File) {
+    const index = this.uploadedCerts.indexOf(item);
+    if (index > -1) {
+      this.uploadedCerts.splice(index, 1);
+    }
+    if (this.uploadedCerts.length === 0) {
+      this.CertSelected = false;
+      this.CertUploaded = false;
+    }
+    this.selectedCertificateType = null;
+  } else if (item.Name) {
+    const apiUrl = '/api/api/webCourseMaster/DeleteCertificateforWEB';
+    const requestBody = {
+      CertificateId : item.ID
+    };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status === true) {
+          const index = this.uploadedCerts.indexOf(item);
+          if (index > -1) {
+            this.uploadedCerts.splice(index, 1);
+          }
+          if (this.uploadedCerts.length === 0) {
+            this.CertSelected = false;
+            this.CertUploaded = false;
+          }
+          this.selectedCertificateType = null;
+        } else {
+          alert('Failed to delete file from server.');
+        }
+      },
+      (error) => {
+        console.error('Error deleting file:', error);
+        alert('Error occurred while deleting file.');
+      }
+    );
+  }
+}
+
+ FetchCertificate() {
+   const employeeCode = this.newUser.employeeCode;
+   const apiUrl = '/api/api/webCourseMaster/GetUsersDetailsforWEB';
+    const requestBody = {
+       mode: 4,
+      EMPLOYEECODE: employeeCode
+    };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status === true && Array.isArray(response.data) && response.data.length > 0) {
+           this.CertUploaded = true;
+           this.uploadedCerts = [];
+         response.data.forEach((item: { FilePath: string; Type: string,ID:number }) => {
+          let filePath = item.FilePath || '';
+          const cleanedFilePath = filePath.replace(/\\/g, '/');
+          const fileName = cleanedFilePath.substring(cleanedFilePath.lastIndexOf('/') + 1);
+          this.uploadedCerts.push({
+            File: null,
+            Type: item.Type,
+            Name: fileName,
+            ID: item.ID,
+            FilePath: item.FilePath
+          });
+        });
+
+        console.log('Uploaded Certs:', this.uploadedCerts);
+        }},
+      (error) => {
+        console.error('Error fetching user details:', error);
       }
     );
   }

@@ -48,11 +48,14 @@ export const AppLabels = {
      txt_Coursesassigned :'Courses yet to be assigned',
      txt_NotStarted :'Not Started',
      txt_Coursesassignednotbegun :'Courses assigned but not begun',
-     txt_ProgressTracker :'Course Progress Tracker'
+     txt_ProgressTracker :'Course Progress Tracker',
+     txt_CertificateType :'Certificate Type',
+     txt_Upload :'Upload',
+     txt_Certificate :'Certificate'
   };
 
   export const AppHeader = {
-    Header: 'SkillMate',
+    Header: 'Skill Mate',
     SubHeader : 'Learning Portal Application',
     CourseHeader:'Course Details',
     ChapterHeader:'Chapter Details',
@@ -134,5 +137,8 @@ export const AppLabels = {
     tbl_Marks :'Test Marks',
     tbl_ObtainedMarks :'Obtained Marks',
     tbl_PassMarks :'Pass Marks',
+    tbl_UploadedCertificate :'Uploaded Certificate',
+    tbl_Download :'Download',
+    tbl_Type:'Type',
   }
 
