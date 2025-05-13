@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';  // Import Router
+import {  AppHeader } from '../../app.constants';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';  // Import Router
 export class HeaderComponent {
   employeeName: string = '';  // Variable to hold EmployeeName
 
+  Header = AppHeader;
   constructor(private router: Router) {
     this.employeeName = sessionStorage.getItem('EmployeeName') || '';  // Default to 'Guest' if not found
 
