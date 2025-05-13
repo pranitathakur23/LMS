@@ -1,6 +1,6 @@
 .sidebar-toggle-icon {
   position: fixed;
-  top: 85px;
+  top: 36px;
   left: 10px;
   cursor: pointer;
   z-index: 1000;
@@ -10,7 +10,7 @@
 .sidebar {
   background: linear-gradient(135deg, #0a48b3, #3e77b0, #6799cc);
   color: white;
- margin-top: 40%;
+ margin-top: 36%;
   height: 100%;
   overflow-y: auto;
   transition: transform 0.3s ease-in-out;

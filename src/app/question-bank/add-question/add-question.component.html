@@ -44,12 +44,12 @@
        
         <table class="table table-hover table-striped custom-table">
           <thead>
-            <tr>
-              <th>SR. No</th>
-              <th>Question Name</th>
-              <th>Category</th>
+            <tr class="text-start">
+              <th class="text-start">SR. No</th>
+              <th class="text-start">Question Name</th>
+              <th class="text-start">Category</th>
               
-              <th>Action</th>
+              <th class="text-start">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -57,11 +57,11 @@
               <td colspan="3" class="text-center">No data available</td>
             </tr>
             <tr *ngFor="let question of questions; let i = index">
-              <td>{{ (p - 1) * entriesPerPage + (i + 1) }}</td>
-              <td>{{ question.QuestionName }}</td>
-              <td>{{ question.Category }}</td> 
+              <td class="text-start">{{ (p - 1) * entriesPerPage + (i + 1) }}</td>
+              <td class="text-start">{{ question.QuestionName }}</td>
+              <td class="text-start">{{ question.Category }}</td> 
               
-              <td>
+              <td class="text-start">
                 <button class="edit-btn" (click)="editQuestion(question)" style="background: green; color: white; border: none;">
                   <i class="fa fa-edit"></i>
                 </button> &nbsp;

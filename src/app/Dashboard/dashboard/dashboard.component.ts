@@ -5,13 +5,14 @@ import { Chart, registerables } from 'chart.js';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder} from '../../app.constants';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule,HttpClientModule  ]
 })
   export class DashboardComponent implements OnInit, AfterViewInit {
     greetingMessage: string = '';
@@ -21,24 +22,18 @@ import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder} from '../../
     Link = AppLink;
     Button = AppButton;
     PlaceHolder = AppPlaceHolder;
-    
-    bankLabels: string[] = [
-      "Axis", "Andhra Pradesh", "DCB", "Assam", "ESFB", "Bihar", "FSFB", "Chhattisgarh",
-      "IDBI", "Gujarat", "IDFC", "Haryana", "Kotak", "Karnataka", "KVB", "Kerala", "Management",
-      "Madhya Pradesh", "Northern Arc", "Maharashtra", "PCH", "Odisha", "RBL", "Rajasthan",
-      "Samunnati", "Tamil Nadu", "SIB", "Telangana", "SSFB", "Tripura", "USFB", "Uttar Pradesh",
-      "Vivriti", "Uttarakhand", "YBL"
-    ];
-  
-    stateLabels: string[] = [
-      "Andhra Pradesh", "Assam", "Bihar", "Chhattisgarh", "Gujarat", "Haryana",
-      "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Odisha", "Rajasthan",
-      "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand"
-    ];
-  
+    dashboardData: any = {};
+
+    employeeName:string='';
+    constructor(private http: HttpClient) {
+      this.employeeName = sessionStorage.getItem('EmployeeName') || '';  // Default to 'Guest' if not found
+console.log('EMP', this.employeeName)
+    } // ✅ Inject HttpClient
+
     ngOnInit(): void {
       this.setGreeting();
       Chart.register(...registerables);
+      this.getDashboardCount();
     }
   
     ngAfterViewInit(): void {
@@ -49,14 +44,15 @@ import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder} from '../../
   
     setGreeting(): void {
       const hour = new Date().getHours();
+      const name = this.employeeName || 'Guest';
       if (hour >= 5 && hour < 12) {
-        this.greetingMessage = 'Good Morning, Priti!';
+        this.greetingMessage = `Good Morning, ${name}!`;
       } else if (hour >= 12 && hour < 17) {
-        this.greetingMessage = 'Good Afternoon, Priti!';
+        this.greetingMessage = `Good Afternoon, ${name}!`;
       } else if (hour >= 17 && hour < 21) {
-        this.greetingMessage = 'Good Evening, Priti!';
+        this.greetingMessage = `Good Evening, ${name}!`;
       } else {
-        this.greetingMessage = 'Good Night, Priti!';
+        this.greetingMessage = `Good Night, ${name}!`;
       }
     }
   
@@ -65,115 +61,267 @@ import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder} from '../../
     }
   
     renderCharts(): void {
-      // Depending on the selected filter, render either bank or state charts
       if (this.selectedFilter === 'bank') {
-        this.renderBankCharts();
+        this.getCompletedChartData();
+        this.getInProgressChartData();
+        this.notStartedChart();
       } else if (this.selectedFilter === 'state') {
-        this.renderStateCharts();
+        this.getCompletedStateChartData(); 
+        this.getInProgressStateChartData(); 
+        this.notstarted();
       }
     }
-  
-    renderBankCharts(): void {
-      const chartOptions: any = {
-        responsive: true,
-        plugins: {
-          legend: { position: 'top' },
-          title: { display: false }
+    getCompletedChartData(): void {
+      const body = { mode: 1, status: 'Completed' };
+      this.http.post<any>('/api/api/webCourseMaster/GetChartDashboardData', body).subscribe({
+        next: (response) => {
+          if (response?.status && Array.isArray(response.data)) {
+            const labels = response.data.map((item: any) => item.BankPartners);
+            const data = response.data.map((item: any) => item.chartcount);
+            this.renderCompletedChart(labels, data);
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching completed chart data', err);
         }
-      };
+      });
+    }
+    getInProgressChartData(): void {
+      const body = { mode: 1, status: 'inProgress' };
+      this.http.post<any>('/api/api/webCourseMaster/GetChartDashboardData', body).subscribe({
+        next: (response) => {
+          if (response?.status && Array.isArray(response.data)) {
+            const labels = response.data.map((item: any) => item.BankPartners);
+            const data = response.data.map((item: any) => item.chartcount);
+            this.renderInProgressChart(labels, data);
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching inProgress chart data', err);
+        }
+      });
+    }
+    notStartedChart(): void {
+      const body = { mode: 1, status: 'Pending' };
+      this.http.post<any>('/api/api/webCourseMaster/GetChartDashboardData', body).subscribe({
+        next: (response) => {
+          if (response?.status && Array.isArray(response.data)) {
+            const labels = response.data.map((item: any) => item.BankPartners);
+            const data = response.data.map((item: any) => item.chartcount);
+            this.renderNotStartedChart(labels, data);
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching Pending chart data', err);
+        }
+      });
+    }
+    
+    renderCompletedChart(labels: string[], data: number[]): void {
+      const ctx = (document.getElementById('completedChart') as HTMLCanvasElement)?.getContext('2d');
+      if (!ctx) return;
   
-      new Chart((document.getElementById('completedChart') as HTMLCanvasElement).getContext('2d')!, {
+      new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: this.bankLabels,
+          labels: labels,
           datasets: [{
             label: 'Completed Courses',
-            data: this.dummyData(this.bankLabels, 1.5),
+            data: data,
             backgroundColor: 'rgba(18, 190, 190, 0.7)'
           }]
         },
-        options: chartOptions
-      });
-  
-      new Chart((document.getElementById('inProgressChart') as HTMLCanvasElement).getContext('2d')!, {
-        type: 'bar',
-        data: {
-          labels: this.bankLabels,
-          datasets: [{
-            label: 'In Progress Courses',
-            data: this.dummyData(this.bankLabels, 1),
-            backgroundColor: 'rgba(233, 173, 35, 0.7)'
-          }]
-        },
-        options: chartOptions
-      });
-  
-      new Chart((document.getElementById('notStartedChart') as HTMLCanvasElement).getContext('2d')!, {
-        type: 'bar',
-        data: {
-          labels: this.bankLabels,
-          datasets: [{
-            label: 'Not Started Courses',
-            data: this.dummyData(this.bankLabels, 0.7),
-            backgroundColor: 'rgba(147, 14, 43, 0.7)'
-          }]
-        },
-        options: chartOptions
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: false }
+          }
+        }
       });
     }
+    renderInProgressChart(labels: string[], data: number[]): void {
+      const ctx = (document.getElementById('inProgressChart') as HTMLCanvasElement)?.getContext('2d');
+      if (!ctx) return;
   
-    renderStateCharts(): void {
-      const chartOptions: any = {
-        responsive: true,
-        plugins: {
-          legend: { position: 'top' },
-          title: { display: false }
-        }
-      };
-  
-      new Chart((document.getElementById('completedStateChart') as HTMLCanvasElement).getContext('2d')!, {
+      new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: this.stateLabels,
+          labels: labels,
+          datasets: [{
+            label: 'In-Progress Courses',
+            data: data,
+            backgroundColor: 'rgba(255, 193, 7, 0.7)' // Yellow-ish
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: false }
+          }
+        }
+      });
+    }
+    renderNotStartedChart(labels: string[], data: number[]): void {
+      const ctx = (document.getElementById('notStartedChart') as HTMLCanvasElement)?.getContext('2d');
+      if (!ctx) return;
+    
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Pending Courses',
+            data: data,
+            backgroundColor: 'rgba(255, 99, 132, 0.7)' // red shade
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: false }
+          }
+        }
+      });
+    }
+    getCompletedStateChartData(): void {
+      const body = { mode: 2, status: 'Completed' };
+      this.http.post<any>('/api/api/webCourseMaster/GetChartDashboardData', body).subscribe({
+        next: (response) => {
+          if (response?.status && Array.isArray(response.data)) {
+            const labels = response.data.map((item: any) => item.States); // ✅ Use States
+            const data = response.data.map((item: any) => item.chartcount);
+            this.renderCompletedStateChart(labels, data);
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching Completed State chart data', err);
+        }
+      });
+    }
+    getInProgressStateChartData(): void {
+      const body = { mode: 2, status: 'inProgress' };
+      this.http.post<any>('/api/api/webCourseMaster/GetChartDashboardData', body).subscribe({
+        next: (response) => {
+          if (response?.status && Array.isArray(response.data)) {
+            const labels = response.data.map((item: any) => item.States); // Extract state names
+            const data = response.data.map((item: any) => item.chartcount); // Extract chart count
+            this.renderInProgressStateChart(labels, data);
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching In Progress State chart data', err);
+        }
+      });
+    }
+    notstarted(): void {
+      const body = { mode: 2, status: 'Pending' };
+      this.http.post<any>('/api/api/webCourseMaster/GetChartDashboardData', body).subscribe({
+        next: (response) => {
+          if (response?.status && Array.isArray(response.data)) {
+            const labels = response.data.map((item: any) => item.States); // State names
+            const data = response.data.map((item: any) => item.chartcount); // Chart counts
+            this.renderNotStartedStateChart(labels, data);
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching Pending State chart data', err);
+        }
+      });
+    }
+    
+    renderCompletedStateChart(labels: string[], data: number[]): void {
+      const ctx = (document.getElementById('completedStateChart') as HTMLCanvasElement)?.getContext('2d');
+      if (!ctx) return;
+    
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
           datasets: [{
             label: 'Completed Courses (State)',
-            data: this.dummyData(this.stateLabels, 1.4),
-            backgroundColor: 'rgba(75, 28, 168, 0.7)'
+            data: data,
+            backgroundColor: 'rgba(60, 25, 165, 0.7)' // Teal color
           }]
         },
-        options: chartOptions
-      });
-  
-      new Chart((document.getElementById('inProgressStateChart') as HTMLCanvasElement).getContext('2d')!, {
-        type: 'bar',
-        data: {
-          labels: this.stateLabels,
-          datasets: [{
-            label: 'In Progress Courses (State)',
-            data: this.dummyData(this.stateLabels, 1),
-            backgroundColor: 'rgba(162, 88, 13, 0.7)'
-          }]
-        },
-        options: chartOptions
-      });
-  
-      new Chart((document.getElementById('notStartedStateChart') as HTMLCanvasElement).getContext('2d')!, {
-        type: 'bar',
-        data: {
-          labels: this.stateLabels,
-          datasets: [{
-            label: 'Not Started Courses (State)',
-            data: this.dummyData(this.stateLabels, 0.8),
-            backgroundColor: 'rgba(22, 71, 169, 0.7)'
-          }]
-        },
-        options: chartOptions
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: false }
+          }
+        }
       });
     }
+    renderInProgressStateChart(labels: string[], data: number[]): void {
+      const ctx = (document.getElementById('inProgressStateChart') as HTMLCanvasElement)?.getContext('2d');
+      if (!ctx) return;
+    
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'In Progress Courses (State)',
+            data: data,
+            backgroundColor: 'rgba(210, 9, 9, 0.7)' // Orange color
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: false }
+          }
+        }
+      });
+    }
+    renderNotStartedStateChart(labels: string[], data: number[]): void {
+      const ctx = (document.getElementById('notStartedStateChart') as HTMLCanvasElement)?.getContext('2d');
+      if (!ctx) return;
+    
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Pending Courses (State)',
+            data: data,
+            backgroundColor: 'rgba(2, 97, 21, 0.7)' // Purple shade
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: false }
+          }
+        }
+      });
+    }
+    
+    
+    
   
     onSearch(): void {
       console.log("Selected Filter:", this.selectedFilter);  // Debugging line
       this.renderCharts();
+    }
+    getDashboardCount(): void {
+      this.http.get<any>('/api/api/webCourseMaster/GetDashboardCount').subscribe({
+        next: (response) => {
+          console.log('Dashboard API Response:', response); // ✅ Log the full response
+
+          if (response?.status && response?.data?.length) {
+            this.dashboardData = response.data[0];
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching dashboard data', err);
+        },
+      });
     }
   
   

@@ -263,7 +263,9 @@ export class CourseMappingComponent implements OnInit {
       employee.selected = this.selectAll;
     });
   }
-
+  getSelectedCount(): number {
+    return this.employees.filter(emp => emp.selected).length;
+  }
   openModal() {
     this.isModalOpen = true;
   }
@@ -308,6 +310,8 @@ export class CourseMappingComponent implements OnInit {
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status === true) {
+          alert('Course allocated successfully!');
+
           this.submitForm();
           this.closeModal();
           this.router.navigate(['/layout/Courses/courses']);
