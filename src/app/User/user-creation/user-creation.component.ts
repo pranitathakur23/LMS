@@ -55,7 +55,7 @@ export class UserCreationComponent implements OnInit {
   CertUploaded: boolean = false;
   selectedCertificateType:  string | null = null;
   CertificateType:  string | null = null;
-  uploadedCerts: { File: File| null, Type: string | null,Name: string | null , ID: number | null,FilePath: string | null}[] = [];
+  uploadedCerts: {  SerialNo: number | null,File: File| null, Type: string | null,Name: string | null , ID: number | null,FilePath: string | null}[] = [];
   isReadOnly: boolean = false; 
   isEditCert : boolean = false;
   selectedFiles: File[] = [];
@@ -473,7 +473,7 @@ export class UserCreationComponent implements OnInit {
       this.passwordSelect.nativeElement.focus();
       return;
     }
-    if (this.uploadedCerts.length==0) {
+    if (this.uploadedCerts.length==0 && this.CertSelected) {
       alert('Please Upload Certificate.');
       this.employeeCodeSelect.nativeElement.focus();
       return;
@@ -499,10 +499,12 @@ formData.append('RoleCode', this.newUser.role.toString());
 formData.append('CreatedBy', employeeCode);
 formData.append('IsActive', this.newUser.isActive.toString()); // Boolean must be string
 formData.append('password', this.newUser.decryptedPassword);
+if (this.newUser.CertificateFiles && this.newUser.CertificateFiles.length > 0) {
 this.newUser.CertificateFiles.forEach((cert, index) => {
   formData.append(`CertificateFiles[${index}].File`, cert.file?? '');
   formData.append(`CertificateFiles[${index}].Type`, cert.type ?? '');
 });
+}
 this.http.post<any>(apiUrl, formData).subscribe(
   res => console.log('Success', res),
   err => console.error('Error', err)
@@ -536,9 +538,11 @@ onCertFileUpload(event: any): void {
       alert('Only PDF, JPG, or JPEG files are allowed.');
       return;
     }
+     const serialNo = this.uploadedCerts.length + 1;
     this.uploadedCerts.push({
-      File: file,
-      Type: this.selectedCertificateType ?? '',
+        SerialNo: serialNo,
+        File: file,
+        Type: this.selectedCertificateType ?? '',
         Name: file.name,
         ID:0,
         FilePath:null
@@ -569,7 +573,7 @@ downloadFile(item: { File: File| null; Type: string | null ;Name: string | null;
   }
 }
 
-deleteFile(item: { File: File | null; Type: string | null; Name: string | null ; ID: number | null;FilePath: string | null}) {
+deleteFile(item: { SerialNo: number | null, File: File | null; Type: string | null; Name: string | null ; ID: number | null;FilePath: string | null}) {
   if (!item.File && !item.Name) {
     console.warn('No file available for deletion.');
     return;
@@ -627,12 +631,14 @@ deleteFile(item: { File: File | null; Type: string | null; Name: string | null ;
       (response) => {
         if (response.status === true && Array.isArray(response.data) && response.data.length > 0) {
            this.CertUploaded = true;
-           this.uploadedCerts = [];
+           this.uploadedCerts = [];          
          response.data.forEach((item: { FilePath: string; Type: string,ID:number }) => {
           let filePath = item.FilePath || '';
           const cleanedFilePath = filePath.replace(/\\/g, '/');
           const fileName = cleanedFilePath.substring(cleanedFilePath.lastIndexOf('/') + 1);
+            const serialNo = this.uploadedCerts.length+1 ; 
           this.uploadedCerts.push({
+             SerialNo: serialNo,
             File: null,
             Type: item.Type,
             Name: fileName,
