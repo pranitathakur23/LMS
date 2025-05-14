@@ -198,7 +198,7 @@
 </div>
 <div class="col-md-4" *ngIf="CertSelected">
   <label for="fileUploadChapter" class="fw-bold">{{labels.txt_Upload}}</label><br>
-  <button type="button" class="btn btn-primary btn-sm" (click)="fileInput.click()">
+  <button type="button" class="btn btn-primary btn-sm mt-2" (click)="fileInput.click()">
     <i class="bi bi-upload me-1"></i>
   </button>
   <input type="file" #fileInput id="fileUploadChapter" style="display: none;" (change)="onCertFileUpload($event)">
