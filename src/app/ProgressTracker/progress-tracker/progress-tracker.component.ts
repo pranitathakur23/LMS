@@ -245,16 +245,11 @@ export class ProgressTrackerComponent {
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
-          const employeeList = response.data.map((emp: any) => {
+          this.employees = response.data.map((emp: any) => {
             return {
-              name: emp.Designation
+              name: emp.EmployeeName
             };
           });
-  
-          // Add "All" option at the top
-          this.employees = [{ name: 'All' }, ...employeeList];
-  
-          // Set default selected to "All"
           this.selectedEmployee = 'All';
         } else {
           console.error('Error fetching employee details:', response.message);
