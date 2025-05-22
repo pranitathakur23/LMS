@@ -10,7 +10,7 @@
 .sidebar {
   background: linear-gradient(135deg, #0a48b3, #3e77b0, #6799cc);
   color: white;
- margin-top: 36%;
+ margin-top: 29%;
   height: 100%;
   overflow-y: auto;
   transition: transform 0.3s ease-in-out;
@@ -58,4 +58,25 @@
 
 .sidebar-item i {
   width: 20px;
+}
+.sidebar-submenu {
+  list-style-type: none; /* Removes bullets */
+  padding-left: 20px;    /* Indent for child items */
+  margin: 0;
+}
+
+.sidebar-subitem {
+  padding: 5px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-subitem i {
+  margin-right: 8px;
+}
+
+
+::ng-deep .sidebar-submenu {
+  list-style-type: none;
 }
