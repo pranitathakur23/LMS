@@ -30,7 +30,7 @@ export class SidebarComponent {
   Assessment= false;
   Question_Bank= false;
   Progress_Tracker= false;
-
+isTrainingMenuOpen: boolean = false;
   constructor(
     private router: Router,
     private cdr: ChangeDetectorRef,
@@ -104,5 +104,15 @@ export class SidebarComponent {
     this.router.navigate(['layout/User/user-creation']);
   }
 
+toggleTrainingMenu() {
+  this.isTrainingMenuOpen = !this.isTrainingMenuOpen;
+}
 
+navigateToTraineeEvidenceCollection() {
+  this.router.navigate(['field-training/trainee-evidence']);
+}
+
+navigateToFieldTrainingAssignment() {
+  this.router.navigate(['field-training/assignment']);
+}
 }
