@@ -38,7 +38,7 @@ export const routes: Routes = [
       { path: 'ProgressTracker/progress-tracker', component: ProgressTrackerComponent } , 
         { path: 'AssignFieldTraining/field-training-assignment', component: FieldTrainingAssignmentComponent } 
 
-    ]// Modified this path    ]
+    ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
