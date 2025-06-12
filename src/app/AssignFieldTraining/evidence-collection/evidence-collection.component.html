@@ -1,0 +1,253 @@
+
+<div class="container" style="margin-top: 4%;">
+<!-- Flex container for back button and heading -->
+<div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+
+<!-- Course Mapping Heading aligned to start -->
+<h2 style="margin: 0; font-weight: bold; font-size: 24px; word-break: break-word; max-width: 90%;">
+ {{Header.Training}}
+</h2>
+</div>
+<div class="container mt-3">
+  <form>
+    <div class="row mb-3">
+      <!-- Bank Dropdown -->
+      <div class="col-md-3">
+        <label for="bank">{{labels.txt_Bank}}</label>
+        <select id="bank" class="form-select custom-dropdown" [(ngModel)]="formData.bank" name="bank" required>
+          <!-- <option value="">Select Bank</option> -->
+          <option value="">All</option>
+          <option *ngFor="let bank of banks" [value]="bank">{{ bank }}</option>
+        </select>
+      </div>
+      <!-- State Dropdown -->
+      <div class="col-md-3">
+        <label for="state">{{labels.txt_State}}</label>
+        <select id="state" class="form-select" [(ngModel)]="formData.state" name="state" required>
+          <!-- <option value="">Select State</option> -->
+          <option value="">All</option>
+          <option *ngFor="let state of states" [value]="state">{{ state }}</option>
+        </select>
+      </div>
+      
+      <!-- Area Dropdown -->
+      <div class="col-md-3">
+        <label for="area">{{labels.txt_Area}}</label>
+        <select id="area" class="form-select" [(ngModel)]="formData.area" name="area" required>
+          <!-- <option value="">Select Area</option> -->
+          <option value="">All</option>
+          <option *ngFor="let area of areas" [value]="area">{{ area }}</option>
+        </select>
+      </div>
+      
+      <!-- Branch Dropdown -->
+      <div class="col-md-3">
+        <label for="branch">{{labels.txt_Branch}}</label>
+        <select id="branch" class="form-select" [(ngModel)]="formData.branch" name="branch" required>
+          <!-- <option value="">Select Branch</option> -->
+          <option value="">All</option>
+          <option *ngFor="let branch of branches" [value]="branch">{{ branch }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row" style="margin-top: -2%; padding-top: 0;">
+
+      <!-- Designation Dropdown -->
+      <div class="col-md-3">
+        <label for="designation">{{labels.txt_Designation}}</label>
+        <select id="designation" class="form-select" [(ngModel)]="formData.designation" name="designation" required>
+          <!-- <option value="">Select Designation</option> -->
+          <option value="">All</option>
+          <option *ngFor="let designation of designations" [value]="designation">{{ designation }}</option>
+        </select>
+      </div>
+      <!-- From Date Picker -->
+      <div class="col-md-3">
+        <label for="date">{{labels.txt_FromDate}}</label>
+        <input type="date" id="date" class="form-control" [(ngModel)]="formData.date" name="date" required>
+      </div>
+       <!-- To Date Picker -->
+      <div class="col-md-3">
+        <label for="date">{{labels.txt_ToDate}}</label>
+        <input type="date" id="todate" class="form-control" [(ngModel)]="formData.todate" name="todate" required>
+      </div>
+      <!-- Search Button -->
+      <div class="col-md-1 mt-4">
+        <button type="button" class="btn btn-primary" (click)="FetchEDData()">Search</button>
+      </div>
+    </div>
+  </form>
+  <div class="container">
+    <!-- Loading Spinner (only show when loading) -->
+    <div *ngIf="isLoading" class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+    <!-- Make the table container scrollable with both X and Y axis -->
+    <div class="table-container" *ngIf="!isLoading">
+      <div class="container">
+        <!-- Search Box and Show Entries -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <!-- Show entries -->
+            <div>
+                <label for="entriesPerPage">{{labels.txt_Showentries}}</label>
+                <select id="entriesPerPage" class="form-control" [(ngModel)]="entriesPerPage" (ngModelChange)="changeEntriesPerPage()">
+                    <option *ngFor="let option of entriesOptions" [value]="option">{{ option }}</option>
+                </select>
+            </div>
+
+            <!-- Search box -->
+            <div>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Search employees..." 
+                    [(ngModel)]="searchText" 
+                    (ngModelChange)="searchEmployees()"
+                />
+            </div>
+        </div>
+    
+        <!-- Loading Spinner (only show when loading) -->
+        <div *ngIf="isLoading" class="spinner-overlay">
+            <div class="spinner"></div>
+        </div>
+        <!-- Make the table container scrollable with both X and Y axis -->
+        <div class="table-container" *ngIf="!isLoading" style="height: auto; overflow-y: auto; overflow-x: auto;">
+            <table class="table">
+                <thead style="background-color: #0a48b3 !important; color: white;">
+                    <tr>
+                        <th>{{table.tbl_TraineeCode}}</th>
+                        <th>{{table.tbl_TraineeName}}</th>
+                         <th>{{table.tbl_TrainerCode}}</th>
+                        <th>{{table.tbl_TrainerName}}</th>
+                        <th>{{table.tbl_Bank}}</th>
+                        <th>{{table.tbl_State}}</th>
+                        <th>{{table.tbl_Area}}</th>
+                        <th>{{table.tbl_Branch}}</th>
+                        <th>{{table.tbl_Designation}}</th>
+                        <th>{{table.tbl_dateofJoinning}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="filteredEmployees.length === 0" class="text-center">
+                    <!-- <p style="text-align: center;">No data available</p> -->
+                    <td colspan="12" class="text-center">No data available</td> <!-- Adjust colspan to match the number of columns -->
+                  </tr>
+                  <tr *ngFor="let employee of filteredEmployees | paginate: { itemsPerPage: entriesPerPage, currentPage: p }" 
+                  (click)="openModal(employee.TraineeCode ,employee.ID )">
+                    <td>{{ employee.TraineeCode }}</td>
+                    <td>{{ employee.TraineeName }}</td>
+                        <td>{{ employee.TrainerCode }}</td>
+                    <td>{{ employee.TrainerName }}</td>
+                    <td>{{ employee.BankPartners }}</td>
+                    <td>{{ employee.States }}</td>
+                    <td>{{ employee.Area }}</td>
+                    <td>{{ employee.Branches }}</td>
+                    <td>{{ employee.Designation }}</td>
+                    <td>{{ employee.Dateofjoining  }}</td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    </div>
+  
+    <!-- Pagination Controls and Showing X to Y of Z entries -->
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- Pagination controls -->
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  
+      <!-- Showing X to Y of Z entries -->
+      <div class="text-right">
+        <span>{{labels.txt_Showing}} {{ rangeInfo.start }} to {{ rangeInfo.end }} of {{ rangeInfo.total }} entries</span>
+      </div>
+    </div>
+  </div>
+  
+  </div>
+  
+ 
+<!-- Modal for Course Allocation -->
+<div *ngIf="isModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;">
+    <div class="modal-content">
+    <span class="close-btn" (click)="closeModal()">&times;</span>
+    <h3 class="text-center mb-2"> {{labels.txt_EvidenceDetails}}</h3>
+    <form>
+        <hr />
+  <div *ngFor="let item of EmployeeData; let i = index">
+  <div class="row mb-4">
+    <h5><b>{{ i + 1 }}. {{ item.Type }} :</b></h5>
+
+    <!-- Trainee Image Section -->
+    <div class="col-md-4">
+      <div class="card mt-1 shadow-sm">
+        <div class="card-header profileDiv"><b>{{labels.txt_TraineeImage}}</b></div>
+        <img [src]="item.TraineeImage" class="card-img-top openimgFrame" alt="Trainee Image" style="height: 150px; object-fit: cover; width: 100%;" />
+        <label style="margin-left: 5px;">
+          <b>{{labels.txt_EvidenceDate}} :</b> {{ item.TraineeUploadedDate | date: 'dd-MM-yyyy' }}
+        </label>
+        <label style="margin-left: 5px;">
+          <b>{{labels.txt_LatLong}} :</b> {{ item.LatLong }}
+        </label>
+      </div>
+    </div>
+
+    <!-- Trainer Image Section -->
+    <div class="col-md-4">
+      <div class="card mt-1 shadow-sm">
+        <div class="card-header profileDiv"><b>{{labels.txt_TrainerImage}}</b></div>
+        <img [src]="item.TrainerImage" class="card-img-top openimgFrame" alt="Trainer Image" style="height: 150px; object-fit: cover; width: 100%;"/>
+        <label style="margin-left: 5px;">
+          <b>{{labels.txt_EvidenceDate}}  :</b> {{ item.TrainerUploadedDate | date: 'dd-MM-yyyy' }}
+        </label>
+        <label style="margin-left: 5px;">
+          <b>{{labels.txt_LatLong}} :</b> {{ item.LatLong }}
+        </label>
+      </div>
+    </div>
+
+    <!-- Match Section -->
+    <div class="col-md-4 mt-5">
+      <div class="row">
+        <div class="col-md-12 mt-2">
+          <label class="form-label matchHeader"><b>{{labels.txt_Match}}</b></label>
+        </div>
+
+        <div class="facematchBtn">
+         
+        <button class="btn btn-info fmDiv"
+         [class.readonly-btn]="!( !isNonEmpty(item.IsMatched) && !isNonEmpty(item.SimilarityPer) )"
+         (click)=" (!isNonEmpty(item.IsMatched) && !isNonEmpty(item.SimilarityPer)) && verifyFaceapiDetails(item)" 
+         style="color: white;"> {{Button.FaceMatch}}
+        </button>
+
+         <span *ngIf="item.SimilarityPer !== null && item.SimilarityPer !== undefined">
+          <span *ngIf="item.SimilarityPer >= 50" class="circle-check">
+            <i class="fa fa-check" aria-hidden="true"></i>
+          </span>
+          <span *ngIf="item.SimilarityPer < 50" class="circle-cross">
+             <i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+          </span>
+        </div>
+
+        <div class="col-md-12 mt-2">
+          <ng-container *ngIf="isNonEmpty(item.IsMatched)">
+             <label class="form-label bold-label me-2"><b>{{labels.txt_IsMatch}}:</b></label>
+             <span class="me-3">{{ item.IsMatched }}</span>
+          </ng-container>
+
+           <ng-container *ngIf="isNonEmpty(item.SimilarityPer)">
+             <label class="form-label bold-label me-2"><b>{{labels.txt_Similarity}} :</b></label>
+             <span class="me-3">{{ item.SimilarityPer }}%</span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+</div>
+    </form>
+  </div>
+</div>
