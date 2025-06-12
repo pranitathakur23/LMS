@@ -112,7 +112,7 @@ navigateToTraineeEvidenceCollection() {
   this.router.navigate(['layout/AssignFieldTraining/evidence-collection']);
 }
 
-navigateToFieldTrainingAssignment() {
-  this.router.navigate(['field-training/assignment']);
+navigateToFieldTrainingAssignment(): void {
+  this.router.navigate(['layout/AssignFieldTraining/field-training-assignment']);
 }
 }
