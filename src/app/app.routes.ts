@@ -14,6 +14,8 @@ import { ReportsComponent } from './Reports/reports/reports.component';
 import { ResetpasswordComponent } from './Users/resetpassword/resetpassword.component';
 import { ProgressTrackerComponent } from './ProgressTracker/progress-tracker/progress-tracker.component';
 import { AddQuestionComponent } from './question-bank/add-question/add-question.component';
+import { FieldTrainingAssignmentComponent } from './AssignFieldTraining/field-training-assignment/field-training-assignment.component';
+import { EvidenceCollectionComponent } from './AssignFieldTraining/evidence-collection/evidence-collection.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -35,7 +37,10 @@ export const routes: Routes = [
       { path: 'Mapping/course-mapping', component: CourseMappingComponent } , // Modified this path
       { path: 'Questions/questions', component: QuestionsComponent } , // Modified this path
       { path: 'ProgressTracker/progress-tracker', component: ProgressTrackerComponent } , 
-    ]// Modified this path    ]
+      { path: 'AssignFieldTraining/field-training-assignment', component: FieldTrainingAssignmentComponent } ,
+      { path: 'AssignFieldTraining/evidence-collection', component: EvidenceCollectionComponent } 
+
+    ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

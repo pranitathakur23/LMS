@@ -9,6 +9,21 @@
     <li class="sidebar-item" (click)="navigateTo()" *ngIf="showDashboard">
       <i class="fa fa-home"></i> Dashboard
     </li>
+      <!-- Assign Field Training with sub-items -->
+   <!-- Assign Field Training (Collapsible) -->
+    <li class="sidebar-item" (click)="toggleTrainingMenu()">
+      <i class="fa fa-tasks"></i> Field Training
+      <i class="fa" [ngClass]="{'fa-chevron-down': !isTrainingMenuOpen, 'fa-chevron-up': isTrainingMenuOpen}" style="float: right;"></i>
+    </li>
+    <ul class="sidebar-submenu" *ngIf="isTrainingMenuOpen">
+         <li class="sidebar-subitem" (click)="navigateToFieldTrainingAssignment()">
+        <i class="fa fa-clipboard-list"></i>Assign Field Training 
+      </li>
+      <li class="sidebar-subitem" (click)="navigateToTraineeEvidenceCollection()">
+        <i class="fa fa-user-check"></i>  Training Status
+      </li>
+   
+    </ul>
     <li class="sidebar-item" (click)="navigateToprogress()" *ngIf="Progress_Tracker">
       <i class="fas fa-chart-line"></i> Progress Tracker
     </li>

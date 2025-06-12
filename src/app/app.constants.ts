@@ -39,7 +39,6 @@ export const AppLabels = {
      txt_entries:'entries',
      txt_area :'Area',
      txt_EmployeeName :'Employee',
-     
      txt_Completed :'Completed',
      txt_Coursesfinished : 'Courses finished successfully' ,
      txt_InProgress :'In Progress',
@@ -51,7 +50,17 @@ export const AppLabels = {
      txt_ProgressTracker :'Course Progress Tracker',
      txt_CertificateType :'Certificate Type',
      txt_Upload :'Upload',
-     txt_Certificate :'Certificate'
+     txt_Certificate :'Certificate',
+     txt_EvidenceDetails :'Evidence Details',
+     txt_TraineeImage :'Trainee Image',
+      txt_TrainerImage :'Trainer Image',
+     txt_Showing:'Showing',
+     txt_EvidenceDate :'Evidence Upload Date',
+     txt_LatLong :'Lat-Long',
+     txt_Match:'Match with Trainee and Trainer Image',
+     txt_IsMatch :'Match',
+     txt_Similarity:'Similarity',
+     txt_Showentries:'Show entries'
   };
 
   export const AppHeader = {
@@ -62,7 +71,8 @@ export const AppLabels = {
     UserHeader:'User Details',
    AssessmentHeader:'Assessment Details',
     QuestionHeader:'Question Details',
-    Reports:'Reports'
+    Reports:'Reports',
+    Training:'Training Status'
   };
 
   export const AppLink = {
@@ -83,7 +93,8 @@ export const AppLabels = {
     QuestionButton:'Add Question Paper',
     TemplateButton:'Download Template',
     View:'View',
-    Download:'Download'
+    Download:'Download',
+    FaceMatch:'Face Match'
   };
 
   export const AppPlaceHolder ={
@@ -124,6 +135,8 @@ export const AppLabels = {
      tbl_EmpName :'First Name',
      tbl_Area :'Area',
      tbl_Bank :'Bank',
+      tbl_Branch :'Branch',
+      tbl_Designation :'Designation',
      tbl_Region :'Region',
      tbl_State :'State',
      tbl_CStart :'Course Start',
@@ -140,5 +153,10 @@ export const AppLabels = {
     tbl_UploadedCertificate :'Uploaded Certificate',
     tbl_Download :'Download',
     tbl_Type:'Type',
+    tbl_dateofJoinning :'Date of Joining',
+    tbl_TraineeCode :'Trainee Code',
+    tbl_TraineeName :'Trainee Name',
+    tbl_TrainerCode :'Trainer Code',
+    tbl_TrainerName :'Trainer Name'
   }
 
