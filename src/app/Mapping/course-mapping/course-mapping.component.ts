@@ -230,7 +230,7 @@ export class CourseMappingComponent implements OnInit {
       States: this.formData.state || 'AB',
       Area: this.formData.area || 'AB',
       Branches: this.formData.branch || 'AB',
-      Designation: this.formData.designation || 'AB',
+      Designation: this.formData.designation || 0,
       doj: this.formData.date || '',
       todate: this.formData.todate || '',
     };
