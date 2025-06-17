@@ -134,3 +134,33 @@ h4 {
     opacity: 1;
   }
 }
+/* Custom smaller login card */
+.login-card {
+  max-width: 451px;        /* Reduces width */
+  margin: auto;            /* Centers it horizontally */
+  padding: 20px !important; /* Reduce internal padding */
+}
+
+/* Adjust typography inside the login card */
+.login-card h1 {
+  font-size: 2.2rem; /* Smaller heading */
+}
+
+.login-card h4 {
+  font-size: 1.2rem;
+}
+
+/* Reduce padding on form fields and buttons */
+.form-control {
+  height: 42px; /* Reduce height */
+  font-size: 14px;
+}
+
+.login-btn {
+  padding: 12px;
+  font-size: 16px;
+}
+.col-md-5 img {
+  max-height: 350px;
+  object-fit: contain;
+}

@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 
-
 @Component({
   selector: 'app-sidebar',
   standalone: true,
