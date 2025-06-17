@@ -110,7 +110,7 @@ toggleTrainingMenu() {
 navigateToTraineeEvidenceCollection() {
   this.router.navigate(['layout/AssignFieldTraining/evidence-collection']);
 }
-
+ 
 navigateToFieldTrainingAssignment(): void {
   this.router.navigate(['layout/AssignFieldTraining/field-training-assignment']);
 }

@@ -36,7 +36,7 @@ export class ProgressTrackerComponent {
 
   constructor(private http: HttpClient) { }
 
-  ngOnInit() {
+  ngOnInit() { 
      this.fetchCourses();
      this.fetchBankNames();
       this.fetchdesignations();
