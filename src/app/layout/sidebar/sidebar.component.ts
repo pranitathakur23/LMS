@@ -108,7 +108,7 @@ toggleTrainingMenu() {
 }
 
 navigateToTraineeEvidenceCollection() {
-  this.router.navigate(['field-training/trainee-evidence']);
+  this.router.navigate(['layout/AssignFieldTraining/evidence-collection']);
 }
 
 navigateToFieldTrainingAssignment(): void {
