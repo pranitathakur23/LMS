@@ -7,7 +7,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
+import { AppLabels, AppHeader, AppLink, AppButton, AppPlaceHolder, Apptable } from '../../app.constants';
 
 interface Bank {
   BankPartners: string;
@@ -26,22 +26,22 @@ interface Employee {
 @Component({
   selector: 'app-evidence-collection',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule,NgxPaginationModule],
+  imports: [FormsModule, CommonModule, HttpClientModule, NgxPaginationModule],
   templateUrl: './evidence-collection.component.html',
   styleUrl: './evidence-collection.component.css'
 })
 export class EvidenceCollectionComponent {
-@ViewChild('allocateFromSelect') allocateFromSelect!: ElementRef;
+  @ViewChild('allocateFromSelect') allocateFromSelect!: ElementRef;
   @ViewChild('allocateToSelect') allocateToSelect!: ElementRef;
   courseId: number | null = null;
- TraineeImage: string = '';
- TrainerImage: string = '';
+  TraineeImage: string = '';
+  TrainerImage: string = '';
   isLoadingFace = false;
   isFaceApiAlertVisible: boolean = true;
   errorMessageFaceapi: string = '';
-  simalarPer1:string = '';
+  simalarPer1: string = '';
 
-    labels = AppLabels;
+  labels = AppLabels;
   Header = AppHeader;
   Link = AppLink;
   Button = AppButton;
@@ -56,7 +56,7 @@ export class EvidenceCollectionComponent {
     branch: '',
     designation: '',
     date: '',
-    todate:''
+    todate: ''
   };
 
   allocateFormData = {
@@ -73,11 +73,11 @@ export class EvidenceCollectionComponent {
   states: string[] = [];
   areas: string[] = [];
   branches: string[] = [];
-  designations: string[] = [];
+  designations: { DesignationId: number; Designation: string }[] = [];
   employees: Employee[] = [];
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
- 
+
   // Pagination and Data
   p: number = 1;  // Current page
   entriesPerPage: number = 10;
@@ -101,7 +101,7 @@ export class EvidenceCollectionComponent {
     this.fetchDesignations();
     this.FetchEDData()
   }
- 
+
   // Fetch Banks data
   fetchBanks() {
     const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
@@ -175,16 +175,21 @@ export class EvidenceCollectionComponent {
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status == true) {
-          this.designations = response.data.map((item: { Designation: string }) => item.Designation);
+          this.designations = response.data.map(
+            (item: { Id: number; Designation: string }) =>
+            ({
+              DesignationId: item.Id,
+              Designation: item.Designation
+            }));
           console.log('Mapped Designations:', this.designations);
         }
       },
       (error) => {
         console.error('Error fetching designations:', error);
       }
-   
-  );
-}
+
+    );
+  }
 
   // Method to change entries per page
   changeEntriesPerPage() {
@@ -194,10 +199,10 @@ export class EvidenceCollectionComponent {
 
   // Handle Search functionality
   searchEmployees() {
-    console.log(this.searchText ,this.employees,);  // Log the search term to check if it's updating
+    console.log(this.searchText, this.employees,);  // Log the search term to check if it's updating
     if (this.searchText) {
       // Filter employees based on searchText
-      this.filteredEmployees = this.employees.filter(employee => 
+      this.filteredEmployees = this.employees.filter(employee =>
         Object.values(employee).some(val =>
           val.toString().toLowerCase().includes(this.searchText.toLowerCase())
         )
@@ -226,7 +231,7 @@ export class EvidenceCollectionComponent {
       States: this.formData.state || 'AB',
       Area: this.formData.area || 'AB',
       Branches: this.formData.branch || 'AB',
-      Designation: this.formData.designation || 'AB',
+      DesignationID: this.formData.designation || 0,
       doj: this.formData.date || '',
       todate: this.formData.todate || '',
     };
@@ -251,6 +256,7 @@ export class EvidenceCollectionComponent {
         this.isLoading = false;
       }
     );
+
   }
 
   toggleSelectAll() {
@@ -260,10 +266,10 @@ export class EvidenceCollectionComponent {
     });
   }
 
-  openModal(employeeCode: string, ID:number): void {
+  openModal(employeeCode: string, ID: number): void {
     this.isModalOpen = true;
-     const params = {
-      ID:ID,
+    const params = {
+      ID: ID,
       employeeCode: employeeCode || 'AB'
     };
     this.isLoading = true;
@@ -271,15 +277,15 @@ export class EvidenceCollectionComponent {
       (response) => {
         console.log('Map response', response);
         if (response.status && response.data && response.data.length > 0) {
-         console.log('Madhuraaaaaaaaaaa',response.data )
-         console.log('IsMatched:', response.data[0].IsMatched);
-         console.log('IsMatched:', response.data[0].IsMatched, typeof response.data[0].IsMatched);
+          console.log('Madhuraaaaaaaaaaa', response.data)
+          console.log('IsMatched:', response.data[0].IsMatched);
+          console.log('IsMatched:', response.data[0].IsMatched, typeof response.data[0].IsMatched);
 
-           this.employees = response.data.map((employee: any) => ({
+          this.employees = response.data.map((employee: any) => ({
             ...employee
           }));
           this.EmployeeData = [...this.employees];
-            this.isLoading = false
+          this.isLoading = false
         }
       },
       (error) => {
@@ -293,7 +299,7 @@ export class EvidenceCollectionComponent {
     this.isModalOpen = false;
   }
 
-  
+
   verifyFaceapiDetails(item: any): void {
     if (!item.TraineeImage || !item.TrainerImage) {
       alert('Both the images should be present to perform face match.');
@@ -311,9 +317,9 @@ export class EvidenceCollectionComponent {
     this.http.post<any>(apiUrl, requestData).subscribe(
       response => {
         this.isLoading = false;  // Stop the loader
-          item.SimilarityPer = response[0].similarityPercentage  ; // Ensures it's a number like 100.0
-        item.IsMatched = response[0].match ;
-        this.Savematchdata(item.ID,item.Typeid,item.IsMatched,item.SimilarityPer)
+        item.SimilarityPer = response[0].similarityPercentage; // Ensures it's a number like 100.0
+        item.IsMatched = response[0].match;
+        this.Savematchdata(item.ID, item.Typeid, item.IsMatched, item.SimilarityPer)
 
       },
       error => {
@@ -328,21 +334,21 @@ export class EvidenceCollectionComponent {
     );
   }
 
-closeFaceApiAlert(): void {
+  closeFaceApiAlert(): void {
     this.isFaceApiAlertVisible = false;
   }
 
-  Savematchdata(ID: number,Type: string,match: string, similarity:string): void {
-       const params = {
-        ID:ID,
-        Type:Type,
-      Match:match,
-      similarity: similarity 
+  Savematchdata(ID: number, Type: string, match: string, similarity: string): void {
+    const params = {
+      ID: ID,
+      Type: Type,
+      Match: match,
+      similarity: similarity
     }
-       console.log(params )
-     this.http.post<any>('/api/api/webCourseMaster/Savematchdata', params).subscribe(
+    console.log(params)
+    this.http.post<any>('/api/api/webCourseMaster/Savematchdata', params).subscribe(
       (response) => {
-         console.log(response.data )
+        console.log(response.data)
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -351,11 +357,11 @@ closeFaceApiAlert(): void {
     );
   }
 
-isNonEmpty(value:any): boolean {
-  if(value === null || value === undefined) return false;
-  if (typeof value === 'string') return value.trim().length > 0;
-   if (typeof value === 'number') return !isNaN(value);
-  if (typeof value == 'object') return Object.keys(value).length > 0;
-  return true; 
-}
+  isNonEmpty(value: any): boolean {
+    if (value === null || value === undefined) return false;
+    if (typeof value === 'string') return value.trim().length > 0;
+    if (typeof value === 'number') return !isNaN(value);
+    if (typeof value == 'object') return Object.keys(value).length > 0;
+    return true;
+  }
 }
