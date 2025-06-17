@@ -135,21 +135,11 @@
           <input type="text" id="department" class="form-control" [(ngModel)]="newUser.department" name="department"
             placeholder="{{PlaceHolder.ph_Department }}" required #departmentSelect>
         </div>
-        <!-- <div class="col-md-4 form-group">
+        <div class="col-md-4 form-group">
           <label for="designation" style="font-weight: bold;">{{labels.txt_Designation }}</label>
           <input type="text" id="designation" class="form-control" [(ngModel)]="newUser.designation" name="designation"
             placeholder="{{PlaceHolder.ph_Designation }} " required #designationSelect>
-        </div> -->
-         
-
-         <!-- Designation Dropdown -->
-      <div class="col-md-4 form-group">
-        <label for="designation" style="font-weight: bold;">{{labels.txt_Designation}}</label>
-        <select id="designation"class="form-control"  [(ngModel)]="newUser.designation" name="designation" required>
-          <option value="" disabled selected disabled>Select Designation</option>
-          <option *ngFor="let designation of Designations"  [value]="designation.DesignationID">{{ designation.Designation }}</option>
-        </select>
-      </div>
+        </div>
         <div class="col-md-4 form-group">
           <label for="state" style="font-weight: bold;">{{labels.txt_State}}</label>
           <input type="text" id="state" class="form-control" [(ngModel)]="newUser.state" name="state"
