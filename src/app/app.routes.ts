@@ -40,6 +40,7 @@ export const routes: Routes = [
       { path: 'AssignFieldTraining/field-training-assignment', component: FieldTrainingAssignmentComponent } ,
       { path: 'AssignFieldTraining/evidence-collection', component: EvidenceCollectionComponent } 
 
+
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }

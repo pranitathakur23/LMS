@@ -10,8 +10,9 @@
 }
 
 .main-content {
-  flex: 1;
+  flex: 4;
   padding: 20px;
   margin-top: 2%;
   overflow: hidden; /* Prevents unwanted scrolling */
+  margin-left: 15%;
 }
