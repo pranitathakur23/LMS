@@ -153,36 +153,36 @@ export class ReportsComponent {
       return;
     }
 
-    if (!this.bank) {
-      alert('Please select Bank.');
-      this.bankSelect.nativeElement.focus();
-      return;
-    }
+    // if (!this.bank) {
+    //   alert('Please select Bank.');
+    //   this.bankSelect.nativeElement.focus();
+    //   return;
+    // }
 
-    if (!this.department) {
-      alert('Please select Department.');
-      this.departmentSelect.nativeElement.focus();
-      return;
-    }
+    // if (!this.department) {
+    //   alert('Please select Department.');
+    //   this.departmentSelect.nativeElement.focus();
+    //   return;
+    // }
 
-    if (!this.selectedCourseId) {
-      alert('Please select Course.');
-      this.courseSelect.nativeElement.focus();
-      return;
-    }
+    // if (!this.selectedCourseId) {
+    //   alert('Please select Course.');
+    //   this.courseSelect.nativeElement.focus();
+    //   return;
+    // }
 
-    if (!this.designation) {
-      alert('Please select Employee Group.');
-      this.designationSelect.nativeElement.focus();
-      return;
-    }
+    // if (!this.designation) {
+    //   alert('Please select Employee Group.');
+    //   this.designationSelect.nativeElement.focus();
+    //   return;
+    // }
 
     const apiUrl = '/api/api/webCourseMaster/GetReportDetails';
     const requestBody = {
-      bank: this.bank,
-      department: this.department,
-      courseID: this.selectedCourseId,
-      employeeGroup: this.designation,
+      bank: this.bank || 'All',
+      department: this.department || 'All',
+      courseID: this.selectedCourseId ||0,
+      employeeGroup: this.designation || 'All',
       fromDate: this.fromDate,
       toDate: this.toDate
     };
@@ -202,9 +202,7 @@ export class ReportsComponent {
   }
   filterData(): void {
     const term = this.searchTerm.toLowerCase().trim();
-    console.log('Search Term:', term);
-  
-    this.filteredGroupData = this.reportData.filter((item) =>
+      this.filteredGroupData = this.reportData.filter((item) =>
       (item.courseName?.toLowerCase() || '').includes(term) ||
       (item.employeeCode?.toLowerCase() || '').includes(term) ||
       (item.employeeName?.toLowerCase() || '').includes(term) ||
@@ -224,7 +222,7 @@ export class ReportsComponent {
       (String(item.passingMarks || '').toLowerCase().includes(term))
     );
   
-    console.log('Filtered Group Data:', this.filteredGroupData);
+   
   }
   
   onPageChange(page: number): void {
