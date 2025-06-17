@@ -246,35 +246,35 @@ applyFilters() {
       return;
     }
   
-    if (!this.ansC) {
-      alert('Please enter Answer C.');
-      document.getElementById('ansC')?.focus();
-      return;
-    }
+    // if (!this.ansC) {
+    //   alert('Please enter Answer C.');
+    //   document.getElementById('ansC')?.focus();
+    //   return;
+    // }
   
-    if (!this.ansD) {
-      alert('Please enter Answer D.');
-      document.getElementById('ansD')?.focus();
-      return;
-    }
+    // if (!this.ansD) {
+    //   alert('Please enter Answer D.');
+    //   document.getElementById('ansD')?.focus();
+    //   return;
+    // }
   
-    if (!this.ansE) {
-      alert('Please enter Answer E.');
-      document.getElementById('ansE')?.focus();
-      return;
-    }
+    // if (!this.ansE) {
+    //   alert('Please enter Answer E.');
+    //   document.getElementById('ansE')?.focus();
+    //   return;
+    // }
   
-    if (!this.ansF) {
-      alert('Please enter Answer F.');
-      document.getElementById('ansF')?.focus();
-      return;
-    }
+    // if (!this.ansF) {
+    //   alert('Please enter Answer F.');
+    //   document.getElementById('ansF')?.focus();
+    //   return;
+    // }
   
-    if (!this.questionTags) {
-      alert('Please enter Question Tags.');
-      document.getElementById('questionTags')?.focus();
-      return;
-    }
+    // if (!this.questionTags) {
+    //   alert('Please enter Question Tags.');
+    //   document.getElementById('questionTags')?.focus();
+    //   return;
+    // }
   
     if (!this.difficulty) {
       alert('Please enter Difficulty.');
@@ -282,11 +282,11 @@ applyFilters() {
       return;
     }
   
-    if (!this.explanation) {
-      alert('Please enter Explanation.');
-      document.getElementById('explanation')?.focus();
-      return;
-    }
+    // if (!this.explanation) {
+    //   alert('Please enter Explanation.');
+    //   document.getElementById('explanation')?.focus();
+    //   return;
+    // }
   
     const apiUrl = '/api/api/webCourseMaster/saveQuestionsforWEB';
     const requestBody = {
@@ -312,8 +312,8 @@ applyFilters() {
       (response) => {
         if (response.status === true) {
           this.fetchQuestionscategorywise();
-          this.router.navigate(['/layout/Questions/question-bank']);
-          this.resetForm();     
+          // this.router.navigate(['/layout/Questions/question-bank']);
+          // this.resetForm();     
           this.closeModal();   
         } else {
           console.error('Failed to save question:', response.message);
