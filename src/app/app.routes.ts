@@ -36,7 +36,7 @@ export const routes: Routes = [
       { path: 'Mapping/course-mapping', component: CourseMappingComponent } , // Modified this path
       { path: 'Questions/questions', component: QuestionsComponent } , // Modified this path
       { path: 'ProgressTracker/progress-tracker', component: ProgressTrackerComponent } , 
-        { path: 'AssignFieldTraining/field-training-assignment', component: FieldTrainingAssignmentComponent } 
+        { path: 'AssignFieldTraining/field-training-assignment', component: FieldTrainingAssignmentComponent },
 
     ]
   },

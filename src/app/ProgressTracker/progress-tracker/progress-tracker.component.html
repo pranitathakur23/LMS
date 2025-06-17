@@ -128,16 +128,16 @@
         <div *ngFor="let course of courses" class="mb-4">
           <div class="d-flex justify-content-between mb-1">
             <span><i class="bi bi-book-fill text-info me-2"></i>{{ course.name }}</span>
-            <span class="fw-semibold">{{ course.progress }}</span>
+<span class="fw-semibold">{{ course.progress }}</span>  <!-- will show 3.20% -->
           </div>
           <div class="progress" style="height: 16px; border-radius: 10px; background-color: #e9ecef;">
-            <div class="progress-bar"
-              [ngStyle]="{
-                'width.%': course.progress,
-                'background': getGradient(course.progress)
-              }"
-              style="border-radius: 10px;">
-            </div>
+        <div class="progress-bar"
+  [ngStyle]="{
+    'width.%': course.progressValue < 1 ? 1 : course.progressValue,
+    'background': getGradient(course.progressValue)
+  }"
+  style="border-radius: 10px;">
+</div>
           </div>
         </div>
       </div>

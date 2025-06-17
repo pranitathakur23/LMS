@@ -10,12 +10,13 @@
 .sidebar {
   background: linear-gradient(135deg, #0a48b3, #3e77b0, #6799cc);
   color: white;
- margin-top: 29%;
   height: 100%;
   overflow-y: auto;
   transition: transform 0.3s ease-in-out;
   box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.1);
   z-index: 999;
+  position: fixed;
+  margin-top: 5%;
 }
 
 .sidebar.collapsed {
@@ -57,7 +58,7 @@
 }
 
 .sidebar-item i {
-  width: 20px;
+  width: 10px;
 }
 .sidebar-submenu {
   list-style-type: none; /* Removes bullets */
