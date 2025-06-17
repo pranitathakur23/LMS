@@ -22,7 +22,7 @@ export const routes: Routes = [
   { path: 'forgot', component: ForgotComponent },
   { path: 'resetpassword', component: ResetpasswordComponent },
   {
-    path: 'layout',
+    path: 'layout', 
     component: LayoutComponent,
     children: [
       { path: 'Dashboard/Dashboard', component: DashboardComponent },  // Modified this path

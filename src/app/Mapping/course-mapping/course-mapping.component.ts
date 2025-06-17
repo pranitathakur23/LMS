@@ -59,7 +59,7 @@ export class CourseMappingComponent implements OnInit {
   states: string[] = [];
   areas: string[] = [];
   branches: string[] = [];
-  designations : any[] = [];
+  designations: string[] = [];
   employees: Employee[] = [];
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
@@ -180,10 +180,6 @@ export class CourseMappingComponent implements OnInit {
       (response) => {
         if (response.status == true) {
           this.designations = response.data.map((item: { Designation: string }) => item.Designation);
-        this.designations = response.data.map((item: { Id: number; Designation: string }) => ({
-  DesignationId: item.Id,
-  Designation: item.Designation
-}));
           console.log('Mapped Designations:', this.designations);
         }
       },
@@ -236,7 +232,7 @@ export class CourseMappingComponent implements OnInit {
       States: this.formData.state || 'AB',
       Area: this.formData.area || 'AB',
       Branches: this.formData.branch || 'AB',
-      DesignationID: this.formData.designation || 0,
+      Designation: this.formData.designation || 0,
       doj: this.formData.date || '',
       todate: this.formData.todate || '',
     };

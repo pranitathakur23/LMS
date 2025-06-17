@@ -73,7 +73,7 @@ export class EvidenceCollectionComponent {
   states: string[] = [];
   areas: string[] = [];
   branches: string[] = [];
-  designations: { DesignationId: number; Designation: string }[] = [];;
+  designations: string[] = [];
   employees: Employee[] = [];
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
@@ -175,10 +175,7 @@ export class EvidenceCollectionComponent {
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status == true) {
-          this.designations = response.data.map(
-            (item: {Id: number; Designation: string }) => 
-            ({DesignationId: item.Id,
-             Designation:item.Designation}) );
+          this.designations = response.data.map((item: { Designation: string }) => item.Designation);
           console.log('Mapped Designations:', this.designations);
         }
       },
@@ -229,7 +226,7 @@ export class EvidenceCollectionComponent {
       States: this.formData.state || 'AB',
       Area: this.formData.area || 'AB',
       Branches: this.formData.branch || 'AB',
-      DesignationID: this.formData.designation || 0,
+      Designation: this.formData.designation || 'AB',
       doj: this.formData.date || '',
       todate: this.formData.todate || '',
     };
