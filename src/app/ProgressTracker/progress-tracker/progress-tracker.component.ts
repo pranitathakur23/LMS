@@ -74,7 +74,7 @@ export class ProgressTrackerComponent {
   fetchCourses() {
     console.log(this.selectedArea)
     const apiUrl = '/api/api/webCourseMaster/GetAllCourseData';
-    const requestBody = { Bank:'AB',State:'AB',Area:'AB',Branch:'AB',Designation:'AB',EmployeeCode:'AB'};
+    const requestBody = { Bank:'AB',State:'AB',Area:'AB',Branch:'AB',DesignationID:0,EmployeeCode:'AB'};
     this.http.post<any>(apiUrl,requestBody).subscribe(
       response => {
         console.log(response)
@@ -98,7 +98,7 @@ export class ProgressTrackerComponent {
   
   fetchtracker() {
     const apiUrl = '/api/api/webCourseMaster/GetProgressTrackerData';
-    const requestBody = { Bank:'AB',State:'AB',Area:'AB',Branch:'AB',Designation:'AB',EmployeeCode:'AB'};
+    const requestBody = { Bank:'AB',State:'AB',Area:'AB',Branch:'AB',DesignationID:0,EmployeeCode:'AB'};
     this.http.post<any>(apiUrl,requestBody).subscribe(
       response => {
         console.log(response)
@@ -118,7 +118,7 @@ export class ProgressTrackerComponent {
   }
   fetchBankNames() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 1, Bank: 'AB', State: 'AB', Area: 'AB', Branch: 'AB', Designation: 'AB' };
+    const requestBody = { mode: 1, Bank: 'AB', State: 'AB', Area: 'AB', Branch: 'AB', DesignationID: 0 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
@@ -141,7 +141,7 @@ export class ProgressTrackerComponent {
   
   fetchstates() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 2, Bank: this.selectedBank, State: 'AB', Area: 'AB', Branch: 'AB', Designation: 'AB' };
+    const requestBody = { mode: 2, Bank: this.selectedBank, State: 'AB', Area: 'AB', Branch: 'AB', DesignationID: 0 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
@@ -164,7 +164,7 @@ export class ProgressTrackerComponent {
   
   fetchareas() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 3, Bank: this.selectedBank, State: this.selectedState, Area: 'AB', Branch: 'AB', Designation: 'AB' };
+    const requestBody = { mode: 3, Bank: this.selectedBank, State: this.selectedState, Area: 'AB', Branch: 'AB', DesignationID:0 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
@@ -187,7 +187,7 @@ export class ProgressTrackerComponent {
   
   fetchbranches() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 4, Bank: this.selectedBank, State: this.selectedState, Area: this.selectedArea, Branch: 'AB', Designation: 'AB' };
+    const requestBody = { mode: 4, Bank: this.selectedBank, State: this.selectedState, Area: this.selectedArea, Branch: 'AB', DesignationID: 0 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
@@ -210,16 +210,17 @@ export class ProgressTrackerComponent {
   
   fetchdesignations() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 6, Bank: this.selectedBank, State: this.selectedState, Area: this.selectedArea, Branch: this.selectedBranch, Designation: 'AB' };
+    const requestBody = { mode: 6, Bank: this.selectedBank, State: this.selectedState, Area: this.selectedArea, Branch: this.selectedBranch, DesignationID: 0 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
           this.designations = response.data.map((designation: any) => {
             return {
+              DesignationID:designation.DesignationID,
               name: designation.Designation
             };
           });
-          this.selectedDesignation = this.designations[0]?.name; // Set default value
+          this.selectedDesignation = this.designations[0]?.DesignationID; // Set default value
           this.fetchemployees(); // Fetch employees once designations are loaded
         } else {
           console.error('Error fetching designation details:', response.message);
@@ -239,18 +240,20 @@ export class ProgressTrackerComponent {
       State: this.selectedState,
       Area: this.selectedArea,
       Branch: this.selectedBranch,
-      Designation: this.selectedDesignation
+      DesignationID: this.selectedDesignation
     };
-  
+    
+   console.log("requestBody",requestBody)
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
           this.employees = response.data.map((emp: any) => {
             return {
+              EmpCode : emp.EmployeeCode,
               name: emp.EmployeeName
             };
           });
-          this.selectedEmployee = 'All';
+          this.selectedEmployee = this.employees[0]?.EmpCode;
         } else {
           console.error('Error fetching employee details:', response.message);
         }
@@ -264,16 +267,17 @@ export class ProgressTrackerComponent {
 
 onSearch() {
   this.isLoading = true;
+  console.log("test1212122",this.selectedDesignation)
   const requestBody = {
     Bank: (this.selectedBank === 'All' || !this.selectedBank) ? 'AB' : this.selectedBank,
     State: (this.selectedState === 'All' || !this.selectedState) ? 'AB' : this.selectedState,
     Area: (this.selectedArea === 'All' || !this.selectedArea) ? 'AB' : this.selectedArea,
     Branch: (this.selectedBranch === 'All' || !this.selectedBranch) ? 'AB' : this.selectedBranch,
-    Designation: (this.selectedDesignation === 'All' || !this.selectedDesignation) ? 'AB' : this.selectedDesignation,
+    DesignationID: (this.selectedDesignation === 'All' || !this.selectedDesignation) ? 0 : this.selectedDesignation,
     EmployeeCode: (this.selectedEmployee === 'All' || !this.selectedEmployee) ? 'AB' : this.selectedEmployee
   
   };
-
+console.log("test1222222222222",requestBody)
   const trackerApi$ = this.http.post<any>('/api/api/webCourseMaster/GetProgressTrackerData', requestBody);
   const courseApi$ = this.http.post<any>('/api/api/webCourseMaster/GetAllCourseData', requestBody);
 

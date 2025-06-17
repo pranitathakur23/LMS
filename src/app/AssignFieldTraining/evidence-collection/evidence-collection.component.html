@@ -58,8 +58,8 @@
         <select id="designation" class="form-select" [(ngModel)]="formData.designation" name="designation" required>
           <!-- <option value="">Select Designation</option> -->
           <option value="">All</option>
-          <option *ngFor="let designation of designations" [value]="designation">{{ designation }}</option>
-        </select>
+          <option *ngFor="let designation of designations" [value]="designation.DesignationId">{{ designation.Designation }}</option>
+       </select>
       </div>
       <!-- From Date Picker -->
       <div class="col-md-3">
