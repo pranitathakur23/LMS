@@ -251,6 +251,7 @@ export class EvidenceCollectionComponent {
         this.isLoading = false;
       }
     );
+    
   }
 
   toggleSelectAll() {

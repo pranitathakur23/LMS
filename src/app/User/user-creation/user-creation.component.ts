@@ -273,6 +273,32 @@ export class UserCreationComponent implements OnInit {
     );
   }
 
+<<<<<<< HEAD
+=======
+  
+  
+  fetchDesignation() {
+    const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
+    const requestBody = { mode: 7 };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status) {
+          this.Designations = response.data.map((Designation: { DesignationID: any; Designation: any; }) => ({
+            DesignationID: Designation.DesignationID,
+            Designation: Designation.Designation
+          }));
+          this.removeItemById(0)
+         }
+      },
+      (error) => {
+        console.error('Error fetching roles:', error);
+      }
+    );
+  }
+removeItemById(idToRemove: number): void {
+  this.Designations = this.Designations.filter(item => item.DesignationID !== 0);
+}
+>>>>>>> fa658ed (test)
   openModal(isEditMode: boolean, user?: any) {
     this.isModalOpen = true;
     this.CurrentID = 0;

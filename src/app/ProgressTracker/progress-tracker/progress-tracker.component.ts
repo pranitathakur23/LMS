@@ -54,6 +54,7 @@ export class ProgressTrackerComponent {
 
 
   
+  
   getProgressBarClass(progress: number): string {
     if (progress >= 80) return 'bg-primary';
     if (progress >= 60) return 'bg-warning';

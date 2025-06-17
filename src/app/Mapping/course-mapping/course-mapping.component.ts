@@ -226,6 +226,7 @@ export class CourseMappingComponent implements OnInit {
 
   
 
+  
   submitForm() {
     const params = {
       BankPartners: this.formData.bank || 'AB',
