@@ -72,3 +72,12 @@
   align-items: center;
   z-index: 1050;
 }
+.scrollable-select {
+  overflow-y: auto;
+  max-height: 150px;
+}
+
+/* Optional: consistent appearance */
+.custom-select-wrapper select {
+  height: auto;
+}

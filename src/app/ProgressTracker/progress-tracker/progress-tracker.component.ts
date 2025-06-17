@@ -41,6 +41,7 @@ export class ProgressTrackerComponent {
      this.fetchBankNames();
       this.fetchdesignations();
       this.fetchtracker();
+      this.onSearch();
   }
  
   courses: any[] = [];
@@ -59,17 +60,19 @@ export class ProgressTrackerComponent {
     if (progress >= 40) return 'bg-success';
     return 'bg-danger';
   }
-  getGradient(progress: number): string {
-    if (progress < 40) {
-      return 'linear-gradient(90deg, #f85032, #e73827)'; // red-orange
-    } else if (progress < 70) {
-      return 'linear-gradient(90deg, #f7971e, #ffd200)'; // yellow-orange
-    } else if (progress < 100) {
-      return 'linear-gradient(90deg, #00c6ff, #0072ff)'; // blue
-    } else {
-      return 'linear-gradient(90deg, #00b09b, #96c93d)'; // green
-    }
+getGradient(progress: number): string {
+  if (progress === 0) {
+    return 'none';  // no color for 0%
+  } else if (progress < 40) {
+    return 'linear-gradient(90deg,rgb(73, 50, 248),rgb(39, 116, 231))'; // red-orange
+  } else if (progress < 70) {
+    return 'linear-gradient(90deg, #f7971e, #ffd200)'; // yellow-orange
+  } else if (progress < 100) {
+    return 'linear-gradient(90deg, #00c6ff, #0072ff)'; // blue
+  } else {
+    return 'linear-gradient(90deg, #00b09b, #96c93d)'; // green
   }
+}
  
   fetchCourses() {
     console.log(this.selectedArea)
@@ -301,14 +304,21 @@ console.log("test1222222222222",requestBody)
         console.error('Error fetching tracker data:', trackerRes.message);
       }
 
-      if (courseRes.status === true) {
-        this.courses = courseRes.data.map((course: any) => ({
-          name: course.courseName,
-          progress: course.courseCompletionPercent
-        }));
-      } else {
-        console.error('Error fetching course data:', courseRes.message);
-      }
+     if (courseRes.status === true) {
+  this.courses = courseRes.data.map((course: any) => {
+    const progressStr = course.courseCompletionPercent.trim();  // e.g. "3.20%"
+    const progressValue = parseFloat(progressStr.replace('%', '')) || 0;  // numeric 3.20
+
+    return {
+      name: course.courseName,
+      progress: progressStr,      // Keep "3.20%" for display
+      progressValue: progressValue // Numeric for styling
+    };
+  });
+} else {
+  console.error('Error fetching course data:', courseRes.message);
+}
+
 
       this.isLoading = false; 
     },

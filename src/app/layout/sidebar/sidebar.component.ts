@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 
-
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -112,7 +111,7 @@ navigateToTraineeEvidenceCollection() {
   this.router.navigate(['layout/AssignFieldTraining/evidence-collection']);
 }
 
-navigateToFieldTrainingAssignment() {
-  this.router.navigate(['field-training/assignment']);
+navigateToFieldTrainingAssignment(): void {
+  this.router.navigate(['layout/AssignFieldTraining/field-training-assignment']);
 }
 }
