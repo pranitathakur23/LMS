@@ -35,6 +35,7 @@ export class UserCreationComponent implements OnInit {
   isModalOpen = false;
   isEditMode = false;
   roles: any[] = [];
+  Designations: any[] = [];
   CurrentID: number = 0;
   isLoading: boolean = true;  // Add loading state
   searchText: string = '';
@@ -84,6 +85,7 @@ export class UserCreationComponent implements OnInit {
     status: '',
     bankPartner: '',
     department: '',
+    DesignationId:'',
     designation: '',
     state: '',
     area: '',
@@ -100,6 +102,7 @@ export class UserCreationComponent implements OnInit {
   ngOnInit() {
     this.fetchUsers();
     this.fetchRoles();
+    this.fetchDesignation()
   }
 
 
@@ -273,6 +276,28 @@ export class UserCreationComponent implements OnInit {
     );
   }
 
+  
+  fetchDesignation() {
+    const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
+    const requestBody = { mode: 7 };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status) {
+          this.Designations = response.data.map((Designation: { DesignationID: any; Designation: any; }) => ({
+            DesignationID: Designation.DesignationID,
+            Designation: Designation.Designation
+          }));
+          this.removeItemById(0)
+         }
+      },
+      (error) => {
+        console.error('Error fetching roles:', error);
+      }
+    );
+  }
+removeItemById(idToRemove: number): void {
+  this.Designations = this.Designations.filter(item => item.DesignationID !== 0);
+}
   openModal(isEditMode: boolean, user?: any) {
     this.isModalOpen = true;
     this.CurrentID = 0;
@@ -289,6 +314,7 @@ export class UserCreationComponent implements OnInit {
         status: '',
         bankPartner: '',
         department: '',
+          DesignationId: '',
         designation: '',
         state: '',
         area: '',
@@ -332,6 +358,7 @@ export class UserCreationComponent implements OnInit {
             status: userData.Employmentstatus || '',
             bankPartner: userData.BankPartners || '',
             department: userData.Department || '',
+             DesignationId: userData.DesignationId || '',
             designation: userData.Designation || '',
             state: userData.States || '',
             area: userData.Area || '',
@@ -342,6 +369,7 @@ export class UserCreationComponent implements OnInit {
             decryptedPassword: userData.decryptedPassword || '',
             CertificateFiles: userData.FilePath || ''
           };
+          this.newUser.designation = userData.DesignationId;
         this.FetchCertificate()
         } else {
           console.error('Error fetching user details:', response.message);
@@ -478,7 +506,7 @@ export class UserCreationComponent implements OnInit {
       this.employeeCodeSelect.nativeElement.focus();
       return;
     }
-    const apiUrl = '/api/api/webCourseMaster/SaveUserData';
+   const apiUrl = '/api/api/webCourseMaster/SaveUserData';
     const formData = new FormData();
 
 formData.append('id', this.CurrentID.toString());
@@ -489,7 +517,7 @@ formData.append('MobileNo', this.newUser.mobile);
 formData.append('Employmentstatus', this.newUser.status);
 formData.append('BankPartners', this.newUser.bankPartner);
 formData.append('Department', this.newUser.department);
-formData.append('Designation', this.newUser.designation);
+formData.append('DesignationID', this.newUser.designation);
 formData.append('States', this.newUser.state);
 formData.append('Area', this.newUser.area);
 formData.append('Branches', this.newUser.branch);
