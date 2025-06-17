@@ -4,7 +4,7 @@
   height: 100vh;
 }
 
-.content {
+.content { 
   display: flex;
   flex: 1;
 }
