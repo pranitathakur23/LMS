@@ -222,7 +222,9 @@ export class CourseMappingComponent implements OnInit {
       end: end,
       total: totalEmployees,
     };
-  }
+  } 
+
+  
 
   submitForm() {
     const params = {
