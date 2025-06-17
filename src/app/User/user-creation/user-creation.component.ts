@@ -35,6 +35,7 @@ export class UserCreationComponent implements OnInit {
   isModalOpen = false;
   isEditMode = false;
   roles: any[] = [];
+  Designations: any[] = [];
   CurrentID: number = 0;
   isLoading: boolean = true;  // Add loading state
   searchText: string = '';
@@ -85,6 +86,7 @@ export class UserCreationComponent implements OnInit {
     bankPartner: '',
     department: '',
     designation: '',
+      DesignationId:'',
     state: '',
     area: '',
     branch: '',
@@ -100,6 +102,7 @@ export class UserCreationComponent implements OnInit {
   ngOnInit() {
     this.fetchUsers();
     this.fetchRoles();
+     this.fetchDesignation()
   }
 
 
@@ -273,32 +276,6 @@ export class UserCreationComponent implements OnInit {
     );
   }
 
-<<<<<<< HEAD
-=======
-  
-  
-  fetchDesignation() {
-    const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 7 };
-    this.http.post<any>(apiUrl, requestBody).subscribe(
-      (response) => {
-        if (response.status) {
-          this.Designations = response.data.map((Designation: { DesignationID: any; Designation: any; }) => ({
-            DesignationID: Designation.DesignationID,
-            Designation: Designation.Designation
-          }));
-          this.removeItemById(0)
-         }
-      },
-      (error) => {
-        console.error('Error fetching roles:', error);
-      }
-    );
-  }
-removeItemById(idToRemove: number): void {
-  this.Designations = this.Designations.filter(item => item.DesignationID !== 0);
-}
->>>>>>> fa658ed (test)
   openModal(isEditMode: boolean, user?: any) {
     this.isModalOpen = true;
     this.CurrentID = 0;
@@ -315,6 +292,7 @@ removeItemById(idToRemove: number): void {
         status: '',
         bankPartner: '',
         department: '',
+        DesignationId: '',
         designation: '',
         state: '',
         area: '',
@@ -358,6 +336,7 @@ removeItemById(idToRemove: number): void {
             status: userData.Employmentstatus || '',
             bankPartner: userData.BankPartners || '',
             department: userData.Department || '',
+             DesignationId: userData.DesignationId || '',
             designation: userData.Designation || '',
             state: userData.States || '',
             area: userData.Area || '',
@@ -368,6 +347,7 @@ removeItemById(idToRemove: number): void {
             decryptedPassword: userData.decryptedPassword || '',
             CertificateFiles: userData.FilePath || ''
           };
+            this.newUser.designation = userData.DesignationId;
         this.FetchCertificate()
         } else {
           console.error('Error fetching user details:', response.message);
@@ -515,7 +495,7 @@ formData.append('MobileNo', this.newUser.mobile);
 formData.append('Employmentstatus', this.newUser.status);
 formData.append('BankPartners', this.newUser.bankPartner);
 formData.append('Department', this.newUser.department);
-formData.append('Designation', this.newUser.designation);
+formData.append('DesignationID', this.newUser.designation);
 formData.append('States', this.newUser.state);
 formData.append('Area', this.newUser.area);
 formData.append('Branches', this.newUser.branch);
@@ -680,4 +660,29 @@ deleteFile(item: { SerialNo: number | null, File: File | null; Type: string | nu
       }
     );
   }
+
+
+
+
+   fetchDesignation() {
+    const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
+    const requestBody = { mode: 7 };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      (response) => {
+        if (response.status) {
+          this.Designations = response.data.map((Designation: { DesignationID: any; Designation: any; }) => ({
+            DesignationID: Designation.DesignationID,
+            Designation: Designation.Designation
+          }));
+          this.removeItemById(0)
+         }
+      },
+      (error) => {
+        console.error('Error fetching roles:', error);
+      }
+    );
+  }
+removeItemById(idToRemove: number): void {
+  this.Designations = this.Designations.filter(item => item.DesignationID !== 0);
+}
 }

@@ -232,11 +232,7 @@ form .form-control {
     transform: scale(1.1); /* Shrink the checkbox size */
   }
   
-  
-<<<<<<< HEAD
- 
-=======
-::ng-deep .ng-dropdown-panel {
+  ::ng-deep .ng-dropdown-panel {
   background-color: #fff !important;
   max-height: unset !important;  
   overflow: visible !important;  
@@ -272,7 +268,6 @@ form .form-control {
   z-index: 1050;
 }
 
-
 /* Form and Input Styling */
 form .form-select, form .form-control {
   width: 100%;
@@ -285,4 +280,3 @@ form .form-select, form .form-control {
 .form-select, .form-control {
   margin-bottom: 15px;
 }
->>>>>>> fa658ed (test)

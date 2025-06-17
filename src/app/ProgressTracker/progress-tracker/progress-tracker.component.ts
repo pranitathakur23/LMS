@@ -78,7 +78,7 @@ getGradient(progress: number): string {
   fetchCourses() {
     console.log(this.selectedArea)
     const apiUrl = '/api/api/webCourseMaster/GetAllCourseData';
-    const requestBody = { Bank:'AB',State:'AB',Area:'AB',Branch:'AB',Designation:'AB',EmployeeCode:'AB'};
+   const requestBody = { Bank:'AB',State:'AB',Area:'AB',Branch:'AB',DesignationID:0,EmployeeCode:'AB'};
     this.http.post<any>(apiUrl,requestBody).subscribe(
       response => {
         console.log(response)
@@ -102,7 +102,7 @@ getGradient(progress: number): string {
   
   fetchtracker() {
     const apiUrl = '/api/api/webCourseMaster/GetProgressTrackerData';
-    const requestBody = { Bank:'AB',State:'AB',Area:'AB',Branch:'AB',Designation:'AB',EmployeeCode:'AB'};
+    const requestBody = { Bank:'AB',State:'AB',Area:'AB',Branch:'AB',DesignationID:0,EmployeeCode:'AB'};
     this.http.post<any>(apiUrl,requestBody).subscribe(
       response => {
         console.log(response)
@@ -122,7 +122,7 @@ getGradient(progress: number): string {
   }
   fetchBankNames() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 1, Bank: 'AB', State: 'AB', Area: 'AB', Branch: 'AB', Designation: 'AB' };
+    const requestBody = { mode: 1, Bank: 'AB', State: 'AB', Area: 'AB', Branch: 'AB', DesignationID: 0  };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
@@ -145,7 +145,7 @@ getGradient(progress: number): string {
   
   fetchstates() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 2, Bank: this.selectedBank, State: 'AB', Area: 'AB', Branch: 'AB', Designation: 'AB' };
+    const requestBody = { mode: 2, Bank: this.selectedBank, State: 'AB', Area: 'AB', Branch: 'AB', DesignationID: 0  };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
@@ -168,7 +168,7 @@ getGradient(progress: number): string {
   
   fetchareas() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 3, Bank: this.selectedBank, State: this.selectedState, Area: 'AB', Branch: 'AB', Designation: 'AB' };
+    const requestBody = { mode: 3, Bank: this.selectedBank, State: this.selectedState, Area: 'AB', Branch: 'AB',DesignationID: 0  };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
@@ -191,7 +191,7 @@ getGradient(progress: number): string {
   
   fetchbranches() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 4, Bank: this.selectedBank, State: this.selectedState, Area: this.selectedArea, Branch: 'AB', Designation: 'AB' };
+    const requestBody = { mode: 4, Bank: this.selectedBank, State: this.selectedState, Area: this.selectedArea, Branch: 'AB', DesignationID: 0  };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
@@ -214,16 +214,17 @@ getGradient(progress: number): string {
   
   fetchdesignations() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
-    const requestBody = { mode: 6, Bank: this.selectedBank, State: this.selectedState, Area: this.selectedArea, Branch: this.selectedBranch, Designation: 'AB' };
+    const requestBody = { mode: 6, Bank: this.selectedBank, State: this.selectedState, Area: this.selectedArea, Branch: this.selectedBranch, DesignationID: 0 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
         if (response.status) {
           this.designations = response.data.map((designation: any) => {
             return {
+                DesignationID:designation.DesignationID,
               name: designation.Designation
             };
           });
-          this.selectedDesignation = this.designations[0]?.name; // Set default value
+           this.selectedDesignation = this.designations[0]?.DesignationID;
           this.fetchemployees(); // Fetch employees once designations are loaded
         } else {
           console.error('Error fetching designation details:', response.message);
@@ -243,7 +244,7 @@ getGradient(progress: number): string {
       State: this.selectedState,
       Area: this.selectedArea,
       Branch: this.selectedBranch,
-      Designation: this.selectedDesignation
+     DesignationID: this.selectedDesignation
     };
   
     this.http.post<any>(apiUrl, requestBody).subscribe(
@@ -251,10 +252,11 @@ getGradient(progress: number): string {
         if (response.status) {
           this.employees = response.data.map((emp: any) => {
             return {
+               EmpCode : emp.EmployeeCode,
               name: emp.EmployeeName
             };
           });
-          this.selectedEmployee = 'All';
+         this.selectedEmployee = this.employees[0]?.EmpCode;
         } else {
           console.error('Error fetching employee details:', response.message);
         }
@@ -273,7 +275,7 @@ onSearch() {
     State: (this.selectedState === 'All' || !this.selectedState) ? 'AB' : this.selectedState,
     Area: (this.selectedArea === 'All' || !this.selectedArea) ? 'AB' : this.selectedArea,
     Branch: (this.selectedBranch === 'All' || !this.selectedBranch) ? 'AB' : this.selectedBranch,
-    Designation: (this.selectedDesignation === 'All' || !this.selectedDesignation) ? 'AB' : this.selectedDesignation,
+    DesignationID: (this.selectedDesignation === 'All' || !this.selectedDesignation) ? 0 : this.selectedDesignation,
     EmployeeCode: (this.selectedEmployee === 'All' || !this.selectedEmployee) ? 'AB' : this.selectedEmployee
   
   };

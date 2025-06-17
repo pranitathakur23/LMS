@@ -25,7 +25,7 @@ interface Employee {
 @Component({
   selector: 'app-course-mapping',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule,NgxPaginationModule],
+  imports: [FormsModule, CommonModule, HttpClientModule, NgxPaginationModule],
   templateUrl: './course-mapping.component.html',
   styleUrls: ['./course-mapping.component.css'],
 })
@@ -41,7 +41,7 @@ export class CourseMappingComponent implements OnInit {
     branch: '',
     designation: '',
     date: '',
-    todate:''
+    todate: ''
   };
 
   allocateFormData = {
@@ -53,13 +53,13 @@ export class CourseMappingComponent implements OnInit {
     fromBranch: '',
   };
 
- searchTerm: string = '';  // For the global search term
+  searchTerm: string = '';  // For the global search term
   isModalOpen: boolean = false;
   banks: Bank[] = [];
   states: string[] = [];
   areas: string[] = [];
   branches: string[] = [];
-  designations: string[] = [];
+  designations: any[] = [];
   employees: Employee[] = [];
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
@@ -84,23 +84,23 @@ export class CourseMappingComponent implements OnInit {
       console.log('Query Params:', params); // Debugging log
       this.courseId = params['courseId'] ? +params['courseId'] : null;
       this.courseName = params['courseName'] ? decodeURIComponent(params['courseName']) : 'Unknown Course';
-  
+
       console.log('Course ID:', this.courseId);
       console.log('Course Name:', this.courseName);
-  
+
       if (!this.courseId) {
         console.error('Course ID not provided');
       }
     });
-  
-  
+
+
     this.fetchBanks();
     this.fetchStates();
     this.fetchAreas();
     this.fetchBranches();
     this.fetchDesignations();
     this.submitForm()
-    
+
   }
   goBack() {
     this.location.back();
@@ -179,16 +179,19 @@ export class CourseMappingComponent implements OnInit {
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status == true) {
-          this.designations = response.data.map((item: { Designation: string }) => item.Designation);
+          this.designations = response.data.map((item: { Id: number; Designation: string }) => ({
+            DesignationId: item.Id,
+            Designation: item.Designation
+          }));
           console.log('Mapped Designations:', this.designations);
         }
       },
       (error) => {
         console.error('Error fetching designations:', error);
       }
-   
-  );
-}
+
+    );
+  }
 
   // Method to change entries per page
   changeEntriesPerPage() {
@@ -201,7 +204,7 @@ export class CourseMappingComponent implements OnInit {
     console.log(this.searchText);  // Log the search term to check if it's updating
     if (this.searchText) {
       // Filter employees based on searchText
-      this.filteredEmployees = this.employees.filter(employee => 
+      this.filteredEmployees = this.employees.filter(employee =>
         Object.values(employee).some(val =>
           val.toString().toLowerCase().includes(this.searchText.toLowerCase())
         )
@@ -222,18 +225,18 @@ export class CourseMappingComponent implements OnInit {
       end: end,
       total: totalEmployees,
     };
-  } 
+  }
 
-  
 
-  
+
+
   submitForm() {
     const params = {
       BankPartners: this.formData.bank || 'AB',
       States: this.formData.state || 'AB',
       Area: this.formData.area || 'AB',
       Branches: this.formData.branch || 'AB',
-      Designation: this.formData.designation || 0,
+      DesignationID: this.formData.designation || 0,
       doj: this.formData.date || '',
       todate: this.formData.todate || '',
     };
@@ -318,7 +321,7 @@ export class CourseMappingComponent implements OnInit {
           this.submitForm();
           this.closeModal();
           this.router.navigate(['/layout/Courses/courses']);
-          
+
         } else {
           console.error(response.message);
         }
