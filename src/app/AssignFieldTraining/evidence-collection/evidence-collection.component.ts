@@ -69,11 +69,12 @@ export class EvidenceCollectionComponent {
   };
 
   isModalOpen: boolean = false;
-  banks: Bank[] = [];
-  states: string[] = [];
-  areas: string[] = [];
-  branches: string[] = [];
-  designations: { DesignationId: number; Designation: string }[] = [];
+  courses: any[] = [];
+  banks: any[] = [];
+  states: any[] = [];
+  areas: any[] = [];
+  branches: any[] = [];
+  designations: any[] = [];
   employees: Employee[] = [];
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
@@ -101,34 +102,40 @@ export class EvidenceCollectionComponent {
     this.fetchDesignations();
     this.FetchEDData()
   }
-
-  // Fetch Banks data
+// Fetch Banks data
   fetchBanks() {
-    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
-    const requestBody = { mode: 7 };
+    const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
+    const requestBody = { mode: 1, Bank: 'AB', State: 'AB', Area: 'AB', Branch: 'AB', DesignationID: 0 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
-      (response) => {
-        if (response.status == true) {
-          this.banks = response.data.map((item: { BankPartners: string }) => item.BankPartners);
-          console.log('Mapped Banks:', this.banks);
+      response => {
+        if (response.status) {
+          this.banks = response.data.map((bank: any) => {
+            return {
+              bank: bank.BankName
+            };
+          });       
+          this.fetchStates(); // Fetch states once banks are loaded
         } else {
-          console.log('Failed to fetch banks, response status is not true');
+          console.error('Error fetching bank details:', response.message);
         }
       },
-      (error) => {
+      error => {
         console.error('Error fetching banks:', error);
       }
     );
   }
 
   fetchStates() {
-    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
-    const requestBody = { mode: 8 };
+    this.formData.state = '';
+    const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
+    const requestBody = { mode: 2, Bank: this.formData.bank || 'All', State: 'AB', Area: 'AB', Branch: 'AB', DesignationID: 0 };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status == true) {
-          this.states = response.data.map((item: { States: string }) => item.States);
-          console.log('Mapped States:', this.states);
+          this.states = response.data.map((item: any) => {
+            return { state: item.StateName }; // ✅ this makes each item like { state: 'Maharashtra' }
+          });
+          this.fetchAreas(); // Fetch states once banks are loaded
         }
       },
       (error) => {
@@ -138,13 +145,19 @@ export class EvidenceCollectionComponent {
   }
 
   fetchAreas() {
-    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
-    const requestBody = { mode: 9 };
+    this.formData.area = '';
+    const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
+    const requestBody = {
+      mode: 3, Bank: this.formData.bank || 'All', State: this.formData.state || 'All'
+      , Area: 'AB', Branch: 'AB', DesignationID: 0
+    };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status == true) {
-          this.areas = response.data.map((item: { Area: string }) => item.Area);
-          console.log('Mapped Areas:', this.areas);
+          this.areas = response.data.map((item: any) => {
+            return { areas: item.AreaName };
+          });
+          this.fetchBranches();
         }
       },
       (error) => {
@@ -154,13 +167,23 @@ export class EvidenceCollectionComponent {
   }
 
   fetchBranches() {
-    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
-    const requestBody = { mode: 10 };
+      this.formData.branch = '';
+    const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
+    const requestBody = {
+      mode: 4,
+      Bank: this.formData.bank || 'All',
+      State: this.formData.state || 'All'
+      , Area: this.formData.area || 'All',
+      Branch: 'AB', DesignationID: 0
+    };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status == true) {
           this.branches = response.data.map((item: { Branches: string }) => item.Branches);
-          console.log('Mapped Branches:', this.branches);
+          this.branches = response.data.map((item: any) => {
+            return { Branch: item.BranchName };
+          });
+          this.fetchDesignations();
         }
       },
       (error) => {
@@ -170,18 +193,23 @@ export class EvidenceCollectionComponent {
   }
 
   fetchDesignations() {
-    const apiUrl = '/api/api/webCourseMaster/GetDepartmentInfo';
-    const requestBody = { mode: 11 };
+     this.formData.designation = '';
+    const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
+    const requestBody = {
+      mode: 6,
+      Bank: this.formData.bank || 'All',
+      State: this.formData.state || 'All',
+      Area: this.formData.area || 'All',
+      Branch: this.formData.branch || 'All',
+      DesignationID: 0
+    };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status == true) {
-          this.designations = response.data.map(
-            (item: { Id: number; Designation: string }) =>
-            ({
-              DesignationId: item.Id,
-              Designation: item.Designation
-            }));
-          console.log('Mapped Designations:', this.designations);
+          this.designations = response.data.map((item: { DesignationID: number; Designation: string }) => ({
+            DesignationId: item.DesignationID,
+            Designation: item.Designation
+          }));
         }
       },
       (error) => {
