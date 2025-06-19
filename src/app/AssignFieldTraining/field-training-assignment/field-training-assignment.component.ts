@@ -41,6 +41,7 @@ export class FieldTrainingAssignmentComponent implements OnInit {
   PlaceHolder = AppPlaceHolder;
   table = Apptable;
   selectedTrainer: string = '';
+  selectedTrainee: string = '';
   formData = {
     bank: '',
     state: '',
@@ -287,12 +288,12 @@ export class FieldTrainingAssignmentComponent implements OnInit {
     );
   }
 
-
   isModalOpen: boolean = false;
   selectedEmployee: any = null;
 
   openModal(employee: any) {
     this.isModalOpen = true;
+    this.selectedTrainee=employee.EmployeeCode;
     const branchName = employee.Branches;
     const payload = { Branches: branchName };
     this.http.post<any>('/api/api/webCourseMaster/GetTrainersListBranchWise', payload).subscribe(
@@ -311,19 +312,20 @@ export class FieldTrainingAssignmentComponent implements OnInit {
     );
   }
 
-
   closeModal() {
     this.isModalOpen = false;
     this.selectedTrainerCode = ''; // This resets the dropdown
+    this.selectedTrainee='';
     this.trainerList = [];
   }
+
   SaveandUpdateUserDetails() {
     if (!this.selectedTrainerCode) {
       alert('Please select a trainer.');
       return;
     }
     const payload = {
-      TraineeCode: this.traineeCodeFromAPI,
+      TraineeCode: this.selectedTrainee,
       TrainerCode: this.selectedTrainerCode
     };
     this.http.post<any>('/api/api/webCourseMaster/TrainingMappingInsert', payload).subscribe(
