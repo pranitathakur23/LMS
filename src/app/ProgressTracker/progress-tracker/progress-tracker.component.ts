@@ -55,26 +55,22 @@ export class ProgressTrackerComponent {
 
   
   
-  getProgressBarClass(progress: number): string {
-    if (progress >= 80) return 'bg-primary';
-    if (progress >= 60) return 'bg-warning';
-    if (progress >= 40) return 'bg-success';
-    return 'bg-danger';
-  }
+ 
 getGradient(progress: number): string {
-  if (progress === 0) {
-    return 'none';  // no color for 0%
-  } else if (progress < 40) {
-    return 'linear-gradient(90deg,rgb(73, 50, 248),rgb(39, 116, 231))'; // red-orange
-  } else if (progress < 70) {
-    return 'linear-gradient(90deg, #f7971e, #ffd200)'; // yellow-orange
-  } else if (progress < 100) {
-    return 'linear-gradient(90deg, #00c6ff, #0072ff)'; // blue
+  if (progress > 0.1 && progress <= 20) {
+    return 'linear-gradient(to right, #ff4e50,rgb(149, 31, 20))'; // Red
+  } else if (progress > 20 && progress <= 40) {
+    return 'linear-gradient(to right, #ffd54f,rgb(120, 96, 26))'; // Yellow
+  } else if (progress > 40 && progress <= 60) {
+    return 'linear-gradient(to right, #ba68c8,rgb(57, 15, 64))'; // Purple
+  } else if (progress > 60 && progress <= 80) {
+    return 'linear-gradient(to right, #42a5f5,rgb(31, 47, 61))'; // Blue
+  } else if (progress > 80 && progress <= 100) {
+    return 'linear-gradient(to right, #66bb6a,rgb(24, 56, 25))'; // Green
   } else {
-    return 'linear-gradient(90deg, #00b09b, #96c93d)'; // green
+    return '#dee2e6'; // Fallback light gray
   }
 }
- 
   fetchCourses() {
     console.log(this.selectedArea)
     const apiUrl = '/api/api/webCourseMaster/GetAllCourseData';
