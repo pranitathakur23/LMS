@@ -221,7 +221,7 @@
                     style="color: white;"> {{Button.FaceMatch}}
                   </button>
 
-                  <span *ngIf="item.SimilarityPer !== null && item.SimilarityPer !== undefined">
+                  <span *ngIf="item.SimilarityPer !== null && item.SimilarityPer !== undefined && item.SimilarityPer !== ''">
                     <span *ngIf="item.SimilarityPer >= 50" class="circle-check">
                       <i class="fa fa-check" aria-hidden="true"></i>
                     </span>
