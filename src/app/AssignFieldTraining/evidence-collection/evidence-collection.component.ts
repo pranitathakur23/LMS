@@ -303,12 +303,7 @@ export class EvidenceCollectionComponent {
     this.isLoading = true;
     this.http.post<any>('/api/api/webCourseMaster/GetUserWiseData', params).subscribe(
       (response) => {
-        console.log('Map response', response);
         if (response.status && response.data && response.data.length > 0) {
-          console.log('Madhuraaaaaaaaaaa', response.data)
-          console.log('IsMatched:', response.data[0].IsMatched);
-          console.log('IsMatched:', response.data[0].IsMatched, typeof response.data[0].IsMatched);
-
           this.employees = response.data.map((employee: any) => ({
             ...employee
           }));

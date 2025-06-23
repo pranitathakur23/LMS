@@ -295,7 +295,9 @@ export class FieldTrainingAssignmentComponent implements OnInit {
     this.isModalOpen = true;
     this.selectedTrainee=employee.EmployeeCode;
     const branchName = employee.Branches;
-    const payload = { Branches: branchName };
+    const payload = { 
+      Branches: branchName,
+      employeeCode: this.selectedTrainee };
     this.http.post<any>('/api/api/webCourseMaster/GetTrainersListBranchWise', payload).subscribe(
       response => {
         if (response.status && response.data) {

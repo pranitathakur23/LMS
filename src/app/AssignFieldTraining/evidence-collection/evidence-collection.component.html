@@ -119,6 +119,7 @@
                   <th>{{table.tbl_Branch}}</th>
                   <th>{{table.tbl_Designation}}</th>
                   <th>{{table.tbl_dateofJoinning}}</th>
+                  <th>{{table.tbl_TrainingStatus}}</th>
                 </tr>
 
               </thead>
@@ -130,7 +131,8 @@
                 </tr>
                 <tr
                   *ngFor="let employee of filteredEmployees | paginate: { itemsPerPage: entriesPerPage, currentPage: p }"
-                  (click)="openModal(employee.TraineeCode ,employee.ID )">
+                  [class.disabled-row]="employee.trainingStatus !== 'Completed'"
+                  (click)="employee.trainingStatus === 'Completed' && openModal(employee.TraineeCode, employee.ID)">
                   <td>{{ employee.TraineeCode }}</td>
                   <td>{{ employee.TraineeName }}</td>
                   <td>{{ employee.TrainerCode }}</td>
@@ -141,10 +143,13 @@
                   <td>{{ employee.Branches }}</td>
                   <td>{{ employee.Designation }}</td>
                   <td>{{ employee.Dateofjoining }}</td>
+                  <td>{{ employee.trainingStatus }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
+
+
         </div>
 
       </div>
