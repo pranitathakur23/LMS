@@ -57,20 +57,21 @@ export class ProgressTrackerComponent {
   
  
 getGradient(progress: number): string {
-  if (progress > 0.1 && progress <= 20) {
-    return 'linear-gradient(to right, #ff4e50,rgb(149, 31, 20))'; // Red
+  if (progress > 0 && progress <= 20) {
+    return 'linear-gradient(to right, #F2E8E1, #ED1B0C)'; // 0–20%
   } else if (progress > 20 && progress <= 40) {
-    return 'linear-gradient(to right, #ffd54f,rgb(120, 96, 26))'; // Yellow
+    return 'linear-gradient(to right, #F0EEDD, #EDC00C)'; // 20–40%
   } else if (progress > 40 && progress <= 60) {
-    return 'linear-gradient(to right, #ba68c8,rgb(57, 15, 64))'; // Purple
+    return 'linear-gradient(to right, #DDE2F0, #5B0CED)'; // 40–60%
   } else if (progress > 60 && progress <= 80) {
-    return 'linear-gradient(to right, #42a5f5,rgb(31, 47, 61))'; // Blue
+    return 'linear-gradient(to right, #ABE8ED, #0CB1ED)'; // 60–80%
   } else if (progress > 80 && progress <= 100) {
-    return 'linear-gradient(to right, #66bb6a,rgb(24, 56, 25))'; // Green
+    return 'linear-gradient(to right, #A3E3C0, #3FBA72)'; // 80–100%
   } else {
     return '#dee2e6'; // Fallback light gray
   }
 }
+
   fetchCourses() {
     console.log(this.selectedArea)
     const apiUrl = '/api/api/webCourseMaster/GetAllCourseData';
