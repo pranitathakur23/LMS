@@ -97,6 +97,11 @@ table th {
   color: white;
 }
 
+.disabled-row {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 
 /* Action Buttons Styling */
