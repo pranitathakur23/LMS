@@ -47,6 +47,8 @@ export class ReportsComponent {
   table=Apptable;
   courses: any[] = [];
   selectedCourseId: number | null = null;
+  isLoading: boolean = false; // Loading spinner flag
+
 
   constructor(private http: HttpClient) { }
 
@@ -186,8 +188,10 @@ export class ReportsComponent {
       fromDate: this.fromDate,
       toDate: this.toDate
     };
+    this.isLoading = true;
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
+        this.isLoading = false;
         if (response.status == true) {
           this.reportData = response.data;
           this.filteredGroupData = [...this.reportData];
@@ -196,6 +200,7 @@ export class ReportsComponent {
         }
       },
       error => {
+        this.isLoading = false;
         console.error('Error:', error);
       }
     );
