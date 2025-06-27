@@ -121,7 +121,8 @@ export const AppLabels = {
 
   export const Apptable ={
     tbl_SRNo :'SR. No',
-    tbl_CourseName :'Course Name',
+    tbl_MainCourseName : "Course Name",
+    tbl_CourseName :'Sub Course Name',
     tbl_ChapterName :'Chapter Name',
     tbl_Edit :'Edit',
     tbl_Mapping :'Mapping',
