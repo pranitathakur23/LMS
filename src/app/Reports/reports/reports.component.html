@@ -1,50 +1,79 @@
 <div class="reports-container mt-5">
   <h2 class="page-heading">{{Header.Reports}}</h2>
-  <div class="filters-container">
-    <div class="filter-item">
-      <label>{{labels.txt_FromDate}}</label>
-      <input type="date" class="animated-input" [(ngModel)]="fromDate" required #fromDateSelect>
+  <div class="card p-1 mb-1 shadow-sm" style="margin-left: -10px;">
+    <div class="card-body">
+
+      <!-- First Row: Filters -->
+      <div class="row g-1 align-items-end">
+
+        <!-- Bank -->
+        <div class="col-md-2">
+          <label class="form-label">{{labels.txt_Bank}}</label>
+          <select class="form-control form-control-sm" [(ngModel)]="bank" required #bankSelect>
+            <option value="">All</option>
+            <option *ngFor="let bank of banks" [value]="bank.BankName">{{ bank.BankName }}</option>
+          </select>
+        </div>
+
+        <!-- State -->
+        <div class="col-md-2">
+          <label class="form-label">{{labels.txt_State}}</label>
+          <select class="form-control form-control-sm" [(ngModel)]="state" required #stateSelect>
+            <option value="">All</option>
+            <option *ngFor="let state of states" [value]="state.stateName">{{ state.stateName }}</option>
+          </select>
+        </div>
+
+        <!-- Department -->
+        <div class="col-md-2">
+          <label class="form-label">{{labels.txt_Department}}</label>
+          <select class="form-control form-control-sm" [(ngModel)]="department" required #departmentSelect>
+            <option value="">All</option>
+            <option *ngFor="let dept of departments" [value]="dept.DepartmentName">{{ dept.DepartmentName }}</option>
+          </select>
+        </div>
+
+        <!-- Course Name -->
+        <div class="col-md-3">
+          <label class="form-label">{{labels.txt_CourseName}}</label>
+          <select class="form-control form-control-sm" id="Courses" [(ngModel)]="selectedCourseId" name="Courses"
+            required #courseSelect>
+            <option [value]="null" disabled selected>All</option>
+            <option *ngFor="let course of courses" [value]="course.courseId">{{ course.name }}</option>
+          </select>
+        </div>
+
+        <!-- Employee Group -->
+        <div class="col-md-3">
+          <label class="form-label">{{labels.txt_EmployeeGroup}}</label>
+          <select class="form-control form-control-sm" [(ngModel)]="designation" required #designationSelect>
+            <option value="">All</option>
+            <option *ngFor="let role of designations" [value]="role.Designation">{{ role.Designation }}</option>
+          </select>
+        </div>
+
+
+        <!-- From Date -->
+        <div class="col-md-2">
+          <label class="form-label">{{labels.txt_FromDate}}</label>
+          <input type="date" class="form-control form-control-sm" [(ngModel)]="fromDate" required #fromDateSelect>
+        </div>
+
+        <!-- To Date -->
+        <div class="col-md-2">
+          <label class="form-label">{{labels.txt_ToDate}}</label>
+          <input type="date" class="form-control form-control-sm" [(ngModel)]="toDate" required #toDateSelect>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-md-4 d-flex gap-2">
+          <button class="btn btn-primary w-100" (click)="GetReportDetails()">{{Button.View}}</button>
+          <button class="btn btn-success w-100" (click)="downloadExcel()">{{Button.Download}}</button>
+        </div>
+
+      </div>
+
     </div>
-    <div class="filter-item">
-      <label>{{labels.txt_ToDate}}</label>
-      <input type="date" class="animated-input" [(ngModel)]="toDate" required #toDateSelect>
-    </div>
-    <div class="filter-item">
-      <label>{{labels.txt_Bank}}</label>
-      <select class="animated-input" [(ngModel)]="bank" required #bankSelect>
-        <option value="">All</option>
-        <option *ngFor="let bank of banks" [value]="bank.BankName">
-          {{ bank.BankName}}
-        </option>
-      </select>
-    </div>
-    <div class="filter-item">
-      <label>{{labels.txt_Department}}</label>
-      <select class="animated-input" [(ngModel)]="department" required #departmentSelect>
-        <option value="">All</option>
-        <option *ngFor="let dept of departments" [value]="dept.DepartmentName">
-          {{ dept.DepartmentName }}
-        </option>
-      </select>
-    </div>
-    <div class="filter-item">
-      <label>{{labels.txt_CourseName}}</label>
-      <select class="form-control" id="Courses" [(ngModel)]="selectedCourseId" name="Courses" required #courseSelect>
-        <option [value]="null" disabled selected>All</option>
-        <option *ngFor="let course of courses" [value]="course.courseId">{{ course.name }}</option>
-      </select>
-    </div>
-    <div class="filter-item">
-      <label>{{labels.txt_EmployeeGroup}}</label>
-      <select class="animated-input" [(ngModel)]="designation" required #designationSelect>
-        <option value="">All</option>
-        <option *ngFor="let role of designations" [value]="role.Designation">
-          {{ role.Designation }}
-        </option>
-      </select>
-    </div>
-    <button class="view-btn mt-4" (click)="GetReportDetails()">{{Button.View}}</button>
-    <button class="view-btnd mt-4" (click)="downloadExcel()">{{Button.Download}}</button>
   </div>
 </div>
 
@@ -65,10 +94,10 @@
 
 <div class="container">
 
-      <!-- Loading Spinner (only show when loading) -->
-    <div *ngIf="isLoading" class="spinner-overlay">
-      <div class="spinner"></div>
-    </div>
+  <!-- Loading Spinner (only show when loading) -->
+  <div *ngIf="isLoading" class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
 
   <div class="table-container" style="overflow-x: auto;" *ngIf="!isLoading">
 
