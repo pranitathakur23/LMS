@@ -62,7 +62,7 @@
           <label for="designation">Designation</label>
           <select id="designation" class="form-select" [(ngModel)]="formData.designation" name="designation" required>
             <option hidden value="">Select Designation</option>
-            <option value="AB">All</option>
+            <option value="0">All</option>
             <option *ngFor="let designation of designations" [value]="designation.DesignationId">
               {{ designation.Designation }}
             </option>
