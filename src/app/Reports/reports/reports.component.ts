@@ -1,27 +1,27 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http'; 
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
+import { AppLabels, AppHeader, AppLink, AppButton, AppPlaceHolder, Apptable } from '../../app.constants';
 
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, HttpClientModule,FormsModule,NgxPaginationModule],
+  imports: [CommonModule, HttpClientModule, FormsModule, NgxPaginationModule],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css'
 })
 export class ReportsComponent {
-    @ViewChild('courseSelect') courseSelect!: ElementRef;
-    @ViewChild('fromDateSelect') fromDateSelect!: ElementRef;
-    @ViewChild('toDateSelect') toDateSelect!: ElementRef;
-    @ViewChild('bankSelect') bankSelect!: ElementRef;
-    @ViewChild('departmentSelect') departmentSelect!: ElementRef;
-    @ViewChild('designationSelect') designationSelect!: ElementRef;
+  @ViewChild('courseSelect') courseSelect!: ElementRef;
+  @ViewChild('fromDateSelect') fromDateSelect!: ElementRef;
+  @ViewChild('toDateSelect') toDateSelect!: ElementRef;
+  @ViewChild('bankSelect') bankSelect!: ElementRef;
+  @ViewChild('departmentSelect') departmentSelect!: ElementRef;
+  @ViewChild('designationSelect') designationSelect!: ElementRef;
 
   fromDate: string = '';
   toDate: string = '';
@@ -30,7 +30,7 @@ export class ReportsComponent {
   designation: string = '';
   banks: any[] = [];
   departments: any[] = [];
-  designations: any[] = []; 
+  designations: any[] = [];
   reportData: any[] = [];
   Math = Math;
   filteredGroupData: any[] = []; // Data to display after filtering
@@ -44,11 +44,12 @@ export class ReportsComponent {
   Link = AppLink;
   Button = AppButton;
   PlaceHolder = AppPlaceHolder;
-  table=Apptable;
+  table = Apptable;
   courses: any[] = [];
   selectedCourseId: number | null = null;
   isLoading: boolean = false; // Loading spinner flag
-
+  state: string = '';
+  states: any[] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -57,6 +58,7 @@ export class ReportsComponent {
     this.fetchDepartments();
     this.fetchCourses();
     this.fetchDesignation();
+    this.fetchStates();
     const employeeCode = sessionStorage.getItem('employeeCode');
     if (employeeCode) {
       console.log('EmployeeCode:', employeeCode);
@@ -72,6 +74,22 @@ export class ReportsComponent {
       response => {
         if (response.status == true) {
           this.banks = response.data;
+        } else {
+          console.error(response.message);
+        }
+      },
+      error => {
+        console.error('Error fetching banks:', error);
+      }
+    );
+  }
+  fetchStates() {
+    const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
+    const requestBody = { mode: 8 };
+    this.http.post<any>(apiUrl, requestBody).subscribe(
+      response => {
+        if (response.status == true) {
+          this.states = response.data;
         } else {
           console.error(response.message);
         }
@@ -155,33 +173,10 @@ export class ReportsComponent {
       return;
     }
 
-    // if (!this.bank) {
-    //   alert('Please select Bank.');
-    //   this.bankSelect.nativeElement.focus();
-    //   return;
-    // }
-
-    // if (!this.department) {
-    //   alert('Please select Department.');
-    //   this.departmentSelect.nativeElement.focus();
-    //   return;
-    // }
-
-    // if (!this.selectedCourseId) {
-    //   alert('Please select Course.');
-    //   this.courseSelect.nativeElement.focus();
-    //   return;
-    // }
-
-    // if (!this.designation) {
-    //   alert('Please select Employee Group.');
-    //   this.designationSelect.nativeElement.focus();
-    //   return;
-    // }
-
     const apiUrl = '/api/api/webCourseMaster/GetReportDetails';
     const requestBody = {
       bank: this.bank || 'All',
+      stateName: this.state || 'All',
       department: this.department || 'All',
       courseID: this.selectedCourseId ||0,
       employeeGroup: this.designation || 'All',
@@ -206,30 +201,30 @@ export class ReportsComponent {
     );
   }
 
-filterData(): void {
-  const term = this.searchTerm.toLowerCase().trim();
-  this.filteredGroupData = this.reportData.filter((item) =>
-    String(item.courseName || '').toLowerCase().includes(term) ||
-    String(item.employeeCode || '').toLowerCase().includes(term) ||
-    String(item.employeeName || '').toLowerCase().includes(term) ||
-    String(item.area || '').toLowerCase().includes(term) ||
-    String(item.region || '').toLowerCase().includes(term) ||
-    String(item.states || '').toLowerCase().includes(term) ||
-    String(item.courseStart || '').toLowerCase().includes(term) ||
-    String(item.courseExpiry || '').toLowerCase().includes(term) ||
-    String(item.courseCompletedDate || '').toLowerCase().includes(term) ||
-    String(item.courseStatus || '').toLowerCase().includes(term) ||
-    String(item.courseProgress || '').toLowerCase().includes(term) ||
-    String(item.testStatus || '').toLowerCase().includes(term) ||
-    String(item.testDate || '').toLowerCase().includes(term) ||
-    String(item.testTimeStamp || '').toLowerCase().includes(term) ||
-    String(item.totalMarks || '').toLowerCase().includes(term) ||
-    String(item.obtainedMarks || '').toLowerCase().includes(term) ||
-    String(item.passingMarks || '').toLowerCase().includes(term)
-  );
-}
+  filterData(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+    this.filteredGroupData = this.reportData.filter((item) =>
+      String(item.courseName || '').toLowerCase().includes(term) ||
+      String(item.employeeCode || '').toLowerCase().includes(term) ||
+      String(item.employeeName || '').toLowerCase().includes(term) ||
+      String(item.area || '').toLowerCase().includes(term) ||
+      String(item.region || '').toLowerCase().includes(term) ||
+      String(item.states || '').toLowerCase().includes(term) ||
+      String(item.courseStart || '').toLowerCase().includes(term) ||
+      String(item.courseExpiry || '').toLowerCase().includes(term) ||
+      String(item.courseCompletedDate || '').toLowerCase().includes(term) ||
+      String(item.courseStatus || '').toLowerCase().includes(term) ||
+      String(item.courseProgress || '').toLowerCase().includes(term) ||
+      String(item.testStatus || '').toLowerCase().includes(term) ||
+      String(item.testDate || '').toLowerCase().includes(term) ||
+      String(item.testTimeStamp || '').toLowerCase().includes(term) ||
+      String(item.totalMarks || '').toLowerCase().includes(term) ||
+      String(item.obtainedMarks || '').toLowerCase().includes(term) ||
+      String(item.passingMarks || '').toLowerCase().includes(term)
+    );
+  }
 
-  
+
   onPageChange(page: number): void {
     console.log("Page changed to:", page);
     this.currentPage = page;
@@ -238,8 +233,8 @@ filterData(): void {
     this.sortOrder = !this.sortOrder;
     const direction = this.sortOrder ? 1 : -1;
     this.filteredGroupData.sort((a, b) => {
-  
-     
+
+
       return 0;
     });
   }
@@ -253,30 +248,30 @@ filterData(): void {
       alert('No data present in the table.');
       return;
     }
-  
+
     // Convert data to worksheet
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.reportData);
-  
+
     // Create a workbook and append worksheet
     const workbook: XLSX.WorkBook = {
       Sheets: { 'Report Data': worksheet },
       SheetNames: ['Report Data']
     };
-  
+
     // Convert workbook to Excel buffer
     const excelBuffer: any = XLSX.write(workbook, {
       bookType: 'xlsx',
       type: 'array'
     });
-  
+
     // Create a Blob and save the file
     const fileName = `Report_${new Date().toISOString().slice(0, 10)}.xlsx`;
     const data: Blob = new Blob([excelBuffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     });
-  
+
     saveAs(data, fileName);
   }
 
-  
+
 }
