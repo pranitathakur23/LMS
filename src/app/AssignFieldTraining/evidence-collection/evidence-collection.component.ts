@@ -78,6 +78,8 @@ export class EvidenceCollectionComponent {
   employees: Employee[] = [];
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
+isImageModalOpen: boolean = false;
+selectedImageUrl: string = '';
 
   // Pagination and Data
   p: number = 1;  // Current page
@@ -303,12 +305,7 @@ export class EvidenceCollectionComponent {
     this.isLoading = true;
     this.http.post<any>('/api/api/webCourseMaster/GetUserWiseData', params).subscribe(
       (response) => {
-        console.log('Map response', response);
         if (response.status && response.data && response.data.length > 0) {
-          console.log('Madhuraaaaaaaaaaa', response.data)
-          console.log('IsMatched:', response.data[0].IsMatched);
-          console.log('IsMatched:', response.data[0].IsMatched, typeof response.data[0].IsMatched);
-
           this.employees = response.data.map((employee: any) => ({
             ...employee
           }));
@@ -322,7 +319,15 @@ export class EvidenceCollectionComponent {
       }
     );
   }
+openImageModal(imageUrl: string): void {
+  this.selectedImageUrl = imageUrl;
+  this.isImageModalOpen = true;
+}
 
+closeImageModal(): void {
+  this.isImageModalOpen = false;
+  this.selectedImageUrl = '';
+}
   closeModal() {
     this.isModalOpen = false;
   }
@@ -345,7 +350,10 @@ export class EvidenceCollectionComponent {
     this.http.post<any>(apiUrl, requestData).subscribe(
       response => {
         this.isLoading = false;  // Stop the loader
-        item.SimilarityPer = response[0].similarityPercentage; // Ensures it's a number like 100.0
+       const rawSimilarity = response[0].similarityPercentage;
+item.SimilarityPer = parseInt(rawSimilarity.toString().slice(0, 2));
+console.log('Formatted Similarity Percentage:', item.SimilarityPer);
+
         item.IsMatched = response[0].match;
         this.Savematchdata(item.ID, item.Typeid, item.IsMatched, item.SimilarityPer)
 

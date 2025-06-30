@@ -47,6 +47,8 @@ export class ReportsComponent {
   table=Apptable;
   courses: any[] = [];
   selectedCourseId: number | null = null;
+  isLoading: boolean = false; // Loading spinner flag
+
 
   constructor(private http: HttpClient) { }
 
@@ -186,8 +188,10 @@ export class ReportsComponent {
       fromDate: this.fromDate,
       toDate: this.toDate
     };
+    this.isLoading = true;
     this.http.post<any>(apiUrl, requestBody).subscribe(
       response => {
+        this.isLoading = false;
         if (response.status == true) {
           this.reportData = response.data;
           this.filteredGroupData = [...this.reportData];
@@ -196,34 +200,35 @@ export class ReportsComponent {
         }
       },
       error => {
+        this.isLoading = false;
         console.error('Error:', error);
       }
     );
   }
-  filterData(): void {
-    const term = this.searchTerm.toLowerCase().trim();
-      this.filteredGroupData = this.reportData.filter((item) =>
-      (item.courseName?.toLowerCase() || '').includes(term) ||
-      (item.employeeCode?.toLowerCase() || '').includes(term) ||
-      (item.employeeName?.toLowerCase() || '').includes(term) ||
-      (item.area?.toLowerCase() || '').includes(term) ||
-      (item.region?.toLowerCase() || '').includes(term) ||
-      (item.states?.toLowerCase() || '').includes(term) || // Corrected from `state` to `states`
-      (item.courseStart?.toLowerCase() || '').includes(term) ||
-      (item.courseExpiry?.toLowerCase() || '').includes(term) ||
-      (item.courseCompletedDate?.toLowerCase() || '').includes(term) ||
-      (item.courseStatus?.toLowerCase() || '').includes(term) ||
-      (item.courseProgress?.toLowerCase() || '').includes(term) ||
-      (item.testStatus?.toLowerCase() || '').includes(term) ||
-      (item.testDate?.toLowerCase() || '').includes(term) ||
-      (item.testTimeStamp?.toLowerCase() || '').includes(term) ||
-      (String(item.totalMarks || '').toLowerCase().includes(term)) || // Convert numbers to string
-      (String(item.obtainedMarks || '').toLowerCase().includes(term)) ||
-      (String(item.passingMarks || '').toLowerCase().includes(term))
-    );
-  
-   
-  }
+
+filterData(): void {
+  const term = this.searchTerm.toLowerCase().trim();
+  this.filteredGroupData = this.reportData.filter((item) =>
+    String(item.courseName || '').toLowerCase().includes(term) ||
+    String(item.employeeCode || '').toLowerCase().includes(term) ||
+    String(item.employeeName || '').toLowerCase().includes(term) ||
+    String(item.area || '').toLowerCase().includes(term) ||
+    String(item.region || '').toLowerCase().includes(term) ||
+    String(item.states || '').toLowerCase().includes(term) ||
+    String(item.courseStart || '').toLowerCase().includes(term) ||
+    String(item.courseExpiry || '').toLowerCase().includes(term) ||
+    String(item.courseCompletedDate || '').toLowerCase().includes(term) ||
+    String(item.courseStatus || '').toLowerCase().includes(term) ||
+    String(item.courseProgress || '').toLowerCase().includes(term) ||
+    String(item.testStatus || '').toLowerCase().includes(term) ||
+    String(item.testDate || '').toLowerCase().includes(term) ||
+    String(item.testTimeStamp || '').toLowerCase().includes(term) ||
+    String(item.totalMarks || '').toLowerCase().includes(term) ||
+    String(item.obtainedMarks || '').toLowerCase().includes(term) ||
+    String(item.passingMarks || '').toLowerCase().includes(term)
+  );
+}
+
   
   onPageChange(page: number): void {
     console.log("Page changed to:", page);
