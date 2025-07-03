@@ -30,7 +30,6 @@ export class CoursesComponent {
   MainCoursemodalHeader: string = 'Create Main Course';
   chapters = [];
   isModalOpen = false;
-  isMainCourseModal = false;
   isChapterModalOpen = false;
   isEditing = false;
   isCreateMode = true;
@@ -93,7 +92,6 @@ export class CoursesComponent {
     this.fetchCourses();
     this.fetchDepartments();
     this.fetchDurationOptions();
-    this.fetchMainCourses();
     const employeeCode = sessionStorage.getItem('employeeCode');
     if (employeeCode) {
       console.log('EmployeeCode:', employeeCode);
@@ -106,8 +104,13 @@ export class CoursesComponent {
     this.location.back();
   }
   fetchCourses() {
+      const urlParams = new URLSearchParams(window.location.search);
+  const courseId = urlParams.get('courseId') || '0'; 
     const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
-    const requestBody = { mode: 1 };
+      const requestBody = {
+    mode: 9,
+    courseId: Number(courseId)
+  };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status == true) {
@@ -180,12 +183,6 @@ export class CoursesComponent {
   closeModal() {
     this.isModalOpen = false;
     this.resetForm();
-  }
-  openModalMainCourse() {
-    this.isMainCourseModal = true;
-  }
-  closeModalMainCourse() {
-    this.isMainCourseModal = false;
   }
 
   validateNumberInput(event: Event): void {
@@ -347,44 +344,4 @@ export class CoursesComponent {
     }
   }
 
-  createMainCourse() {
-    if (!this.newCourse.MainCourse) {
-      alert('Please enter a Main Course Name.');
-      document.getElementById('MainCourse')?.focus();
-      return;
-    }
-    const apiUrl = '/api/api/webCourseMaster/SaveMainCourseData';
-    const requestBody = { maincoursename: this.newCourse.MainCourse };
-    this.http.post<any>(apiUrl, requestBody).subscribe(response => {
-      if (response.status == true) {
-        alert("Course saved successfully..!")
-        this.fetchMainCourses()
-        this.closeModalMainCourse();
-        this.newCourse.MainCourse = ''
-      } else {
-        console.error(response.message);
-      }
-    });
-  }
-
-  fetchMainCourses() {
-    const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
-    const requestBody = { mode: 7 };
-    this.http.post<any>(apiUrl, requestBody).subscribe(
-      (response) => {
-        if (response.status == true) {
-          this.Maincourses = response.data.map((course: any) => ({
-            CourseID: course.MainCourseID,
-            CourseName: course.MainCourseName
-          }));
-        } else {
-          this.Maincourses = [];  // Ensure courses is an empty array if no data
-        }
-      },
-      (error) => {
-        console.error('Error fetching courses:', error);
-        this.Maincourses = [];  // Ensure courses is an empty array on error
-      }
-    );
-  }
 }
