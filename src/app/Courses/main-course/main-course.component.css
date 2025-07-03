@@ -1,0 +1,355 @@
+/* General Body Styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    overflow-x: hidden;
+}
+/* General Table Styling */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    table-layout: auto;
+}
+
+.table th,
+.table td {
+    
+    padding: 12px 20px;
+    white-space: nowrap;
+}
+
+table th {
+    background-color: #0a48b3 !important;
+
+    color: white;
+}
+
+/* Alternate row styling */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e2e6ea;
+}
+
+.table-responsive {
+    max-height: none;
+    overflow: visible;
+}
+
+/* Actions Column Styling */
+.actions-column {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.no-data-message {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #999;
+    padding: 20px;
+}
+/* Modal Styling */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInModal 0.5s ease-out;
+    z-index: 1000;
+}
+
+/* Modal Fade-In Animation */
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Modal Content Styling */
+.modal-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 50%;
+    max-width: 900%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    max-height: 80vh;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Submit and Cancel Button Styling */
+.submit-btn,
+.cancel-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Submit Button Styling */
+.submit-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: #218838;
+}
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #dc3545;
+}
+/* Cancel Button Styling */
+.cancel-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
+}
+
+
+/* Edit and Delete Button Styling */
+.edit-btn,
+.delete-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+/* Edit Button */
+.edit-btn {
+    background-color: #28a745;
+}
+
+.edit-btn:hover {
+    background-color: #218838;
+}
+
+/* Delete Button */
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    /* Modal Content Styling */
+    .modal-content {
+        width: 80%;
+        padding: 15px;
+    }
+    .Mainmodal-content {
+        width: 80%;
+        padding: 15px;
+    }
+
+    .modal-header {
+        font-size: 20px;
+    }
+
+    /* Data Table */
+    .styled-table {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .submit-btn,
+    .cancel-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .submit-btn {
+        padding: 10px 15px;
+    }
+
+    .cancel-btn {
+        padding: 10px 15px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    .row .col-12.text-right {
+        text-align: right;
+        /* Aligns button to the right */
+    }
+
+    .row .col-12.text-right .btn {
+        margin-left: auto;
+        /* Optional: Ensures margin for spacing if needed */
+    }
+
+    /* For better mobile responsiveness */
+    @media (max-width: 768px) {
+        .row .col-12.text-right {
+            text-align: center;
+            /* Center the button on smaller screens */
+        }
+    }
+}
+
+.add-maincourse-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+}
+
+.add-maincourse-modal-content {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    width: 50%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.add-maincourse-modal-header {
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.add-maincourse-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+.disabled-button {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+ 
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items {
+  max-height: 150px; 
+  overflow-y: auto;
+  background-color: white;
+} 
+
+
+.form-control .ng-select-container {
+  padding: 0;
+  border: none;
+  box-shadow: none;
+   background-color: white;
+} 
+
+/* Match form-control styling for ng-select container */
+.form-control .ng-select-container {
+    padding: 0.375rem 0.75rem;
+  padding-left: 8px;               
+  height: 38px;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: none;
+  box-shadow: none;
+  background-color: white;
+   border: none !important;    
+  box-shadow: none !important; 
+}
+
+.form-control .ng-select-container .ng-value-container  {
+  padding-left: 50px;   
+}
+.form-control .ng-placeholder {
+    padding-left: 50px;  
+  color: #6c757d;
+  opacity: 1;
+}
+
+::ng-deep .ng-dropdown-panel {
+      border-radius: 6px; 
+  background-color: white;
+  left: 0 !important;            
+  border: 1px solid #ced4da;       
+  box-shadow: none;               
+  margin-top: 2px;    
+    padding-left: 10px;              
+}
+
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items {
+    
+  max-height: 150px; 
+  overflow-y: auto;
+}
+
+::ng-deep .ng-dropdown-panel .ng-option:hover {
+  background-color: #f8f9fa;          
+}
+::ng-deep .no-input-border .ng-input > input {
+  border: none !important;
+  
+}
+
+
+
+.table-wrapper {
+  max-height:500px;          
+  overflow-y: auto;
+  position: relative;
+}
+
+
+.table-wrapper thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); 
+}
