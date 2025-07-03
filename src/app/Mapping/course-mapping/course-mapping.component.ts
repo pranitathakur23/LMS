@@ -179,8 +179,8 @@ export class CourseMappingComponent implements OnInit {
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
         if (response.status == true) {
-          this.designations = response.data.map((item: { Id: number; Designation: string }) => ({
-            DesignationId: item.Id,
+          this.designations = response.data.map((item: { DesignationID: number; Designation: string }) => ({
+            DesignationId: item.DesignationID,
             Designation: item.Designation
           }));
           console.log('Mapped Designations:', this.designations);
