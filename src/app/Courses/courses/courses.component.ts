@@ -6,6 +6,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AppLabels, AppHeader, AppLink, AppButton, AppPlaceHolder, Apptable } from '../../app.constants';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ActivatedRoute } from '@angular/router';
 
 interface Department {
   DepartmentID: number;
@@ -25,6 +26,8 @@ interface Duration {
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent {
+  courseId: string = '0';
+  courseName: string = '0';
   mode: number = 0;
   modalHeader: string = 'Create Course';
   MainCoursemodalHeader: string = 'Create Main Course';
@@ -77,7 +80,7 @@ export class CoursesComponent {
     }
   }
 
-  constructor(private http: HttpClient, private router: Router, private location: Location) { }
+  constructor(private http: HttpClient, private router: Router, private location: Location,private route: ActivatedRoute) { }
   mapCourse(courseId: number, courseName: string) {
     console.log('Navigating to course-mapping:', courseId, courseName); // Debugging log
     this.router.navigate(['/layout/Mapping/course-mapping'], {
@@ -104,12 +107,12 @@ export class CoursesComponent {
     this.location.back();
   }
   fetchCourses() {
-      const urlParams = new URLSearchParams(window.location.search);
-  const courseId = urlParams.get('courseId') || '0'; 
+       this.courseId = this.route.snapshot.paramMap.get('id') || '0';
+    console.log('Course ID:', this.courseId);
     const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
       const requestBody = {
     mode: 9,
-    courseId: Number(courseId)
+    courseId: Number(this.courseId)
   };
     this.http.post<any>(apiUrl, requestBody).subscribe(
       (response) => {
@@ -120,9 +123,11 @@ export class CoursesComponent {
             courseId: course.courseId,
             maincoursename: course.maincoursename,
           }));
+          this.courseName = response.data[0]?.maincoursename || 'Course';
         } else {
           this.courses = [];  // Ensure courses is an empty array if no data
         }
+
       },
       (error) => {
         console.error('Error fetching courses:', error);
@@ -206,9 +211,8 @@ export class CoursesComponent {
     formData.append('departmentId', this.newCourse.department.toString());
     formData.append('courseDurationIn', this.newCourse.durationTime.toString());
     formData.append('mode', mode.toString());
-    if (this.newCourse.MainCourseddl !== null && this.newCourse.MainCourseddl !== undefined) {
-      formData.append('maincourseid', this.newCourse.MainCourseddl.toString());
-    }
+    formData.append('maincourseid', this.courseId.toString());
+    
     if (mode === 1 && this.newCourse.courseId) {
       formData.append('courseId', this.newCourse.courseId.toString());
     }
@@ -331,12 +335,6 @@ export class CoursesComponent {
       document.getElementById('description')?.focus();
       return;
     }
-    if (!this.newCourse.MainCourseddl) {
-      alert('Please select main course.');
-      document.getElementById('mainCourse')?.focus();
-      return;
-    }
-
     if (this.isCreateMode) {
       this.createCourse(0);
     } else {
