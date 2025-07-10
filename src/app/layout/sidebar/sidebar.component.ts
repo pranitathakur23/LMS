@@ -85,8 +85,8 @@ isTrainingMenuOpen: boolean = false;
     this.router.navigate(['layout/Reports/reports']);
   }
   navigateToCourses(path: string): void {
-    this.router.navigate(['layout/Courses/courses']);
-  }
+    // this.router.navigate(['layout/Courses/courses']);
+this.router.navigate(['layout/Courses/main-course']);  }
   navigateToprogress(): void {
     this.router.navigate(['layout/ProgressTracker/progress-tracker']);
   }

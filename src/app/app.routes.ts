@@ -16,6 +16,7 @@ import { ProgressTrackerComponent } from './ProgressTracker/progress-tracker/pro
 import { AddQuestionComponent } from './question-bank/add-question/add-question.component';
 import { FieldTrainingAssignmentComponent } from './AssignFieldTraining/field-training-assignment/field-training-assignment.component';
 import { EvidenceCollectionComponent } from './AssignFieldTraining/evidence-collection/evidence-collection.component';
+import { MainCourseComponent } from './Courses/main-course/main-course.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -25,22 +26,20 @@ export const routes: Routes = [
     path: 'layout', 
     component: LayoutComponent,
     children: [
-      { path: 'Dashboard/Dashboard', component: DashboardComponent },  // Modified this path
-      { path: 'Reports/reports', component: ReportsComponent },  // Modified this path
-      { path: 'Courses/courses', component: CoursesComponent },  // Modified this path
+      { path: 'Dashboard/Dashboard', component: DashboardComponent },
+      { path: 'Reports/reports', component: ReportsComponent },
+   { path: 'Courses/courses/:id', component: CoursesComponent }, // ✅ receives CourseID
+      { path: 'Courses/main-course', component: MainCourseComponent }, // ✅ no param here
       { path: 'Assessment/assessment', component: AssessmentComponent },
-      { path: 'Chapters/chapters', component: ChaptersComponent },  // Modified this path
-      { path: 'Questions/question-bank', component: QuestionBankComponent } , // Modified this path
-      { path: 'Questions/add-question', component: AddQuestionComponent } , // Modified this path
-
-      { path: 'User/user-creation', component: UserCreationComponent } ,
-      { path: 'Mapping/course-mapping', component: CourseMappingComponent } , // Modified this path
-      { path: 'Questions/questions', component: QuestionsComponent } , // Modified this path
-      { path: 'ProgressTracker/progress-tracker', component: ProgressTrackerComponent } , 
-      { path: 'AssignFieldTraining/field-training-assignment', component: FieldTrainingAssignmentComponent } ,
-      { path: 'AssignFieldTraining/evidence-collection', component: EvidenceCollectionComponent } 
-
-
+      { path: 'Chapters/chapters', component: ChaptersComponent },
+      { path: 'Questions/question-bank', component: QuestionBankComponent },
+      { path: 'Questions/add-question', component: AddQuestionComponent },
+      { path: 'User/user-creation', component: UserCreationComponent },
+      { path: 'Mapping/course-mapping', component: CourseMappingComponent },
+      { path: 'Questions/questions', component: QuestionsComponent },
+      { path: 'ProgressTracker/progress-tracker', component: ProgressTrackerComponent },
+      { path: 'AssignFieldTraining/field-training-assignment', component: FieldTrainingAssignmentComponent },
+      { path: 'AssignFieldTraining/evidence-collection', component: EvidenceCollectionComponent }
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
