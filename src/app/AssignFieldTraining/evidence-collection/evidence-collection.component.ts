@@ -80,6 +80,10 @@ export class EvidenceCollectionComponent {
   isLoading: boolean = false; // Loading spinner flag
 isImageModalOpen: boolean = false;
 selectedImageUrl: string = '';
+isTrainerModalOpen: boolean = false;
+selectedTrainerCode: string = '';
+selectedTrainee: string = '';
+trainerList: any[] = [];
 
   // Pagination and Data
   p: number = 1;  // Current page
@@ -330,6 +334,67 @@ closeImageModal(): void {
 }
   closeModal() {
     this.isModalOpen = false;
+  }
+
+  handleRowClick(employee: any): void {
+    if (employee.trainingStatus === 'Completed') {
+      this.openModal(employee.TraineeCode, employee.ID);
+    } else if (employee.trainingStatus === 'Pending') {
+      this.openTrainerModal(employee);
+    }
+  }
+
+  openTrainerModal(employee: any): void {
+    this.isTrainerModalOpen = true;
+    this.selectedTrainee = employee.TraineeCode;
+    const branchName = employee.Branches;
+    const payload = { 
+      Branches: branchName,
+      employeeCode: this.selectedTrainee 
+    };
+    this.http.post<any>('/api/api/webCourseMaster/GetTrainersListBranchWise', payload).subscribe(
+      response => {
+        if (response.status == true) {
+          this.trainerList = response.data;
+        } else {
+          this.trainerList = [];
+          console.warn('No trainer data found.');
+        }
+      },
+      error => {
+        console.error('API Error:', error);
+        this.trainerList = [];
+      }
+    );
+  }
+
+  closeTrainerModal(): void {
+    this.isTrainerModalOpen = false;
+    this.selectedTrainerCode = '';
+    this.selectedTrainee = '';
+    this.trainerList = [];
+  }
+
+  assignTrainer(): void {
+    if (!this.selectedTrainerCode) {
+      alert('Please select a trainer.');
+      return;
+    }
+    const payload = {
+      TraineeCode: this.selectedTrainee,
+      TrainerCode: this.selectedTrainerCode
+    };
+    this.http.post<any>('/api/api/webCourseMaster/TrainingMappingInsert', payload).subscribe(
+      (response) => {
+        alert('Trainer assigned successfully!');
+        this.closeTrainerModal();
+        this.FetchEDData();
+      },
+      (error) => {
+        console.error('Error assigning trainer:', error);
+        alert('Error assigning trainer. Please try again.');
+      }
+    );
   }
 
 
