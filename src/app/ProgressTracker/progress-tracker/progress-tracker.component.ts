@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { AppLabels, AppHeader, AppLink , AppButton, AppPlaceHolder,Apptable} from '../../app.constants';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { forkJoin } from 'rxjs';
-
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-progress-tracker',
   standalone: true,
@@ -263,7 +264,54 @@ getGradient(progress: number): string {
       }
     );
   }
-  
+
+
+exportExcelReport(mode: number) {
+  const requestBody = {
+    mode,
+    Bank: this.selectedBank === 'All' || !this.selectedBank ? 'AB' : this.selectedBank,
+    State: this.selectedState === 'All' || !this.selectedState ? 'AB' : this.selectedState,
+    Area: this.selectedArea === 'All' || !this.selectedArea ? 'AB' : this.selectedArea,
+    Branch: this.selectedBranch === 'All' || !this.selectedBranch ? 'AB' : this.selectedBranch,
+    DesignationID: this.selectedDesignation === 'All' || !this.selectedDesignation ? 0 : this.selectedDesignation,
+    EmployeeCode: this.selectedEmployee === 'All' || !this.selectedEmployee ? 'AB' : this.selectedEmployee
+  };
+
+  // File names for each mode
+  const fileNameMap: { [key: number]: string } = {
+    1: 'Completed_Courses.xlsx',
+    2: 'InProgress_Courses.xlsx',
+    3: 'NotStarted_Courses.xlsx',
+    4: 'Unassigned_Courses.xlsx'
+  };
+
+  // API call
+  this.http.post<any>('/api/api/webCourseMaster/GetProgressTrackerExcelReport', requestBody)
+    .subscribe(
+      (response) => {
+        // If data exists
+        if (response?.status == true) {
+          // Convert to Excel
+          const worksheet = XLSX.utils.json_to_sheet(response.data);
+          const workbook = { Sheets: { 'Sheet1': worksheet }, SheetNames: ['Sheet1'] };
+          const buffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+          const blob = new Blob([buffer], { type: 'application/octet-stream' });
+          
+          // Download file
+          saveAs(blob, fileNameMap[mode] || 'Progress_Report.xlsx');
+        } else {
+          alert('No data available for this report.');
+        }
+      },
+      (error) => {
+        // Handle error
+        console.error('API Error:', error);
+        alert('Failed to export report.');
+      }
+    );
+}
+
+
 
 onSearch() {
   this.isLoading = true;
@@ -274,7 +322,6 @@ onSearch() {
     Branch: (this.selectedBranch === 'All' || !this.selectedBranch) ? 'AB' : this.selectedBranch,
     DesignationID: (this.selectedDesignation === 'All' || !this.selectedDesignation) ? 0 : this.selectedDesignation,
     EmployeeCode: (this.selectedEmployee === 'All' || !this.selectedEmployee) ? 'AB' : this.selectedEmployee
-  
   };
 
   const trackerApi$ = this.http.post<any>('/api/api/webCourseMaster/GetProgressTrackerData', requestBody);
