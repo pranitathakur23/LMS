@@ -328,7 +328,8 @@ export class FieldTrainingAssignmentComponent implements OnInit {
     }
     const payload = {
       TraineeCode: this.selectedTrainee,
-      TrainerCode: this.selectedTrainerCode
+      TrainerCode: this.selectedTrainerCode,
+      id:0
     };
     this.http.post<any>('/api/api/webCourseMaster/TrainingMappingInsert', payload).subscribe(
       (response) => {

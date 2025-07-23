@@ -40,6 +40,8 @@ export class EvidenceCollectionComponent {
   isFaceApiAlertVisible: boolean = true;
   errorMessageFaceapi: string = '';
   simalarPer1: string = '';
+  trainingMappingID: number = 0;
+
 
   labels = AppLabels;
   Header = AppHeader;
@@ -337,6 +339,7 @@ closeImageModal(): void {
   }
 
   handleRowClick(employee: any): void {
+    this.trainingMappingID=employee.ID;
     if (employee.trainingStatus === 'Completed') {
       this.openModal(employee.TraineeCode, employee.ID);
     } else if (employee.trainingStatus === 'Pending') {
@@ -382,7 +385,9 @@ closeImageModal(): void {
     }
     const payload = {
       TraineeCode: this.selectedTrainee,
-      TrainerCode: this.selectedTrainerCode
+      TrainerCode: this.selectedTrainerCode,
+      id: this.trainingMappingID,
+
     };
     this.http.post<any>('/api/api/webCourseMaster/TrainingMappingInsert', payload).subscribe(
       (response) => {
@@ -396,7 +401,6 @@ closeImageModal(): void {
       }
     );
   }
-
 
   verifyFaceapiDetails(item: any): void {
     if (!item.TraineeImage || !item.TrainerImage) {
