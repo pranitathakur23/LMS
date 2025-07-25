@@ -54,7 +54,7 @@
 
       </div>
       <div class="col-md-auto">
-        <button class="btn btn-primary rounded-pill px-4" (click)="onSearch()">🔍 Search</button>
+        <button class="btn btn-primary rounded-pill px-4" (click)="onSearch()">🔍</button>
       </div>
     </div>
   </div>
@@ -70,7 +70,7 @@
 
         <!-- Completed -->
         <div class="col-md-6">
-          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #4CAF50, #81C784); border-radius: 1rem;">
+          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #4CAF50, #81C784); border-radius: 1rem; cursor: pointer;" (click)="exportExcelReport(1)">
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <h6 class="fw-bold mb-1">Completed</h6>
@@ -83,7 +83,7 @@
         </div>
         <!-- In Progress -->
         <div class="col-md-6">
-          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #00C9FF, #92FE9D); border-radius: 1rem;">
+          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #00C9FF, #92FE9D); border-radius: 1rem; cursor: pointer;" (click)="exportExcelReport(2)">
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <h6 class="fw-bold mb-1">In Progress</h6>
@@ -96,7 +96,7 @@
         </div>
  <!-- Unassigned -->
  <div class="col-md-6">
-  <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #FF6B6B, #FF8E53); border-radius: 1rem;">
+  <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #FF6B6B, #FF8E53); border-radius: 1rem; cursor: pointer;" (click)="exportExcelReport(4)">
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <h6 class="fw-bold mb-1">Unassigned</h6>
@@ -109,7 +109,7 @@
 </div>
         <!-- Not Started -->
         <div class="col-md-6">
-          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #FFB75E, #ED8F03); border-radius: 1rem;">
+          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #FFB75E, #ED8F03); border-radius: 1rem; cursor: pointer;" (click)="exportExcelReport(3)">
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <h6 class="fw-bold mb-1">Not Started</h6>
