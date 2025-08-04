@@ -7,6 +7,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 import { AppLabels, AppHeader, AppLink, AppButton, AppPlaceHolder, Apptable } from '../../app.constants';
 
 interface Bank {
@@ -40,6 +43,8 @@ export class EvidenceCollectionComponent {
   isFaceApiAlertVisible: boolean = true;
   errorMessageFaceapi: string = '';
   simalarPer1: string = '';
+  trainingMappingID: number = 0;
+
 
   labels = AppLabels;
   Header = AppHeader;
@@ -78,13 +83,14 @@ export class EvidenceCollectionComponent {
   employees: Employee[] = [];
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
-isImageModalOpen: boolean = false;
-selectedImageUrl: string = '';
-isTrainerModalOpen: boolean = false;
-selectedTrainerCode: string = '';
-selectedTrainee: string = '';
-trainerList: any[] = [];
+  isImageModalOpen: boolean = false;
+  selectedImageUrl: string = '';
+  isTrainerModalOpen: boolean = false;
+  selectedTrainerCode: string = '';
+  selectedTrainee: string = '';
+  trainerList: any[] = [];
 
+  showSubmitButton: boolean = false;
   // Pagination and Data
   p: number = 1;  // Current page
   entriesPerPage: number = 10;
@@ -97,8 +103,16 @@ trainerList: any[] = [];
     end: 10,
     total: 0,
   };
+  ModalIDForSave: number = 0;
+  isSubmit: boolean = false;
 
-  constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute, private router: Router) { }
+  Total: number = 0;
+  Completed: number = 0;
+  ApprovalPending: number = 0;
+  Notstarted: number = 0;
+
+
+  constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.fetchBanks();
@@ -107,8 +121,9 @@ trainerList: any[] = [];
     this.fetchBranches();
     this.fetchDesignations();
     this.FetchEDData()
+    this.GetFieldTrainingDashboardCount()
   }
-// Fetch Banks data
+  // Fetch Banks data
   fetchBanks() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
     const requestBody = { mode: 1, Bank: 'AB', State: 'AB', Area: 'AB', Branch: 'AB', DesignationID: 0 };
@@ -119,7 +134,7 @@ trainerList: any[] = [];
             return {
               bank: bank.BankName
             };
-          });       
+          });
           this.fetchStates(); // Fetch states once banks are loaded
         } else {
           console.error('Error fetching bank details:', response.message);
@@ -173,7 +188,7 @@ trainerList: any[] = [];
   }
 
   fetchBranches() {
-      this.formData.branch = '';
+    this.formData.branch = '';
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
     const requestBody = {
       mode: 4,
@@ -199,7 +214,7 @@ trainerList: any[] = [];
   }
 
   fetchDesignations() {
-     this.formData.designation = '';
+    this.formData.designation = '';
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
     const requestBody = {
       mode: 6,
@@ -283,6 +298,7 @@ trainerList: any[] = [];
         } else {
           this.filteredEmployees = [];
         }
+        this.GetFieldTrainingDashboardCount()
         this.isLoading = false;
       },
       (error) => {
@@ -300,11 +316,10 @@ trainerList: any[] = [];
     });
   }
 
-  openModal(employeeCode: string, ID: number): void {
+  openModal(ID: number, trainingStatus: any): void {
     this.isModalOpen = true;
     const params = {
-      ID: ID,
-      employeeCode: employeeCode || 'AB'
+      ID: ID
     };
     this.isLoading = true;
     this.http.post<any>('/api/api/webCourseMaster/GetUserWiseData', params).subscribe(
@@ -313,8 +328,20 @@ trainerList: any[] = [];
           this.employees = response.data.map((employee: any) => ({
             ...employee
           }));
+          this.ModalIDForSave = ID;
           this.EmployeeData = [...this.employees];
           this.isLoading = false
+          this.EmployeeData = this.EmployeeData.map((item: any) => ({
+            ...item,
+            trainingStatus: trainingStatus
+          }));
+          if (trainingStatus === "Approval-Pending") {
+            this.showSubmitButton = this.EmployeeData.every((item: any) =>
+              item.QCStatus === 'Approve' || item.QCStatus === 'Reject'
+            );
+          } else {
+            this.showSubmitButton = false;
+          }
         }
       },
       (error) => {
@@ -323,24 +350,26 @@ trainerList: any[] = [];
       }
     );
   }
-openImageModal(imageUrl: string): void {
-  this.selectedImageUrl = imageUrl;
-  this.isImageModalOpen = true;
-}
 
-closeImageModal(): void {
-  this.isImageModalOpen = false;
-  this.selectedImageUrl = '';
-}
+  openImageModal(imageUrl: string): void {
+    this.selectedImageUrl = imageUrl;
+    this.isImageModalOpen = true;
+  }
+
+  closeImageModal(): void {
+    this.isImageModalOpen = false;
+    this.selectedImageUrl = '';
+  }
   closeModal() {
     this.isModalOpen = false;
   }
 
   handleRowClick(employee: any): void {
-    if (employee.trainingStatus === 'Completed') {
-      this.openModal(employee.TraineeCode, employee.ID);
-    } else if (employee.trainingStatus === 'Pending') {
+    this.trainingMappingID = employee.ID;
+    if (employee.trainingStatus === 'Not-Started') {
       this.openTrainerModal(employee);
+    } else {
+      this.openModal(employee.ID, employee.trainingStatus);
     }
   }
 
@@ -348,9 +377,9 @@ closeImageModal(): void {
     this.isTrainerModalOpen = true;
     this.selectedTrainee = employee.TraineeCode;
     const branchName = employee.Branches;
-    const payload = { 
+    const payload = {
       Branches: branchName,
-      employeeCode: this.selectedTrainee 
+      employeeCode: this.selectedTrainee
     };
     this.http.post<any>('/api/api/webCourseMaster/GetTrainersListBranchWise', payload).subscribe(
       response => {
@@ -382,7 +411,9 @@ closeImageModal(): void {
     }
     const payload = {
       TraineeCode: this.selectedTrainee,
-      TrainerCode: this.selectedTrainerCode
+      TrainerCode: this.selectedTrainerCode,
+      id: this.trainingMappingID,
+
     };
     this.http.post<any>('/api/api/webCourseMaster/TrainingMappingInsert', payload).subscribe(
       (response) => {
@@ -396,7 +427,6 @@ closeImageModal(): void {
       }
     );
   }
-
 
   verifyFaceapiDetails(item: any): void {
     if (!item.TraineeImage || !item.TrainerImage) {
@@ -415,9 +445,9 @@ closeImageModal(): void {
     this.http.post<any>(apiUrl, requestData).subscribe(
       response => {
         this.isLoading = false;  // Stop the loader
-       const rawSimilarity = response[0].similarityPercentage;
-item.SimilarityPer = parseInt(rawSimilarity.toString().slice(0, 2));
-console.log('Formatted Similarity Percentage:', item.SimilarityPer);
+        const rawSimilarity = response[0].similarityPercentage;
+        item.SimilarityPer = parseInt(rawSimilarity.toString().slice(0, 2));
+        console.log('Formatted Similarity Percentage:', item.SimilarityPer);
 
         item.IsMatched = response[0].match;
         this.Savematchdata(item.ID, item.Typeid, item.IsMatched, item.SimilarityPer)
@@ -464,5 +494,141 @@ console.log('Formatted Similarity Percentage:', item.SimilarityPer);
     if (typeof value === 'number') return !isNaN(value);
     if (typeof value == 'object') return Object.keys(value).length > 0;
     return true;
+  }
+
+  updateImageQCStatus(id: number, Type: number, status: 'Approve' | 'Reject', trainingStatus: any): void {
+    const payload = {
+      Id: id,
+      Type: Type,
+      status: status
+    };
+    this.http.post<any>('/api/api/fieldTraining/FieldTrainingImageQCUpdate', payload).subscribe(
+      (response) => {
+        const index = this.EmployeeData.findIndex((x: any) => x.ID === id && x.Typeid === Type);
+        if (index !== -1) {
+          this.EmployeeData[index] = {
+            ...this.EmployeeData[index],
+            QCStatus: status
+          };
+        }
+        this.cdr.detectChanges();
+        if (trainingStatus === 'Approval-Pending') {
+          this.allApproved();
+        }
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  allApproved(): boolean {
+    return this.showSubmitButton = this.EmployeeData.every((item: any) =>
+      item.QCStatus === 'Approve' || item.QCStatus === 'Reject'
+    );
+  }
+
+  submitFinalData(id: number): void {
+    const payload = {
+      Id: id
+    };
+    console.log(payload)
+    this.http.post<any>('/api/api/fieldTraining/FieldTrainingQCSubmitAction', payload).subscribe(
+      (response) => {
+        this.isModalOpen = false;
+        this.FetchEDData();
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  ExcelData() {
+    const params = {
+      BankPartners: this.formData.bank || 'AB',
+      States: this.formData.state || 'AB',
+      Area: this.formData.area || 'AB',
+      Branches: this.formData.branch || 'AB',
+      DesignationID: this.formData.designation || 0,
+      doj: this.formData.date || '',
+      todate: this.formData.todate || '',
+    };
+    this.http.post<any>('/api/api/webCourseMaster/GetFieldTrainingReport', params).subscribe(
+      (response) => {
+        const data = response.data;
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+        // Create a workbook and append the worksheet
+        const workbook: XLSX.WorkBook = {
+          Sheets: { 'Training Report': worksheet },
+          SheetNames: ['Training Report']
+        };
+        // Generate buffer
+        const excelBuffer: any = XLSX.write(workbook, {
+          bookType: 'xlsx',
+          type: 'array'
+        });
+
+        // Save the Excel file
+        const fileName = 'FieldTrainingReport.xlsx';
+        const dataBlob: Blob = new Blob([excelBuffer], {
+          type:
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        });
+        FileSaver.saveAs(dataBlob, fileName);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+
+  getRowClass(status: string): { [key: string]: string } {
+  switch (status) {
+    case 'Completed':
+      return { 'background-color': '#DFF5E1' }; // Light green
+    case 'Assessment-Pending':
+      return { 'background-color': '#FFF4CC' }; // Light yellow
+    case 'Reupload-Pending':
+      return { 'background-color': '#F0F0F0' }; // Light yellow     
+    case 'Approval-Pending':
+      return { 'background-color': '#FFF4CC' }; // Darker orange
+    case 'InProgress':
+      return { 'background-color': '#DCEEFF' }; // Light blue
+    case 'Not-Started':
+      return { 'background-color': '#FFE5D9' }; // Light orange
+    default:
+      return {};
+  }
+}
+
+
+
+  GetFieldTrainingDashboardCount() {
+    const params = {
+      BankPartners: this.formData.bank || 'AB',
+      States: this.formData.state || 'AB',
+      Area: this.formData.area || 'AB',
+      Branches: this.formData.branch || 'AB',
+      DesignationID: this.formData.designation || 0,
+      doj: this.formData.date || '',
+      todate: this.formData.todate || '',
+    };
+    this.http.post<any>('/api/api/fieldTraining/GetFieldTrainingDashboardCount', params).subscribe(
+      (response) => {
+        this.Total=response.data[0].Total
+        this.Completed=response.data[0].Completed
+        this.ApprovalPending=response.data[0].ApprovalPending
+       this.Notstarted=response.data[0].NotStarted
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        this.isLoading = false;
+      }
+    );
   }
 }

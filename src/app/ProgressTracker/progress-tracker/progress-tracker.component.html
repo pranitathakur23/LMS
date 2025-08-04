@@ -12,8 +12,8 @@
       <!---->
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_Bank}}</label>
-        <ng-select [items]="banks" bindLabel="name" bindValue="name" [(ngModel)]="selectedBank" 
-          (change)="fetchstates()" class="small-dropdown" [clearable]="false">
+        <ng-select [items]="banks" bindLabel="name" bindValue="name" [(ngModel)]="selectedBank" (change)="fetchstates()"
+          class="small-dropdown" [clearable]="false">
         </ng-select>
       </div>
       <div class="col-md">
@@ -22,25 +22,25 @@
           (change)="fetchareas()" class="small-dropdown" [clearable]="false">
         </ng-select>
       </div>
-      
+
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_area}}</label>
         <ng-select [items]="areas" bindLabel="name" bindValue="name" [(ngModel)]="selectedArea"
           (change)="fetchbranches()" class="small-dropdown" [clearable]="false">
         </ng-select>
       </div>
-      
+
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_Branch}}</label>
         <ng-select [items]="branches" bindLabel="name" bindValue="name" [(ngModel)]="selectedBranch"
           (change)="fetchdesignations()" class="small-dropdown" [clearable]="false">
         </ng-select>
       </div>
-      
-      
+
+
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_Designation}}</label>
-         <ng-select [items]="designations" bindLabel="name" bindValue="DesignationID" [(ngModel)]="selectedDesignation"
+        <ng-select [items]="designations" bindLabel="name" bindValue="DesignationID" [(ngModel)]="selectedDesignation"
           (change)="fetchemployees()" class="small-dropdown" [clearable]="false">
         </ng-select>
       </div>
@@ -48,29 +48,31 @@
       <div class="col-md">
 
         <label class="form-label fw-semibold">{{labels.txt_EmployeeName}}</label>
-       <ng-select [items]="employees" bindLabel="name" bindValue="EmpCode" [(ngModel)]="selectedEmployee"
-           class="small-dropdown" [clearable]="false">
+        <ng-select [items]="employees" bindLabel="name" bindValue="EmpCode" [(ngModel)]="selectedEmployee"
+          class="small-dropdown" [clearable]="false">
         </ng-select>
 
       </div>
       <div class="col-md-auto">
-        <button class="btn btn-primary rounded-pill px-4" (click)="onSearch()">🔍 Search</button>
+        <button class="btn btn-primary rounded-pill px-4" (click)="onSearch()">🔍</button>
       </div>
     </div>
   </div>
 
   <!-- Content Row -->
   <div class="row mx-1 mt-4">
-     <!-- Status Cards -->
-     <div class="col-lg-6">
+    <!-- Status Cards -->
+    <div class="col-lg-6">
       <div class="row g-4">
-       
 
-        
+
+
 
         <!-- Completed -->
         <div class="col-md-6">
-          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #4CAF50, #81C784); border-radius: 1rem; cursor: pointer;" (click)="exportExcelReport(1)">
+          <div class="card shadow-sm p-3 text-white"
+            style="background: linear-gradient(135deg, #43c44d, #b9eabd); border-radius: 1rem; cursor: pointer;"
+            (click)="exportExcelReport(1)">
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <h6 class="fw-bold mb-1">Completed</h6>
@@ -83,7 +85,9 @@
         </div>
         <!-- In Progress -->
         <div class="col-md-6">
-          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #00C9FF, #92FE9D); border-radius: 1rem; cursor: pointer;" (click)="exportExcelReport(2)">
+          <div class="card shadow-sm p-3 text-white"
+            style="background: linear-gradient(135deg, #1c9bab, #b6eaf0); border-radius: 1rem; cursor: pointer;"
+            (click)="exportExcelReport(2)">
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <h6 class="fw-bold mb-1">In Progress</h6>
@@ -94,22 +98,26 @@
             <h2 class="fw-bold mt-3">{{Inprogress}}</h2>
           </div>
         </div>
- <!-- Unassigned -->
- <div class="col-md-6">
-  <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #FF6B6B, #FF8E53); border-radius: 1rem; cursor: pointer;" (click)="exportExcelReport(4)">
-    <div class="d-flex justify-content-between align-items-center">
-      <div>
-        <h6 class="fw-bold mb-1">Unassigned</h6>
-        <p class="mb-0 small">Courses yet to be assigned</p>
-      </div>
-      <i class="bi bi-slash-circle fs-2"></i>
-    </div>
-    <h2 class="fw-bold mt-3">{{Unassigned}}</h2>
-  </div>
-</div>
+        <!-- Unassigned -->
+        <div class="col-md-6">
+          <div class="card shadow-sm p-3 text-white"
+            style="background: linear-gradient(135deg, #e76161, #e5a6a6); border-radius: 1rem; cursor: pointer;"
+            (click)="exportExcelReport(4)">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="fw-bold mb-1">Unassigned</h6>
+                <p class="mb-0 small">Courses yet to be assigned</p>
+              </div>
+              <i class="bi bi-slash-circle fs-2"></i>
+            </div>
+            <h2 class="fw-bold mt-3">{{Unassigned}}</h2>
+          </div>
+        </div>
         <!-- Not Started -->
         <div class="col-md-6">
-          <div class="card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #FFB75E, #ED8F03); border-radius: 1rem; cursor: pointer;" (click)="exportExcelReport(3)">
+          <div class="card shadow-sm p-3 text-white"
+            style="background: linear-gradient(135deg, #c5a31c, #efde99); border-radius: 1rem; cursor: pointer;"
+            (click)="exportExcelReport(3)">
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <h6 class="fw-bold mb-1">Not Started</h6>
@@ -121,7 +129,7 @@
           </div>
         </div>
       </div>
-    </div> 
+    </div>
     <!-- Progress Tracker -->
     <div class="col-lg-6 mb-4">
       <div class="card shadow p-4 progress-card" style="border-radius: 1rem; max-height: 450px; overflow-y: auto;">
@@ -129,22 +137,20 @@
         <div *ngFor="let course of courses" class="mb-4">
           <div class="d-flex justify-content-between mb-1">
             <span><i class="bi bi-book-fill text-info me-2"></i>{{ course.name }}</span>
-<span class="fw-semibold">{{ course.progress }}</span>  <!-- will show 3.20% -->
+            <span class="fw-semibold">{{ course.progress }}</span> <!-- will show 3.20% -->
           </div>
           <div class="progress" style="height: 16px; border-radius: 10px; background-color: #e9ecef;">
-        <div class="progress-bar"
-  [ngStyle]="{
+            <div class="progress-bar" [ngStyle]="{
     'width.%': course.progressValue < 1 ? 1 : course.progressValue,
     'background': getGradient(course.progressValue)
-  }"
-  style="border-radius: 10px;">
-</div>
+  }" style="border-radius: 10px;">
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-   
+
   </div>
 
 
@@ -153,5 +159,5 @@
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
-  
+
 </div>
