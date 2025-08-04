@@ -174,84 +174,52 @@
 <div *ngIf="isModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;">
   <div class="modal-content evidence-modal">
     <span class="close-btn" (click)="closeModal()">&times;</span>
-    <h3 class="text-center mb-2">{{ labels.txt_EvidenceDetails }}</h3>
-    <form>
+    <div class="modal-header-fixed">
+      <h3 class="text-center mb-2">{{ labels.txt_EvidenceDetails }}</h3>
       <hr />
-      <div *ngFor="let item of EmployeeData; let i = index">
-        <div class="row mb-4">
-          <h5><b>{{ i + 1 }}. {{ item.Type }} :</b></h5>
+    </div>
+    <div class="modal-body-scrollable">
+      <form>
+        <div *ngFor="let item of EmployeeData; let i = index">
+          <div class="row mb-4">
+            <h5><b>{{ i + 1 }}. {{ item.Type }} :</b></h5>
 
-          <!-- Trainee Image Section -->
-          <div class="col-md-6">
-            <div class="card mt-1 shadow-sm">
-              <div class="card-header profileDiv"><b>{{ labels.txt_TraineeImage }}</b></div>
-              <img [src]="item.TraineeImage" class="card-img-top openimgFrame" alt="Trainee Image"
-                style="height: 150px; object-fit: cover; width: 100%;" 
-                (click)="openImageModal(item.TraineeImage)" />
-              <label style="margin-left: 5px;">
-                <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TraineeUploadedDate | date: 'dd-MM-yyyy' }}
-              </label>
-              <label style="margin-left: 5px;">
-                <b>{{ labels.txt_LatLong }} :</b> {{ item.LatLong }}
-              </label>
-            </div>
-          </div>
-
-          <!-- Trainer Image Section -->
-          <div class="col-md-6">
-            <div class="card mt-1 shadow-sm">
-              <div class="card-header profileDiv"><b>{{ labels.txt_TrainerImage }}</b></div>
-              <img [src]="item.TrainerImage" class="card-img-top openimgFrame" alt="Trainer Image"
-                style="height: 150px; object-fit: cover; width: 100%;" 
-                (click)="openImageModal(item.TrainerImage)" />
-              <label style="margin-left: 5px;">
-                <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TrainerUploadedDate | date: 'dd-MM-yyyy' }}
-              </label>
-              <label style="margin-left: 5px;">
-                <b>{{ labels.txt_LatLong }} :</b> {{ item.LatLong }}
-              </label>
-            </div>
-          </div>
-
-          <!-- Match Section -->
-          <!-- <div class="col-md-4 mt-5">
-            <div class="row">
-             
-
-              <div class="facematchBtn">
-                <button class="btn btn-info fmDiv"
-                  [class.readonly-btn]="!( !isNonEmpty(item.IsMatched) && !isNonEmpty(item.SimilarityPer) )"
-                  (click)=" (!isNonEmpty(item.IsMatched) && !isNonEmpty(item.SimilarityPer)) && verifyFaceapiDetails(item)"
-                  style="color: white;">{{ Button.FaceMatch }}
-                </button>
-
-                <span *ngIf="item.SimilarityPer !== null && item.SimilarityPer !== undefined && item.SimilarityPer !== ''">
-                  <span *ngIf="item.SimilarityPer >= 50" class="circle-check">
-                    <i class="fa fa-check" aria-hidden="true"></i>
-                  </span>
-                  <span *ngIf="item.SimilarityPer < 50" class="circle-cross">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                  </span>
-                </span>
-              </div>
-
-              <div class="col-md-12 mt-2">
-                <ng-container *ngIf="isNonEmpty(item.IsMatched)">
-                  <label class="form-label bold-label me-2"><b>{{ labels.txt_IsMatch }}:</b></label>
-<span class="me-3">{{ item.SimilarityPer | number:'1.0-0' | slice:0:2 }}%</span>
-                </ng-container>
-
-                <ng-container *ngIf="isNonEmpty(item.SimilarityPer)">
-                  <label class="form-label bold-label me-2"><b>{{ labels.txt_Similarity }} :</b></label>
-<span class="me-3">{{ item.SimilarityPer | number:'1.0-0' | slice:0:2 }}%</span>
-                </ng-container>
+            <!-- Trainee Image Section -->
+            <div class="col-md-6">
+              <div class="card mt-1 shadow-sm">
+                <div class="card-header profileDiv"><b>{{ labels.txt_TraineeImage }}</b></div>
+                <img [src]="item.TraineeImage" class="card-img-top openimgFrame" alt="Trainee Image"
+                  style="height: 150px; object-fit: cover; width: 100%;" 
+                  (click)="openImageModal(item.TraineeImage)" />
+                <label style="margin-left: 5px;">
+                  <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TraineeUploadedDate | date: 'dd-MM-yyyy' }}
+                </label>
+                <label style="margin-left: 5px;">
+                  <b>{{ labels.txt_LatLong }} :</b> {{ item.LatLong }}
+                </label>
               </div>
             </div>
-          </div> -->
+
+            <!-- Trainer Image Section -->
+            <div class="col-md-6">
+              <div class="card mt-1 shadow-sm">
+                <div class="card-header profileDiv"><b>{{ labels.txt_TrainerImage }}</b></div>
+                <img [src]="item.TrainerImage" class="card-img-top openimgFrame" alt="Trainer Image"
+                  style="height: 150px; object-fit: cover; width: 100%;" 
+                  (click)="openImageModal(item.TrainerImage)" />
+                <label style="margin-left: 5px;">
+                  <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TrainerUploadedDate | date: 'dd-MM-yyyy' }}
+                </label>
+                <label style="margin-left: 5px;">
+                  <b>{{ labels.txt_LatLong }} :</b> {{ item.LatLong }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <hr />
         </div>
-        <hr />
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
 
