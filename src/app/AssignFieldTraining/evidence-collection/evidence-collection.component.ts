@@ -351,6 +351,7 @@ export class EvidenceCollectionComponent {
       }
     );
   }
+
   openImageModal(imageUrl: string): void {
     this.selectedImageUrl = imageUrl;
     this.isImageModalOpen = true;
@@ -537,6 +538,7 @@ export class EvidenceCollectionComponent {
     this.http.post<any>('/api/api/fieldTraining/FieldTrainingQCSubmitAction', payload).subscribe(
       (response) => {
         this.isModalOpen = false;
+        this.FetchEDData();
       },
       (error) => {
         console.error('Error fetching data:', error);
