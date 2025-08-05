@@ -229,9 +229,9 @@
 
 
 <!-- Modal for Course Allocation -->
-<div *ngIf="isModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;">
+<div #modalContainer *ngIf="isModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;"   tabindex="0" (keydown.escape)="closeModal()">
   <div class="modal-content evidence-modal">
-    <span class="close-btn" (click)="closeModal()">&times;</span>
+    <span class="close-btn"  (click)="closeModal()">&times;</span>
     <div class="modal-header-fixed">
       <h3 class="text-center mb-2">{{ labels.txt_EvidenceDetails }}</h3>
       <hr />
@@ -252,7 +252,7 @@
                   style="height: 150px; object-fit: cover; width: 100%;" 
                   (click)="openImageModal(item.TraineeImage)" />
                 <label style="margin-left: 5px;">
-                  <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TraineeUploadedDate | date: 'dd-MM-yyyy' }}
+                  <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TraineeUploadedDate ||'Not Available' }}
 
                 </label>
                 <label style="margin-left: 5px;">
@@ -269,7 +269,7 @@
                   style="height: 150px; object-fit: cover; width: 100%;" 
                   (click)="openImageModal(item.TrainerImage)" />
                 <label style="margin-left: 5px;">
-                  <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TrainerUploadedDate | date: 'dd-MM-yyyy' }}
+                  <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TrainerUploadedDate||'Not Available' }}
                 </label>
                 <label style="margin-left: 5px;">
                   <b>{{ labels.txt_LatLong }} :</b> {{ item.LatLong }}
@@ -277,15 +277,38 @@
 
               </div>
             </div>
+               <div class="col-md-12 d-flex justify-content-end">
+              <div class="col-md-6 mt-3">
+                <p *ngIf="item.QCStatus === 'Reject'" class="text-danger">
+                  <i class="fa fa-times-circle me-2"></i> This image has been rejected
+                </p>
+                <p *ngIf="item.QCStatus === 'Approve'" class="text-success">
+                  <i class="fa fa-check-circle me-2"></i> This image has been approved
+                </p>
+              </div>
+              <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-success btn-sm me-2"
+                  [disabled]="(item.QCStatus === 'Approve' || item.QCStatus === 'Reject') "
+                  (click)="updateImageQCStatus(item.ID , item.Typeid ,'Approve',item.trainingStatus)">
+                  Approve
+                </button>
+                <button class="btn btn-danger btn-sm me-2"
+                  [disabled]="(item.QCStatus === 'Approve' || item.QCStatus === 'Reject')"
+                  (click)="updateImageQCStatus(item.ID , item.Typeid ,'Reject',item.trainingStatus)">
+                  Reject
+                </button>
+              </div>
+           
           </div>
+          </div>        
           <hr />
         </div>
       </form>
     </div>
   </div>
-
+</div>
   <!-- Trainer Assignment Modal -->
-  <div *ngIf="isTrainerModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;">
+  <div  #trainerModal *ngIf="isTrainerModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;" tabindex="0" (keydown.escape)="closeTrainerModal()">
     <div class="modal-content">
       <span class="close-btn" (click)="closeTrainerModal()">&times;</span>
       <h4 class="text-center">Assign Training</h4>
