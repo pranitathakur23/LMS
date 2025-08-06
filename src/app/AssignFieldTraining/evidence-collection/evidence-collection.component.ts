@@ -36,6 +36,33 @@ interface Employee {
 export class EvidenceCollectionComponent {
   @ViewChild('allocateFromSelect') allocateFromSelect!: ElementRef;
   @ViewChild('allocateToSelect') allocateToSelect!: ElementRef;
+  @ViewChild('modalContainer') modalContainer!: ElementRef;
+  @ViewChild('trainerModal') trainerModalRef!: ElementRef;
+
+
+  private wasModalPreviouslyOpen = false;
+    private wasTrainerModalOpen = false;
+
+  ngAfterViewChecked(): void {
+    if (this.isModalOpen && !this.wasModalPreviouslyOpen) {
+      this.wasModalPreviouslyOpen = true;
+      setTimeout(() => {
+        this.modalContainer?.nativeElement?.focus();
+      });
+    } else if (!this.isModalOpen && this.wasModalPreviouslyOpen) {
+      this.wasModalPreviouslyOpen = false;
+    }
+
+        // Trainer Modal Focus
+    if (this.isTrainerModalOpen && !this.wasTrainerModalOpen) {
+      this.wasTrainerModalOpen = true;
+      setTimeout(() => this.trainerModalRef?.nativeElement?.focus(), 0);
+    } else if (!this.isTrainerModalOpen && this.wasTrainerModalOpen) {
+      this.wasTrainerModalOpen = false;
+    }
+  }
+
+
   courseId: number | null = null;
   TraineeImage: string = '';
   TrainerImage: string = '';
@@ -248,17 +275,18 @@ export class EvidenceCollectionComponent {
 
   // Handle Search functionality
   searchEmployees() {
-    console.log(this.searchText, this.employees,);  // Log the search term to check if it's updating
-    if (this.searchText) {
+   if (this.searchText) {
       // Filter employees based on searchText
       this.filteredEmployees = this.employees.filter(employee =>
         Object.values(employee).some(val =>
           val.toString().toLowerCase().includes(this.searchText.toLowerCase())
         )
       );
+       this.updateRangeInfo() 
     } else {
       // Reset to show all employees if the search term is empty
       this.filteredEmployees = [...this.employees];
+       this.updateRangeInfo() 
     }
   }
 
