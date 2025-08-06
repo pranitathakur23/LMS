@@ -303,6 +303,11 @@
           </div>        
           <hr />
         </div>
+         <div class="col-md-12 d-flex justify-content-end">
+          <div class="d-flex justify-content-end mt-3">
+            <button class="btn btn-primary btn-sm me-2"  *ngIf="showSubmitButton" (click)="submitFinalData(ModalIDForSave)"style="background-color: #0a48b3 ;">Submit</button>     
+          </div>
+        </div>
       </form>
     </div>
   </div>
