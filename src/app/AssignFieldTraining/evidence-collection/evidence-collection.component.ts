@@ -150,7 +150,7 @@ export class EvidenceCollectionComponent {
   Completed: number = 0;
   ApprovalPending: number = 0;
   Notstarted: number = 0;
-
+ApproveRej :boolean =false;
 
   constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) { }
 
@@ -295,12 +295,11 @@ export class EvidenceCollectionComponent {
           val.toString().toLowerCase().includes(this.searchText.toLowerCase())
         )
       );
-       this.updateRangeInfo() 
     } else {
       // Reset to show all employees if the search term is empty
       this.filteredEmployees = [...this.employees];
-       this.updateRangeInfo() 
     }
+     this.updateRangeInfo() 
   }
 
   // Update range information for pagination
@@ -380,8 +379,10 @@ export class EvidenceCollectionComponent {
             this.showSubmitButton = this.EmployeeData.every((item: any) =>
               item.QCStatus === 'Approve' || item.QCStatus === 'Reject'
             );
+            this.ApproveRej =true;
           } else {
             this.showSubmitButton = false;
+               this.ApproveRej =false;
           }
         }
       },

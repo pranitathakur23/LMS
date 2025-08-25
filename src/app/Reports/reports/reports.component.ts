@@ -220,7 +220,8 @@ export class ReportsComponent {
       String(item.testTimeStamp || '').toLowerCase().includes(term) ||
       String(item.totalMarks || '').toLowerCase().includes(term) ||
       String(item.obtainedMarks || '').toLowerCase().includes(term) ||
-      String(item.passingMarks || '').toLowerCase().includes(term)
+      String(item.passingMarks || '').toLowerCase().includes(term) ||
+        String(item.Designation || '').toLowerCase().includes(term)
     );
   }
 
