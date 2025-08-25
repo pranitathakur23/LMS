@@ -334,3 +334,15 @@ form .form-select, form .form-control {
   z-index: 10000;
 }
 
+.remarkClosebtn{
+    top: 11px;
+    right: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #ff001f;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 4px 12px;
+    cursor: pointer;
+    z-index: 10000;
+}

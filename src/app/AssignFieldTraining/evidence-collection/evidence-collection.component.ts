@@ -100,6 +100,19 @@ export class EvidenceCollectionComponent {
     fromBranch: '',
   };
 
+  selectedRejectData: {
+  id: number;
+  typeId: number;
+  trainingStatus: any;
+  remark: string;
+} = {
+  id: 0,
+  typeId: 0,
+  trainingStatus: '',
+  remark: ''
+};
+
+
   isModalOpen: boolean = false;
   courses: any[] = [];
   banks: any[] = [];
@@ -388,6 +401,7 @@ export class EvidenceCollectionComponent {
     this.isImageModalOpen = false;
     this.selectedImageUrl = '';
   }
+
   closeModal() {
     this.isModalOpen = false;
   }
@@ -524,32 +538,93 @@ export class EvidenceCollectionComponent {
     return true;
   }
 
-  updateImageQCStatus(id: number, Type: number, status: 'Approve' | 'Reject', trainingStatus: any): void {
-    const payload = {
-      Id: id,
-      Type: Type,
-      status: status
-    };
-    this.http.post<any>('/api/api/fieldTraining/FieldTrainingImageQCUpdate', payload).subscribe(
-      (response) => {
-        const index = this.EmployeeData.findIndex((x: any) => x.ID === id && x.Typeid === Type);
-        if (index !== -1) {
-          this.EmployeeData[index] = {
-            ...this.EmployeeData[index],
-            QCStatus: status
-          };
-        }
-        this.cdr.detectChanges();
-        if (trainingStatus === 'Approval-Pending') {
-          this.allApproved();
-        }
-      },
-      (error) => {
-        console.error('Error fetching data:', error);
-        this.isLoading = false;
-      }
-    );
+  Rejectremark(id: number, typeId: number, trainingStatus: any): void {
+    this.selectedRejectData.id = id;
+    this.selectedRejectData.typeId = typeId;
+    this.selectedRejectData.trainingStatus = trainingStatus;
+    this.isRejectModalOpen = true;
   }
+
+  isRejectModalOpen: boolean = false;
+     closeRejectModal() {
+    this.isRejectModalOpen = false;
+  }
+
+  submitReject(): void {
+  if (!this.selectedRejectData.remark) {
+    alert('Please enter a remark.');
+    return;
+  }
+
+  this.updateImageQCStatus(
+    this.selectedRejectData.id,
+    this.selectedRejectData.typeId,
+    'Reject',
+    this.selectedRejectData.trainingStatus,
+    this.selectedRejectData.remark
+  );
+
+  this.isRejectModalOpen = false;
+ }
+
+updateImageQCStatus(id: number,Type: number,status: 'Approve' | 'Reject',trainingStatus: any, remark: string = ''): void {
+  const payload: any = {
+    Id: id,
+    Type: Type,
+    status: status
+  };
+
+  if (status === 'Reject') {
+    payload.rejectRemark = remark;
+  }
+  this.http.post<any>('/api/api/fieldTraining/FieldTrainingImageQCUpdate', payload).subscribe(
+    (response) => {
+      const index = this.EmployeeData.findIndex((x: any) => x.ID === id && x.Typeid === Type);
+      if (index !== -1) {
+        this.EmployeeData[index] = {
+          ...this.EmployeeData[index],
+          QCStatus: status
+        };
+      }
+      this.cdr.detectChanges();
+
+      if (trainingStatus === 'Approval-Pending') {
+        this.allApproved();
+      }
+    },
+    (error) => {
+      console.error('Error updating image QC status:', error);
+    }
+  );
+}
+
+
+  // updateImageQCStatus(id: number, Type: number, status: 'Approve' | 'Reject', trainingStatus: any): void {
+  //   const payload = {
+  //     Id: id,
+  //     Type: Type,
+  //     status: status
+  //   };
+  //   this.http.post<any>('/api/api/fieldTraining/FieldTrainingImageQCUpdate', payload).subscribe(
+  //     (response) => {
+  //       const index = this.EmployeeData.findIndex((x: any) => x.ID === id && x.Typeid === Type);
+  //       if (index !== -1) {
+  //         this.EmployeeData[index] = {
+  //           ...this.EmployeeData[index],
+  //           QCStatus: status
+  //         };
+  //       }
+  //       this.cdr.detectChanges();
+  //       if (trainingStatus === 'Approval-Pending') {
+  //         this.allApproved();
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching data:', error);
+  //       this.isLoading = false;
+  //     }
+  //   );
+  // }
 
   allApproved(): boolean {
     return this.showSubmitButton = this.EmployeeData.every((item: any) =>

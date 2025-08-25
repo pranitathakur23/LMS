@@ -292,11 +292,13 @@
                   (click)="updateImageQCStatus(item.ID , item.Typeid ,'Approve',item.trainingStatus)">
                   Approve
                 </button>
-                <button class="btn btn-danger btn-sm me-2"
-                  [disabled]="(item.QCStatus === 'Approve' || item.QCStatus === 'Reject')"
-                  (click)="updateImageQCStatus(item.ID , item.Typeid ,'Reject',item.trainingStatus)">
-                  Reject
-                </button>
+            <button
+              class="btn btn-danger btn-sm me-2"
+              [disabled]="(item.QCStatus === 'Approve' || item.QCStatus === 'Reject')"
+              (click)="Rejectremark(item.ID, item.Typeid, item.trainingStatus)">
+              Reject
+            </button>
+
               </div>
            
           </div>
@@ -312,6 +314,35 @@
     </div>
   </div>
 </div>
+
+
+<!-- Modal for   Remark-->
+  <div *ngIf="isRejectModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;">
+    <div class="modal-content">
+      <h3 class="text-center">Remark</h3>
+      <span class="close-btn remarkClosebtn" (click)="closeRejectModal()">&times;</span>
+      <br>
+      <form>
+        <div class="col-md-12">
+          <!-- <input type="text" [(ngModel)]="selectedRejectData.remark" name="remarkInput" class="form-control"
+            placeholder="Enter Remark" required /> -->
+          <textarea class="form-control" [(ngModel)]="selectedRejectData.remark" name="remarkInput" rows="3" placeholder="Enter Remark"
+          ></textarea>
+        </div>
+        <div class="text-center mt-3">
+         <!-- <div class="col-md-12 d-flex justify-content-end"> -->
+  <button class="btn btn-primary btn-sm" style="width: 30%; padding: 8px;" (click)="submitReject()">
+    Submit
+  </button>
+</div>
+
+
+      </form>  
+    </div>
+  </div>
+
+
+
   <!-- Trainer Assignment Modal -->
   <div  #trainerModal *ngIf="isTrainerModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;" tabindex="0" (keydown.escape)="closeTrainerModal()">
     <div class="modal-content">
