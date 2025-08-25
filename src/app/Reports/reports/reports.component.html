@@ -125,6 +125,7 @@
           <th (click)="sortData('totalMarks')">{{table.tbl_Marks}}</th>
           <th (click)="sortData('obtainedMarks')">{{table.tbl_ObtainedMarks}}</th>
           <th (click)="sortData('passingMarks')">{{table.tbl_PassMarks}}</th>
+            <th (click)="sortData('Designation')">{{table.tbl_Designation}}</th>
         </tr>
       </thead>
       <tbody>
@@ -150,6 +151,7 @@
           <td>{{ item.totalMarks }}</td>
           <td>{{ item.obtainedMarks }}</td>
           <td>{{ item.passingMarks }}</td>
+            <td>{{ item.Designation }}</td>
         </tr>
       </tbody>
     </table>
