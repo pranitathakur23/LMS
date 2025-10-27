@@ -7,6 +7,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 import { AppLabels, AppHeader, AppLink, AppButton, AppPlaceHolder, Apptable } from '../../app.constants';
 import { NgSelectModule } from '@ng-select/ng-select';
 interface Bank {
@@ -263,6 +265,7 @@ export class FieldTrainingAssignmentComponent implements OnInit {
       DesignationID: this.formData.designation || 0,
       doj: this.formData.date || '',
       todate: this.formData.todate || '',
+      mode:0
     };
     this.isLoading = true;
     this.http.post<any>('/api/api/webCourseMaster/GetNewJoinersData', params).subscribe(
@@ -321,6 +324,47 @@ export class FieldTrainingAssignmentComponent implements OnInit {
     this.trainerList = [];
   }
 
+    ExcelData() {
+      const params = {
+        BankPartners: this.formData.bank || 'AB',
+        States: this.formData.state || 'AB',
+        Area: this.formData.area || 'AB',
+        Branches: this.formData.branch || 'AB',
+        DesignationID: this.formData.designation || 0,
+        doj: this.formData.date || '',
+        todate: this.formData.todate || '',
+        mode:1
+      };
+      this.http.post<any>('/api/api/webCourseMaster/GetNewJoinersData', params).subscribe(
+        (response) => {
+          const data = response.data;
+          const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+          // Create a workbook and append the worksheet
+          const workbook: XLSX.WorkBook = {
+            Sheets: { 'Training Report': worksheet },
+            SheetNames: ['Training Report']
+          };
+          // Generate buffer
+          const excelBuffer: any = XLSX.write(workbook, {
+            bookType: 'xlsx',
+            type: 'array'
+          });
+  
+          // Save the Excel file
+          const fileName = 'FieldTrainingReport.xlsx';
+          const dataBlob: Blob = new Blob([excelBuffer], {
+            type:
+              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+          });
+          FileSaver.saveAs(dataBlob, fileName);
+        },
+        (error) => {
+          console.error('Error fetching data:', error);
+          this.isLoading = false;
+        }
+      );
+    }
+  
   SaveandUpdateUserDetails() {
     if (!this.selectedTrainerCode) {
       alert('Please select a trainer.');

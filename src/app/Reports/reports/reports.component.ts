@@ -208,7 +208,7 @@ export class ReportsComponent {
       String(item.employeeCode || '').toLowerCase().includes(term) ||
       String(item.employeeName || '').toLowerCase().includes(term) ||
       String(item.area || '').toLowerCase().includes(term) ||
-      String(item.region || '').toLowerCase().includes(term) ||
+      String(item.Branch || '').toLowerCase().includes(term) ||
       String(item.states || '').toLowerCase().includes(term) ||
       String(item.courseStart || '').toLowerCase().includes(term) ||
       String(item.courseExpiry || '').toLowerCase().includes(term) ||
@@ -221,7 +221,9 @@ export class ReportsComponent {
       String(item.totalMarks || '').toLowerCase().includes(term) ||
       String(item.obtainedMarks || '').toLowerCase().includes(term) ||
       String(item.passingMarks || '').toLowerCase().includes(term) ||
-        String(item.Designation || '').toLowerCase().includes(term)
+      String(item.Designation || '').toLowerCase().includes(term) ||
+      String(item.Department || '').toLowerCase().includes(term)
+
     );
   }
 

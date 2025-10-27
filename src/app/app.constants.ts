@@ -158,6 +158,8 @@ export const AppLabels = {
     tbl_TraineeName :'Trainee Name',
     tbl_TrainerCode :'Trainer Code',
     tbl_TrainerName :'Trainer Name',
-    tbl_TrainingStatus :'Training Status'
+    tbl_TrainingStatus :'Training Status',
+    tbl_Department :'Department'
+
   }
 
