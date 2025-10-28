@@ -375,15 +375,15 @@ ApproveRej :boolean =false;
             ...item,
             trainingStatus: trainingStatus
           }));
-          if (trainingStatus === "Approval-Pending") {
-            this.showSubmitButton = this.EmployeeData.every((item: any) =>
-              item.QCStatus === 'Approve' || item.QCStatus === 'Reject'
-            );
+          // if (trainingStatus === "Approval-Pending") {
+          //   this.showSubmitButton = this.EmployeeData.every((item: any) =>
+          //     item.QCStatus === 'Approve' || item.QCStatus === 'Reject'
+          //   );
             this.ApproveRej =true;
-          } else {
-            this.showSubmitButton = false;
-               this.ApproveRej =false;
-          }
+          // } else {
+            // this.showSubmitButton = false;
+            //    this.ApproveRej =false;
+          // }
         }
       },
       (error) => {
