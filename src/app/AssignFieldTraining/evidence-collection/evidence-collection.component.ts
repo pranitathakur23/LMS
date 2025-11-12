@@ -121,6 +121,7 @@ export class EvidenceCollectionComponent {
   branches: any[] = [];
   designations: any[] = [];
   employees: Employee[] = [];
+  modalEmployees: any[] = [];     // Modal-specific data
   selectAll = false;  // Select All checkbox status
   isLoading: boolean = false; // Loading spinner flag
   isImageModalOpen: boolean = false;
@@ -287,20 +288,18 @@ ApproveRej :boolean =false;
   }
 
   // Handle Search functionality
-  searchEmployees() {
-   if (this.searchText) {
-      // Filter employees based on searchText
-      this.filteredEmployees = this.employees.filter(employee =>
-        Object.values(employee).some(val =>
-          val.toString().toLowerCase().includes(this.searchText.toLowerCase())
-        )
-      );
-    } else {
-      // Reset to show all employees if the search term is empty
-      this.filteredEmployees = [...this.employees];
-    }
-     this.updateRangeInfo() 
+searchEmployees() {
+  if (this.searchText) {
+    this.filteredEmployees = this.employees.filter(employee =>
+      Object.values(employee).some(val =>
+        val?.toString().toLowerCase().includes(this.searchText.toLowerCase())
+      )
+    );
+  } else {
+    this.filteredEmployees = [...this.employees];
   }
+  this.updateRangeInfo();
+}
 
   // Update range information for pagination
   updateRangeInfo() {
@@ -365,16 +364,16 @@ ApproveRej :boolean =false;
     this.http.post<any>('/api/api/webCourseMaster/GetUserWiseData', params).subscribe(
       (response) => {
         if (response.status && response.data && response.data.length > 0) {
-          this.employees = response.data.map((employee: any) => ({
-            ...employee
-          }));
+  this.modalEmployees = response.data.map((employee: any) => ({
+          ...employee
+        }));
           this.ModalIDForSave = ID;
-          this.EmployeeData = [...this.employees];
+          // this.EmployeeData = [...this.employees];
           this.isLoading = false
-          this.EmployeeData = this.EmployeeData.map((item: any) => ({
-            ...item,
-            trainingStatus: trainingStatus
-          }));
+        this.EmployeeData = this.modalEmployees.map((item: any) => ({
+          ...item,
+          trainingStatus: trainingStatus
+        }));
           // if (trainingStatus === "Approval-Pending") {
           //   this.showSubmitButton = this.EmployeeData.every((item: any) =>
           //     item.QCStatus === 'Approve' || item.QCStatus === 'Reject'
@@ -403,9 +402,11 @@ ApproveRej :boolean =false;
     this.selectedImageUrl = '';
   }
 
-  closeModal() {
-    this.isModalOpen = false;
-  }
+closeModal() {
+  this.isModalOpen = false;
+  this.EmployeeData = [];
+  this.modalEmployees = [];
+}
 
   handleRowClick(employee: any): void {
     this.trainingMappingID = employee.ID;

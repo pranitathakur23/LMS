@@ -210,8 +210,8 @@ export class ReportsComponent {
       String(item.area || '').toLowerCase().includes(term) ||
       String(item.Branch || '').toLowerCase().includes(term) ||
       String(item.states || '').toLowerCase().includes(term) ||
-      String(item.courseStart || '').toLowerCase().includes(term) ||
-      String(item.courseExpiry || '').toLowerCase().includes(term) ||
+      // String(item.courseStart || '').toLowerCase().includes(term) ||
+      // String(item.courseExpiry || '').toLowerCase().includes(term) ||
       String(item.courseCompletedDate || '').toLowerCase().includes(term) ||
       String(item.courseStatus || '').toLowerCase().includes(term) ||
       String(item.courseProgress || '').toLowerCase().includes(term) ||

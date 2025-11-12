@@ -73,77 +73,82 @@
         <!-- Search Button -->
         <div class="col-md-1 mt-4">
           <button type="button" class="btn btn-primary" (click)="FetchEDData()">Search</button>
-          </div>
-           <div class="col-md-2 mt-4">
-             <button type="button" class="btn btn-success" style="width: fit-content;" (click)="ExcelData()"> <i class="fa fa-file-excel" aria-hidden="true"></i> Report Export</button>
+        </div>
+        <div class="col-md-2 mt-4">
+          <button type="button" class="btn btn-success" style="width: fit-content;" (click)="ExcelData()"> <i
+              class="fa fa-file-excel" aria-hidden="true"></i> Report Export</button>
         </div>
       </div>
     </form>
-  <!-- Content Row -->
-  <div class="row mx-1 mt-4">
-     <!-- Status Cards -->
-        <div class="col-md-3">
-          <div class="card shadow-sm p-2 text-white" style="background: linear-gradient(135deg, #1c9bab, #b6eaf0); border-radius: 1rem; cursor: pointer;" >
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <h6 class="fw-bold mb-1 "  >Total</h6>
-                <p class="mb-0 small">Count of Total Training </p>
-              </div>
-              <i class="bi bi-bar-chart fs-2"></i>
+    <!-- Content Row -->
+    <div class="row mx-1 mt-4">
+      <!-- Status Cards -->
+      <div class="col-md-3">
+        <div class="card shadow-sm p-2 text-white"
+          style="background: linear-gradient(135deg, #1c9bab, #b6eaf0); border-radius: 1rem; cursor: pointer;">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="fw-bold mb-1 ">Total</h6>
+              <p class="mb-0 small">Count of Total Training </p>
             </div>
-            <h3 class="fw-bold mt-3"> {{Total}}</h3>
+            <i class="bi bi-bar-chart fs-2"></i>
           </div>
+          <h3 class="fw-bold mt-3"> {{Total}}</h3>
         </div>
-          <div class="col-md-3">
-          <div class="card shadow-sm p-2 text-white" style="background: linear-gradient(135deg, #43c44d, #b9eabd); border-radius: 1rem; cursor: pointer;" >
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <h6 class="fw-bold mb-1 "  >Completed</h6>
-                <p class="mb-0 small">Count of Training Completed</p>
-              </div>
-              <i class="bi bi-check-circle-fill fs-2"></i>
-            </div>
-            <h3 class="fw-bold mt-3">{{Completed}}</h3>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card shadow-sm p-2 text-white" style="background: linear-gradient(135deg, #c5a31c, #efde99); border-radius: 1rem; cursor: pointer;" >
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <h6 class="fw-bold mb-1 ">Approval Pending</h6>
-                <p class="mb-0 small">Count of Approval Pending</p>
-              </div>
-              <i class="bi bi-clock-history fs-2"></i>
-            </div>
-            <h3 class="fw-bold mt-3">{{ApprovalPending}}</h3>
-          </div>
-        </div>
-        <!-- Completed -->
-        <div class="col-md-3">
-          <div class="card shadow-sm p-2 text-white" style="background: linear-gradient(135deg, #e76161, #e5a6a6); border-radius: 1rem; cursor: pointer;" >
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <h6 class="fw-bold mb-1 " >Not started</h6>
-                <p class="mb-0 small">Count of Training Not started</p>
-              </div>
-              <i class="bi bi-slash-circle fs-2"></i>
-            </div>
-            <h3 class="fw-bold mt-3">{{Notstarted}}</h3>
-          </div>
-        </div>
-    <div class="container">
-      <!-- Loading Spinner (only show when loading) -->
-      <div *ngIf="isLoading" class="spinner-overlay">
-        <div class="spinner"></div>
       </div>
-      <!-- Make the table container scrollable with both X and Y axis -->
-       <br>
-      <div class="table-container" *ngIf="!isLoading">
-        <div class="container">
-          <!-- Search Box and Show Entries -->
-          <div class="d-flex justify-content-end align-items-center mb-3">
-            <!-- Show entries -->
-            <!-- <div>
+      <div class="col-md-3">
+        <div class="card shadow-sm p-2 text-white"
+          style="background: linear-gradient(135deg, #43c44d, #b9eabd); border-radius: 1rem; cursor: pointer;">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="fw-bold mb-1 ">Completed</h6>
+              <p class="mb-0 small">Count of Training Completed</p>
+            </div>
+            <i class="bi bi-check-circle-fill fs-2"></i>
+          </div>
+          <h3 class="fw-bold mt-3">{{Completed}}</h3>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm p-2 text-white"
+          style="background: linear-gradient(135deg, #c5a31c, #efde99); border-radius: 1rem; cursor: pointer;">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="fw-bold mb-1 ">Approval Pending</h6>
+              <p class="mb-0 small">Count of Approval Pending</p>
+            </div>
+            <i class="bi bi-clock-history fs-2"></i>
+          </div>
+          <h3 class="fw-bold mt-3">{{ApprovalPending}}</h3>
+        </div>
+      </div>
+      <!-- Completed -->
+      <div class="col-md-3">
+        <div class="card shadow-sm p-2 text-white"
+          style="background: linear-gradient(135deg, #e76161, #e5a6a6); border-radius: 1rem; cursor: pointer;">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="fw-bold mb-1 ">Not started</h6>
+              <p class="mb-0 small">Count of Training Not started</p>
+            </div>
+            <i class="bi bi-slash-circle fs-2"></i>
+          </div>
+          <h3 class="fw-bold mt-3">{{Notstarted}}</h3>
+        </div>
+      </div>
+      <div class="container">
+        <!-- Loading Spinner (only show when loading) -->
+        <div *ngIf="isLoading" class="spinner-overlay">
+          <div class="spinner"></div>
+        </div>
+        <!-- Make the table container scrollable with both X and Y axis -->
+        <br>
+        <div class="table-container" *ngIf="!isLoading">
+          <div class="container">
+            <!-- Search Box and Show Entries -->
+            <div class="d-flex justify-content-end align-items-center mb-3">
+              <!-- Show entries -->
+              <!-- <div>
               <label for="entriesPerPage">{{labels.txt_Showentries}}</label>
               <select id="entriesPerPage" class="form-control" [(ngModel)]="entriesPerPage"
                 (ngModelChange)="changeEntriesPerPage()">
@@ -151,227 +156,230 @@
               </select>
             </div> -->
 
-            <!-- Search box -->
-            <div >
-              <input type="text" class="form-control" placeholder="Search employees..." [(ngModel)]="searchText"
-                (input)="searchEmployees()" />
+              <!-- Search box -->
+              <div>
+                <input type="text" class="form-control" placeholder="Search employees..." [(ngModel)]="searchText"
+                  (input)="searchEmployees()" />
+              </div>
             </div>
-          </div>
 
-          <!-- Loading Spinner (only show when loading) -->
-          <div *ngIf="isLoading" class="spinner-overlay">
-            <div class="spinner"></div>
-          </div>
-          <!-- Make the table container scrollable with both X and Y axis -->
-          <div class="table-container" *ngIf="!isLoading" style="height: auto; overflow-y: auto; overflow-x: auto;">
-            <table class="table">
-              <thead style="background-color: #0a48b3 !important; color: white;">
-                <tr>
-                  <th>{{table.tbl_TraineeCode}}</th>
-                  <th>{{table.tbl_TraineeName}}</th>
-                  <th>{{table.tbl_TrainerCode}}</th>
-                  <th>{{table.tbl_TrainerName}}</th>
-                  <th>{{table.tbl_Bank}}</th>
-                  <th>{{table.tbl_State}}</th>
-                  <th>{{table.tbl_Area}}</th>
-                  <th>{{table.tbl_Branch}}</th>
-                  <th>{{table.tbl_Designation}}</th>
-                  <th>{{table.tbl_dateOfJoining}}</th>
-                  <th>{{table.tbl_TrainingStatus}}</th>
-                </tr>
+            <!-- Loading Spinner (only show when loading) -->
+            <div *ngIf="isLoading" class="spinner-overlay">
+              <div class="spinner"></div>
+            </div>
+            <!-- Make the table container scrollable with both X and Y axis -->
+            <div class="table-container" *ngIf="!isLoading" style="height: auto; overflow-y: auto; overflow-x: auto;">
+              <table class="table">
+                <thead style="background-color: #0a48b3 !important; color: white;">
+                  <tr>
+                    <th>{{table.tbl_TraineeCode}}</th>
+                    <th>{{table.tbl_TraineeName}}</th>
+                    <th>{{table.tbl_TrainerCode}}</th>
+                    <th>{{table.tbl_TrainerName}}</th>
+                    <th>{{table.tbl_Bank}}</th>
+                    <th>{{table.tbl_State}}</th>
+                    <th>{{table.tbl_Area}}</th>
+                    <th>{{table.tbl_Branch}}</th>
+                    <th>{{table.tbl_Designation}}</th>
+                    <th>{{table.tbl_dateOfJoining}}</th>
+                    <th>{{table.tbl_TrainingStatus}}</th>
+                  </tr>
 
-              </thead>
-              <tbody>
-                <tr *ngIf="filteredEmployees.length === 0" class="text-center">
-                  <!-- <p style="text-align: center;">No data available</p> -->
-                  <td colspan="12" class="text-center">No data available</td>
-                  <!-- Adjust colspan to match the number of columns -->
-                </tr>
-              
-               <tr *ngFor="let employee of filteredEmployees | paginate: { itemsPerPage: entriesPerPage, currentPage: p }"
-                  [style.cursor]="(employee.trainingStatus === 'Completed' || employee.trainingStatus === 'Pending') ? 'pointer' : 'default'"
-                  (click)="handleRowClick(employee)">
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.TraineeCode }}</td>
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.TraineeName }}</td>
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.TrainerCode }}</td>
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.TrainerName }}</td>
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.BankPartners }}</td>
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.States }}</td>
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.Area }}</td>
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.Branches }}</td>
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.Designation }}</td>
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.Dateofjoining }}</td>
-                  <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.trainingStatus }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  <tr *ngIf="filteredEmployees.length === 0" class="text-center">
+                    <!-- <p style="text-align: center;">No data available</p> -->
+                    <td colspan="12" class="text-center">No data available</td>
+                    <!-- Adjust colspan to match the number of columns -->
+                  </tr>
 
+                  <tr
+                    *ngFor="let employee of filteredEmployees | paginate: { itemsPerPage: entriesPerPage, currentPage: p }"
+                    [style.cursor]="(employee.trainingStatus === 'Completed' || employee.trainingStatus === 'Pending') ? 'pointer' : 'default'"
+                    (click)="handleRowClick(employee)">
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.TraineeCode }}</td>
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.TraineeName }}</td>
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.TrainerCode }}</td>
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.TrainerName }}</td>
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.BankPartners }}</td>
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.States }}</td>
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.Area }}</td>
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.Branches }}</td>
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.Designation }}</td>
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.Dateofjoining }}</td>
+                    <td [ngStyle]="getRowClass(employee.trainingStatus)">{{ employee.trainingStatus }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+
+          </div>
 
         </div>
 
-      </div>
+        <!-- Pagination Controls and Showing X to Y of Z entries -->
+        <div class="d-flex justify-content-between align-items-center">
+          <!-- Pagination controls -->
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
 
-      <!-- Pagination Controls and Showing X to Y of Z entries -->
-      <div class="d-flex justify-content-between align-items-center">
-        <!-- Pagination controls -->
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
-
-        <!-- Showing X to Y of Z entries -->
-        <div class="text-right">
-          <span>{{labels.txt_Showing}} {{ rangeInfo.start }} to {{ rangeInfo.end }} of {{ rangeInfo.total }}
-            entries</span>
+          <!-- Showing X to Y of Z entries -->
+          <div class="text-right">
+            <span>{{labels.txt_Showing}} {{ rangeInfo.start }} to {{ rangeInfo.end }} of {{ rangeInfo.total }}
+              entries</span>
+          </div>
         </div>
       </div>
+
     </div>
 
-  </div>
 
-
-<!-- Modal for Course Allocation -->
-<div #modalContainer *ngIf="isModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;"   tabindex="0" (keydown.escape)="closeModal()">
-  <div class="modal-content evidence-modal">
-    <span class="close-btn"  (click)="closeModal()">&times;</span>
-    <div class="modal-header-fixed">
-      <h3 class="text-center mb-2">{{ labels.txt_EvidenceDetails }}</h3>
-      <hr />
-    </div>
-    <div class="modal-body-scrollable">
-      <form>
-
-        <div *ngFor="let item of EmployeeData; let i = index">
-          <div class="row mb-4">
-            <h5><b>{{ i + 1 }}. {{ item.Type }} :</b></h5>
-
-            <!-- Trainee Image Section -->
-            <div class="col-md-6">
-              <div class="card mt-1 shadow-sm">
-                <div class="card-header profileDiv"><b>{{ labels.txt_TraineeImage }}</b></div>
-                <img [src]="item.TraineeImage" class="card-img-top openimgFrame" alt="Trainee Image"
-
-                  style="height: 150px; object-fit: cover; width: 100%;" 
-                  (click)="openImageModal(item.TraineeImage)" />
-                <label style="margin-left: 5px;">
-                  <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TraineeUploadedDate ||'Not Available' }}
-
-                </label>
-                <label style="margin-left: 5px;">
-                  <b>{{ labels.txt_LatLong }} :</b> {{ item.LatLong }}
-                </label>
-              </div>
-            </div>
-
-            <!-- Trainer Image Section -->
-            <div class="col-md-6">
-              <div class="card mt-1 shadow-sm">
-                <div class="card-header profileDiv"><b>{{ labels.txt_TrainerImage }}</b></div>
-                <img [src]="item.TrainerImage" class="card-img-top openimgFrame" alt="Trainer Image"
-                  style="height: 150px; object-fit: cover; width: 100%;" 
-                  (click)="openImageModal(item.TrainerImage)" />
-                <label style="margin-left: 5px;">
-                  <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TrainerUploadedDate||'Not Available' }}
-                </label>
-                <label style="margin-left: 5px;">
-                  <b>{{ labels.txt_LatLong }} :</b> {{ item.LatLongTrainer}}
-                </label>
-
-              </div>
-            </div>
-               <div class="col-md-12 d-flex justify-content-end">
-              <div class="col-md-6 mt-3">
-                <p *ngIf="item.QCStatus === 'Reject'" class="text-danger">
-                  <i class="fa fa-times-circle me-2"></i> This image has been rejected
-                </p>
-                <p *ngIf="item.QCStatus === 'Approve'" class="text-success">
-                  <i class="fa fa-check-circle me-2"></i> This image has been approved
-                </p>
-              </div>
-              <div class="d-flex justify-content-end mt-3" >
-                <button class="btn btn-success btn-sm me-2"
-                  [disabled]="( !ApproveRej || item.QCStatus === 'Approve' || item.QCStatus === 'Reject') "
-                  (click)="updateImageQCStatus(item.ID , item.Typeid ,'Approve',item.trainingStatus)">
-                  Approve
-                </button>
-
-            <button
-              class="btn btn-danger btn-sm me-2"
-              [disabled]="(!ApproveRej || item.QCStatus === 'Approve' || item.QCStatus === 'Reject')"
-              (click)="Rejectremark(item.ID, item.Typeid, item.trainingStatus)">
-              Reject
-            </button>
-              </div>
-           
-          </div>
-          </div>        
+    <!-- Modal for Course Allocation -->
+    <div #modalContainer *ngIf="isModalOpen" class="modal"
+      style="display: flex; justify-content: center; align-items: center;" tabindex="0" (keydown.escape)="closeModal()">
+      <div class="modal-content evidence-modal">
+        <span class="close-btn" (click)="closeModal()">&times;</span>
+        <div class="modal-header-fixed">
+          <h3 class="text-center mb-2">{{ labels.txt_EvidenceDetails }}</h3>
           <hr />
         </div>
-         <div class="col-md-12 d-flex justify-content-end">
-          <div class="d-flex justify-content-end mt-3">
-            <button class="btn btn-primary btn-sm me-2"  *ngIf="showSubmitButton" (click)="submitFinalData(ModalIDForSave)"style="background-color: #0a48b3 ;">Submit</button>     
-          </div>
+        <div class="modal-body-scrollable">
+          <form>
+
+            <div *ngFor="let item of EmployeeData; let i = index">
+              <div class="row mb-4">
+                <h5><b>{{ i + 1 }}. {{ item.Type }} :</b></h5>
+
+                <!-- Trainee Image Section -->
+                <div class="col-md-6">
+                  <div class="card mt-1 shadow-sm">
+                    <div class="card-header profileDiv"><b>{{ labels.txt_TraineeImage }}</b></div>
+                    <img [src]="item.TraineeImage" class="card-img-top openimgFrame" alt="Trainee Image"
+                      style="height: 150px; object-fit: cover; width: 100%;"
+                      (click)="openImageModal(item.TraineeImage)" />
+                    <label style="margin-left: 5px;">
+                      <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TraineeUploadedDate ||'Not Available' }}
+
+                    </label>
+                    <label style="margin-left: 5px;">
+                      <b>{{ labels.txt_LatLong }} :</b> {{ item.LatLong }}
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Trainer Image Section -->
+                <div class="col-md-6">
+                  <div class="card mt-1 shadow-sm">
+                    <div class="card-header profileDiv"><b>{{ labels.txt_TrainerImage }}</b></div>
+                    <img [src]="item.TrainerImage" class="card-img-top openimgFrame" alt="Trainer Image"
+                      style="height: 150px; object-fit: cover; width: 100%;"
+                      (click)="openImageModal(item.TrainerImage)" />
+                    <label style="margin-left: 5px;">
+                      <b>{{ labels.txt_EvidenceDate }} :</b> {{ item.TrainerUploadedDate||'Not Available' }}
+                    </label>
+                    <label style="margin-left: 5px;">
+                      <b>{{ labels.txt_LatLong }} :</b> {{ item.LatLongTrainer}}
+                    </label>
+
+                  </div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-end">
+                  <div class="col-md-6 mt-3">
+                    <p *ngIf="item.QCStatus === 'Reject'" class="text-danger">
+                      <i class="fa fa-times-circle me-2"></i> This image has been rejected
+                    </p>
+                    <p *ngIf="item.QCStatus === 'Approve'" class="text-success">
+                      <i class="fa fa-check-circle me-2"></i> This image has been approved
+                    </p>
+                  </div>
+                  <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-success btn-sm me-2"
+                      [disabled]="(!ApproveRej || item.QCStatus === 'Approve' || item.QCStatus === 'Reject'|| !item.TraineeImage || !item.TrainerImage)"
+                      (click)="updateImageQCStatus(item.ID , item.Typeid ,'Approve',item.trainingStatus)">
+                      Approve
+                    </button>
+
+                    <button class="btn btn-danger btn-sm me-2"
+                      [disabled]="(!ApproveRej || item.QCStatus === 'Approve' || item.QCStatus === 'Reject'|| !item.TraineeImage || !item.TrainerImage)"
+                      (click)="Rejectremark(item.ID, item.Typeid, item.trainingStatus)">
+                      Reject
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+              <hr />
+            </div>
+            <div class="col-md-12 d-flex justify-content-end">
+              <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-primary btn-sm me-2" *ngIf="showSubmitButton"
+                  (click)="submitFinalData(ModalIDForSave)" style="background-color: #0a48b3 ;">Submit</button>
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
-</div>
 
 
-<!-- Modal for   Remark-->
-  <div *ngIf="isRejectModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;">
-    <div class="modal-content">
-      <h3 class="text-center">Remark</h3>
-      <span class="close-btn remarkClosebtn" (click)="closeRejectModal()">&times;</span>
-      <br>
-      <form>
-        <div class="col-md-12">
-          <!-- <input type="text" [(ngModel)]="selectedRejectData.remark" name="remarkInput" class="form-control"
+    <!-- Modal for   Remark-->
+    <div *ngIf="isRejectModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;">
+      <div class="modal-content">
+        <h3 class="text-center">Remark</h3>
+        <span class="close-btn remarkClosebtn" (click)="closeRejectModal()">&times;</span>
+        <br>
+        <form>
+          <div class="col-md-12">
+            <!-- <input type="text" [(ngModel)]="selectedRejectData.remark" name="remarkInput" class="form-control"
             placeholder="Enter Remark" required /> -->
-          <textarea class="form-control" [(ngModel)]="selectedRejectData.remark" name="remarkInput" rows="3" placeholder="Enter Remark"
-          ></textarea>
-        </div>
-        <div class="text-center mt-3">
-         <!-- <div class="col-md-12 d-flex justify-content-end"> -->
-  <button class="btn btn-primary btn-sm" style="width: 30%; padding: 8px;" (click)="submitReject()">
-    Submit
-  </button>
-</div>
+            <textarea class="form-control" [(ngModel)]="selectedRejectData.remark" name="remarkInput" rows="3"
+              placeholder="Enter Remark"></textarea>
+          </div>
+          <div class="text-center mt-3">
+            <!-- <div class="col-md-12 d-flex justify-content-end"> -->
+            <button class="btn btn-primary btn-sm" style="width: 30%; padding: 8px;" (click)="submitReject()">
+              Submit
+            </button>
+          </div>
 
 
-      </form>  
+        </form>
+      </div>
     </div>
-  </div>
 
 
 
-  <!-- Trainer Assignment Modal -->
-  <div  #trainerModal *ngIf="isTrainerModalOpen" class="modal" style="display: flex; justify-content: center; align-items: center;" tabindex="0" (keydown.escape)="closeTrainerModal()">
-    <div class="modal-content">
-      <span class="close-btn" (click)="closeTrainerModal()">&times;</span>
-      <h4 class="text-center">Assign Training</h4>
-      <form>
-        <!-- Trainer Name Dropdown -->
-        <label for="trainerSelect">Trainer Name</label>
-        <select id="trainerSelect" class="form-control" [(ngModel)]="selectedTrainerCode" name="trainerName" required>
-          <option value="" disabled>Select Trainer</option>
-          <option *ngFor="let trainer of trainerList" [value]="trainer.TrainerCode">
-            {{ trainer.TrainerName }}
-          </option>
-        </select>
-        <div class="text-center">
-          <button type="button" (click)="assignTrainer()" class="btn btn-primary"
-            style="background: linear-gradient(135deg, #0a48b3, #3e77b0, #6799cc); border: none; color: white;">
-            Assign
-          </button>
-        </div>
-      </form>
+    <!-- Trainer Assignment Modal -->
+    <div #trainerModal *ngIf="isTrainerModalOpen" class="modal"
+      style="display: flex; justify-content: center; align-items: center;" tabindex="0"
+      (keydown.escape)="closeTrainerModal()">
+      <div class="modal-content">
+        <span class="close-btn" (click)="closeTrainerModal()">&times;</span>
+        <h4 class="text-center">Assign Training</h4>
+        <form>
+          <!-- Trainer Name Dropdown -->
+          <label for="trainerSelect">Trainer Name</label>
+          <select id="trainerSelect" class="form-control" [(ngModel)]="selectedTrainerCode" name="trainerName" required>
+            <option value="" disabled>Select Trainer</option>
+            <option *ngFor="let trainer of trainerList" [value]="trainer.TrainerCode">
+              {{ trainer.TrainerName }}
+            </option>
+          </select>
+          <div class="text-center">
+            <button type="button" (click)="assignTrainer()" class="btn btn-primary"
+              style="background: linear-gradient(135deg, #0a48b3, #3e77b0, #6799cc); border: none; color: white;">
+              Assign
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <!-- Fullscreen Image Modal -->
-  <!-- Image Preview Modal (fullscreen) -->
-  <div *ngIf="isImageModalOpen" class="image-modal-overlay" (click)="closeImageModal()">
-    <div class="image-modal-content" (click)="$event.stopPropagation()">
-      <span class="close-btn" (click)="closeImageModal()">&times;</span>
-      <img [src]="selectedImageUrl" class="preview-img" />
+    <!-- Fullscreen Image Modal -->
+    <!-- Image Preview Modal (fullscreen) -->
+    <div *ngIf="isImageModalOpen" class="image-modal-overlay" (click)="closeImageModal()">
+      <div class="image-modal-content" (click)="$event.stopPropagation()">
+        <span class="close-btn" (click)="closeImageModal()">&times;</span>
+        <img [src]="selectedImageUrl" class="preview-img" />
+      </div>
     </div>
-  </div>                            
