@@ -146,12 +146,10 @@ export class EvidenceCollectionComponent {
   };
   ModalIDForSave: number = 0;
   isSubmit: boolean = false;
-
   Total: number = 0;
   Completed: number = 0;
   ApprovalPending: number = 0;
   Notstarted: number = 0;
-ApproveRej :boolean =false;
 
   constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) { }
 
@@ -355,42 +353,45 @@ searchEmployees() {
     });
   }
 
-  openModal(ID: number, trainingStatus: any): void {
-    this.isModalOpen = true;
-    const params = {
-      ID: ID
-    };
-    this.isLoading = true;
-    this.http.post<any>('/api/api/webCourseMaster/GetUserWiseData', params).subscribe(
-      (response) => {
-        if (response.status && response.data && response.data.length > 0) {
-  this.modalEmployees = response.data.map((employee: any) => ({
-          ...employee
-        }));
-          this.ModalIDForSave = ID;
-          // this.EmployeeData = [...this.employees];
-          this.isLoading = false
+openModal(ID: number, trainingStatus: any): void {
+  this.isModalOpen = true;
+  const params = { ID };
+
+  this.isLoading = true;
+  this.http.post<any>('/api/api/webCourseMaster/GetUserWiseData', params).subscribe(
+    (response) => {
+      if (response.status && response.data && response.data.length > 0) {
+
+        this.modalEmployees = response.data.map((employee: any) => ({ ...employee }));
+        this.ModalIDForSave = ID;
+        this.isLoading = false;
+
         this.EmployeeData = this.modalEmployees.map((item: any) => ({
           ...item,
           trainingStatus: trainingStatus
         }));
-          // if (trainingStatus === "Approval-Pending") {
-          //   this.showSubmitButton = this.EmployeeData.every((item: any) =>
-          //     item.QCStatus === 'Approve' || item.QCStatus === 'Reject'
-          //   );
-            this.ApproveRej =true;
-          // } else {
-            // this.showSubmitButton = false;
-            //    this.ApproveRej =false;
-          // }
+
+        // ---------------------------
+        // SHOW SUBMIT BUTTON CONDITION
+        // ---------------------------
+        if (trainingStatus === "Approval-Pending") {
+          const allValid = this.EmployeeData.every(
+            (item: any) => item.QCStatus === "Approve" || item.QCStatus === "Reject"
+          );
+
+          this.showSubmitButton = allValid;
+        } else {
+          this.showSubmitButton = false;
         }
-      },
-      (error) => {
-        console.error('Error fetching data:', error);
-        this.isLoading = false;
+
       }
-    );
-  }
+    },
+    (error) => {
+      console.error('Error fetching data:', error);
+      this.isLoading = false;
+    }
+  );
+}
 
   openImageModal(imageUrl: string): void {
     this.selectedImageUrl = imageUrl;
@@ -575,7 +576,6 @@ updateImageQCStatus(id: number,Type: number,status: 'Approve' | 'Reject',trainin
     Type: Type,
     status: status
   };
-
   if (status === 'Reject') {
     payload.rejectRemark = remark;
   }
@@ -589,7 +589,6 @@ updateImageQCStatus(id: number,Type: number,status: 'Approve' | 'Reject',trainin
         };
       }
       this.cdr.detectChanges();
-
       if (trainingStatus === 'Approval-Pending') {
         this.allApproved();
       }
@@ -710,8 +709,6 @@ updateImageQCStatus(id: number,Type: number,status: 'Approve' | 'Reject',trainin
       return {};
   }
 }
-
-
 
   GetFieldTrainingDashboardCount() {
     const params = {

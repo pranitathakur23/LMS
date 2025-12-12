@@ -294,13 +294,13 @@
                   </div>
                   <div class="d-flex justify-content-end mt-3">
                     <button class="btn btn-success btn-sm me-2"
-                      [disabled]="(!ApproveRej || item.QCStatus === 'Approve' || item.QCStatus === 'Reject'|| !item.TraineeImage || !item.TrainerImage)"
+                      [disabled]="(item.QCStatus === 'Approve' || item.QCStatus === 'Reject'|| !item.TraineeImage || !item.TrainerImage)"
                       (click)="updateImageQCStatus(item.ID , item.Typeid ,'Approve',item.trainingStatus)">
                       Approve
                     </button>
 
                     <button class="btn btn-danger btn-sm me-2"
-                      [disabled]="(!ApproveRej || item.QCStatus === 'Approve' || item.QCStatus === 'Reject'|| !item.TraineeImage || !item.TrainerImage)"
+                      [disabled]="( item.QCStatus === 'Approve' || item.QCStatus === 'Reject'|| !item.TraineeImage || !item.TrainerImage)"
                       (click)="Rejectremark(item.ID, item.Typeid, item.trainingStatus)">
                       Reject
                     </button>
