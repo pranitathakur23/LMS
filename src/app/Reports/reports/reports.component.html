@@ -9,7 +9,7 @@
         <!-- Bank -->
         <div class="col-md-2">
           <label class="form-label">{{labels.txt_Bank}}</label>
-          <select class="form-control form-control-sm" [(ngModel)]="bank" required #bankSelect>
+          <select class="form-control form-control-sm" [(ngModel)]="bank" [disabled]="isBankUser" required #bankSelect>
             <option value="">All</option>
             <option *ngFor="let bank of banks" [value]="bank.BankName">{{ bank.BankName }}</option>
           </select>

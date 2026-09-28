@@ -151,10 +151,12 @@ export class EvidenceCollectionComponent {
   ApprovalPending: number = 0;
   Notstarted: number = 0;
 ApproveRej :boolean =false;
+  isBankUser = false;
 
   constructor(private http: HttpClient, private location: Location, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.applyBankUserSelection();
     this.fetchBanks();
     this.fetchStates();
     this.fetchAreas();
@@ -163,6 +165,20 @@ ApproveRej :boolean =false;
     this.FetchEDData()
     this.GetFieldTrainingDashboardCount()
   }
+  private applyBankUserSelection(): void {
+    const designation = (sessionStorage.getItem('Designation') || '').trim().toLowerCase();
+    const bankPartner = (sessionStorage.getItem('BankPartners') || '').trim();
+    if (designation !== 'bank user' || !bankPartner) {
+      return;
+    }
+
+    this.isBankUser = true;
+    const match = this.banks.find((item: any) =>
+      String(item.bank || '').trim().toLowerCase() === bankPartner.toLowerCase()
+    );
+    this.formData.bank = match ? match.bank : bankPartner;
+  }
+
   // Fetch Banks data
   fetchBanks() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
@@ -175,6 +191,7 @@ ApproveRej :boolean =false;
               bank: bank.BankName
             };
           });
+          this.applyBankUserSelection();
           this.fetchStates(); // Fetch states once banks are loaded
         } else {
           console.error('Error fetching bank details:', response.message);
