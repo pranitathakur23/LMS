@@ -13,7 +13,7 @@
       <div class="col-md">
         <label class="form-label fw-semibold">{{labels.txt_Bank}}</label>
         <ng-select [items]="banks" bindLabel="name" bindValue="name" [(ngModel)]="selectedBank" (change)="fetchstates()"
-          class="small-dropdown" [clearable]="false">
+          class="small-dropdown" [clearable]="false" [disabled]="isBankUser">
         </ng-select>
       </div>
       <div class="col-md">

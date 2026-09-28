@@ -119,8 +119,14 @@ export class LoginComponent {
             sessionStorage.setItem('employeeCode', userData.EmployeeCode);
             sessionStorage.setItem('Email', userData.Email);
             sessionStorage.setItem('PageRole', userData.PageRole);
-            console.log("Redirecting to Dashboard"); // Log before redirection
-            this.router.navigate(['/layout/Dashboard/Dashboard']);
+            sessionStorage.setItem('Designation', userData.Designation);
+            sessionStorage.setItem('BankPartners', userData.BankPartners);
+          if (userData.PageRole?.split(',').includes('1')) {
+             this.router.navigate(['/layout/Dashboard/Dashboard']);
+           } else if(userData.PageRole?.split(',').includes('9')){
+             this.router.navigate(['/layout/ProgressTracker/progress-tracker']);
+           }
+           
           } 
         } else {
           alert(response.message || 'Invalid Employee Code or Password');

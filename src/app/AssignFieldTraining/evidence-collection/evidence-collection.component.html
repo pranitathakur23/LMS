@@ -14,7 +14,7 @@
         <div class="col-md">
           <label for="bank">Bank</label>
           <select id="bank" class="form-select custom-dropdown" [(ngModel)]="formData.bank" name="bank" required
-            (change)="fetchStates()">
+            [disabled]="isBankUser" (change)="fetchStates()">
             <option value="" hidden>Select Bank</option>
 
             <option *ngFor="let bank of banks" [value]="bank.bank">{{ bank.bank }}</option>

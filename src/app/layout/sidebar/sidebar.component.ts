@@ -29,6 +29,9 @@ export class SidebarComponent {
   Assessment= false;
   Question_Bank= false;
   Progress_Tracker= false;
+  Field_Training= false;
+  showAssignTrainer = false;
+  showEvidenceCollection = false;
 isTrainingMenuOpen: boolean = false;
   constructor(
     private router: Router,
@@ -51,7 +54,9 @@ isTrainingMenuOpen: boolean = false;
         this.Assessment = this.pageRoles.includes('7');
         this.Question_Bank = this.pageRoles.includes('8');
         this.Progress_Tracker = this.pageRoles.includes('9');
-
+        this.showAssignTrainer = this.pageRoles.includes('10');
+        this.showEvidenceCollection = this.pageRoles.includes('11');
+        this.Field_Training = this.showAssignTrainer || this.showEvidenceCollection;
 
         this.cdr.detectChanges();
       } 

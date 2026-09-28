@@ -27,6 +27,7 @@ export class ProgressTrackerComponent {
   Unassigned: number | null = null;
   Notstared: number | null = null;
   isLoading: boolean = false;
+  isBankUser = false;
 
   labels = AppLabels;
   Header = AppHeader;
@@ -38,6 +39,7 @@ export class ProgressTrackerComponent {
   constructor(private http: HttpClient) { }
 
   ngOnInit() { 
+     this.applyBankUserSelection();
      this.fetchCourses();
      this.fetchBankNames();
       this.fetchdesignations();
@@ -118,6 +120,21 @@ getGradient(progress: number): string {
       }
     );
   }
+  private applyBankUserSelection(): boolean {
+    const designation = (sessionStorage.getItem('Designation') || '').trim().toLowerCase();
+    const bankPartner = (sessionStorage.getItem('BankPartners') || '').trim();
+    if (designation !== 'bank user' || !bankPartner) {
+      return false;
+    }
+
+    this.isBankUser = true;
+    const match = this.banks.find((item: any) =>
+      String(item.name || '').trim().toLowerCase() === bankPartner.toLowerCase()
+    );
+    this.selectedBank = match ? match.name : bankPartner;
+    return true;
+  }
+
   fetchBankNames() {
     const apiUrl = '/api/api/webCourseMaster/GetEmployeeHierarchyData';
     const requestBody = { mode: 1, Bank: 'AB', State: 'AB', Area: 'AB', Branch: 'AB', DesignationID: 0  };
@@ -129,7 +146,9 @@ getGradient(progress: number): string {
               name: bank.BankName
             };
           });
-          this.selectedBank = this.banks[0]?.name; // Set default value
+          if (!this.applyBankUserSelection()) {
+            this.selectedBank = this.banks[0]?.name; // Set default value
+          }
           this.fetchstates(); // Fetch states once banks are loaded
         } else {
           console.error('Error fetching bank details:', response.message);

@@ -50,10 +50,12 @@ export class ReportsComponent {
   isLoading: boolean = false; // Loading spinner flag
   state: string = '';
   states: any[] = [];
+  isBankUser = false;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    this.applyBankUserSelection();
     this.fetchBanks();
     this.fetchDepartments();
     this.fetchCourses();
@@ -74,6 +76,7 @@ export class ReportsComponent {
       response => {
         if (response.status == true) {
           this.banks = response.data;
+          this.applyBankUserSelection();
         } else {
           console.error(response.message);
         }
@@ -83,6 +86,20 @@ export class ReportsComponent {
       }
     );
   }
+  private applyBankUserSelection(): void {
+    const designation = (sessionStorage.getItem('Designation') || '').trim().toLowerCase();
+    const bankPartner = (sessionStorage.getItem('BankPartners') || '').trim();
+    if (designation !== 'bank user' || !bankPartner) {
+      return;
+    }
+
+    this.isBankUser = true;
+    const match = this.banks.find((item: any) =>
+      String(item.BankName || '').trim().toLowerCase() === bankPartner.toLowerCase()
+    );
+    this.bank = match ? match.BankName : bankPartner;
+  }
+
   fetchStates() {
     const apiUrl = '/api/api/webCourseMaster/GetCourseDetailsforWEB';
     const requestBody = { mode: 8 };
