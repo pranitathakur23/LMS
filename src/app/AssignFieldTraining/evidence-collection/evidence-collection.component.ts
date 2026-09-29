@@ -729,6 +729,14 @@ updateImageQCStatus(id: number,Type: number,status: 'Approve' | 'Reject',trainin
 
 
 
+  private toCount(value: any): number {
+    if (value == null || typeof value === 'object') {
+      return 0;
+    }
+    const count = Number(value);
+    return Number.isFinite(count) ? count : 0;
+  }
+
   GetFieldTrainingDashboardCount() {
     const params = {
       BankPartners: this.formData.bank || 'AB',
@@ -741,10 +749,11 @@ updateImageQCStatus(id: number,Type: number,status: 'Approve' | 'Reject',trainin
     };
     this.http.post<any>('/api/api/fieldTraining/GetFieldTrainingDashboardCount', params).subscribe(
       (response) => {
-        this.Total=response.data[0].Total
-        this.Completed=response.data[0].Completed
-        this.ApprovalPending=response.data[0].ApprovalPending
-       this.Notstarted=response.data[0].NotStarted
+        const row = response?.data?.[0] || {};
+        this.Total = this.toCount(row.Total);
+        this.Completed = this.toCount(row.Completed);
+        this.ApprovalPending = this.toCount(row.ApprovalPending);
+        this.Notstarted = this.toCount(row.NotStarted);
       },
       (error) => {
         console.error('Error fetching data:', error);
